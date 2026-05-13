@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator Salarii România 2026</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:    #1a2744;
+  --navy-lt: #253460;
+  --accent:  #c8001e;
+  --blue:    #1d6fa4;
+  --teal:    #0d7c6e;
+  --amber:   #b45309;
+  --gray-50:  #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #adb5bd;
+  --gray-600: #6c757d;
+  --gray-800: #343a40;
+  --green:   #1a6b3a;
+  --text:    #1c1c1c;
+  --border:  #dee2e6;
+  --shadow:  0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+  --radius:  10px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--gray-100);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  color: white;
+  padding: 0 24px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { width:30px;height:30px;background:var(--accent);border-radius:6px;display:grid;place-items:center;font-weight:800;font-size:13px;color:white;flex-shrink:0; }
+header h1 { font-size:15px;font-weight:600;letter-spacing:-.2px; }
+.badge { margin-left:auto;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:500; }
+
+/* ── TABS ── */
+.tabs-bar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tab-btn {
+  padding: 14px 18px 12px;
+  border: none;
+  background: none;
+  border-bottom: 3px solid transparent;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: color .15s;
+}
+.tab-btn:hover { color: var(--gray-800); }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); font-weight: 700; }
+.tab-btn .tag { font-size: 10px; background: var(--gray-100); color: var(--gray-600); padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+.tab-btn.active .tag { background: #e8ecf5; color: var(--navy); }
+
+/* ── LAYOUT ── */
+.page { max-width: 980px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 360px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 720px) { .page { grid-template-columns: 1fr; margin: 12px auto; } }
+.tab-panel { display: none; }
+.tab-panel.active { display: contents; }
+
+/* ── CARD ── */
+.card { background: white; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.card-header { background: var(--gray-50); border-bottom: 1px solid var(--border); padding: 12px 18px; font-size: 11px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; color: var(--gray-600); display: flex; align-items: center; gap: 8px; }
+.card-header .dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+.card-body { padding: 18px; }
+
+/* ── FORM ── */
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--gray-600); margin-bottom: 5px; letter-spacing: .2px; }
+.input-wrap { position: relative; }
+.input-wrap .suffix { position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-400);font-weight:500;pointer-events:none; }
+input[type="number"], select, input[type="text"] {
+  width:100%;padding:9px 40px 9px 11px;border:1px solid var(--border);border-radius:7px;
+  font-size:15px;font-weight:600;color:var(--text);background:white;outline:none;
+  transition:border-color .15s;-moz-appearance:textfield;
+}
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+input[type="number"]:focus, select:focus { border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,39,68,.1); }
+select { padding-right:30px;font-size:14px;font-weight:500;cursor:pointer; }
+.two-col { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+.three-col { display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px; }
+
+/* ── MODE TOGGLE ── */
+.mode-toggle { display:grid;grid-template-columns:1fr 1fr;background:var(--gray-100);border-radius:8px;padding:4px;gap:4px;margin-bottom:18px; }
+.mode-btn { padding:9px;border:none;border-radius:6px;background:transparent;font-size:13px;font-weight:500;cursor:pointer;color:var(--gray-600);transition:all .15s;text-align:center; }
+.mode-btn.active { background:white;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:700; }
+
+/* ── ADVANCED ── */
+.adv-toggle { display:flex;align-items:center;gap:8px;padding:10px 0;border:none;background:none;cursor:pointer;width:100%;color:var(--gray-600);font-size:13px;font-weight:600;border-top:1px solid var(--border);margin-top:6px; }
+.adv-toggle svg { transition:transform .2s; }
+.adv-toggle.open svg { transform:rotate(180deg); }
+.adv-body { display:none;padding-top:12px; }
+.adv-body.open { display:block; }
+.toggle-field { display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100); }
+.toggle-field:last-child { border-bottom:none; }
+.toggle-field .lbl { font-size:13px;color:var(--gray-800); }
+.toggle-field .hint { font-size:11px;color:var(--gray-400);display:block; }
+.switch { position:relative;width:40px;height:22px;flex-shrink:0; }
+.switch input { opacity:0;width:0;height:0; }
+.slider { position:absolute;inset:0;background:var(--gray-200);border-radius:11px;cursor:pointer;transition:.2s; }
+.slider::before { content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2); }
+.switch input:checked + .slider { background:var(--navy); }
+.switch input:checked + .slider::before { transform:translateX(18px); }
+
+/* ── BTN ── */
+.btn-calc { width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;letter-spacing:.2px;transition:background .15s; }
+.btn-calc:hover { background:var(--navy-lt); }
+.btn-calc.blue { background:var(--blue); }
+.btn-calc.teal { background:var(--teal); }
+.btn-calc.amber { background:var(--amber); }
+
+/* ── RESULTS ── */
+.results-placeholder { display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 20px;color:var(--gray-400);text-align:center;gap:10px; }
+.results-placeholder svg { opacity:.25; }
+.results-placeholder p { font-size:13.5px; }
+.results-wrap { display:none; }
+.results-wrap.visible { display:block; }
+
+/* Result rows */
+.res-section { padding:0 18px; }
+.res-section + .res-section { border-top:1px solid var(--border);margin-top:2px;padding-top:2px; }
+.res-section-title { font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gray-400);padding:12px 0 6px; }
+.res-row { display:flex;align-items:center;justify-content:space-between;padding:6px 0; }
+.res-row .name { font-size:13.5px;color:var(--gray-800);display:flex;align-items:center;gap:6px; }
+.res-row .pct { font-size:11px;background:var(--gray-100);color:var(--gray-600);padding:2px 6px;border-radius:4px;font-weight:600; }
+.res-row .val { font-size:14px;font-weight:600;color:var(--text);text-align:right; }
+.res-row .val.minus { color:var(--accent); }
+.res-row .val.dim { color:var(--gray-500); }
+.res-row .val.plus { color:var(--green); }
+
+.res-total-row { display:flex;align-items:center;justify-content:space-between;padding:12px 18px 14px;background:var(--navy);margin-top:4px; }
+.res-total-row .name { font-size:14px;font-weight:700;color:rgba(255,255,255,.7); }
+.res-total-row .val { font-size:22px;font-weight:800;color:white; }
+.res-total-row.teal-bg { background:var(--teal); }
+.res-total-row.amber-bg { background:var(--amber); }
+.res-total-row.blue-bg { background:var(--blue); }
+
+.res-complet-row { display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:var(--gray-50);border-top:1px solid var(--border); }
+.res-complet-row .name { font-size:12px;font-weight:600;color:var(--gray-600); }
+.res-complet-row .val { font-size:15px;font-weight:700;color:var(--gray-800); }
+
+/* Tax bar */
+.tax-bar-wrap { padding:12px 18px 18px;border-top:1px solid var(--border); }
+.tax-bar-label { font-size:12px;color:var(--gray-600);margin-bottom:7px; }
+.tax-bar { height:9px;border-radius:5px;background:var(--gray-200);overflow:hidden;display:flex; }
+.seg-net { background:var(--green); }
+.seg-angajat { background:var(--accent); }
+.seg-angajator { background:#f59e0b; }
+.tax-legend { display:flex;gap:14px;margin-top:7px;flex-wrap:wrap; }
+.tax-leg-item { display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gray-600); }
+.tax-leg-dot { width:8px;height:8px;border-radius:2px;flex-shrink:0; }
+
+/* Info box */
+.info-box { margin:12px 18px 0;padding:10px 12px;border-radius:7px;font-size:12.5px;line-height:1.5; }
+.info-box.yellow { background:#fffbeb;border:1px solid #fde68a;color:#92400e; }
+.info-box.blue { background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af; }
+.info-box.green { background:#f0fdf4;border:1px solid #bbf7d0;color:#166534; }
+.info-box strong { font-weight:700; }
+
+/* Somaj duration badge */
+.duration-badge { display:inline-flex;align-items:center;gap:6px;background:#e8ecf5;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--navy);margin:8px 18px 0; }
+
+/* Breakdown list (somaj/CM) */
+.breakdown { padding:0 18px; }
+.breakdown-row { display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--gray-100);font-size:13.5px; }
+.breakdown-row:last-child { border-bottom:none; }
+.breakdown-row .k { color:var(--gray-700); }
+.breakdown-row .v { font-weight:700;color:var(--text); }
+
+footer { text-align:center;padding:20px 16px;font-size:11.5px;color:var(--gray-400); }
+
+/* Norm buttons */
+.norm-btns { display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px; }
+.norm-btn { padding:7px 4px;border:1px solid var(--border);border-radius:6px;background:white;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;text-align:center;transition:all .15s; }
+.norm-btn:hover { border-color:var(--blue);color:var(--blue); }
+.norm-btn.active { background:#eff6ff;border-color:var(--blue);color:var(--blue); }
+
+/* Concediu type pills */
+.type-pills { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px; }
+.type-pill { padding:6px 12px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--gray-600);cursor:pointer;background:white;transition:all .15s; }
+.type-pill.active { background:var(--teal);border-color:var(--teal);color:white; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CS</div>
+  <h1>Calculator Salarii România</h1>
+  <span class="badge">2026</span>
+</header>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('brut-net')">
+    Brut ↔ Net <span class="tag">principal</span>
+  </button>
+  <button class="tab-btn" onclick="showTab('part-time')">
+    Part-time
+  </button>
+  <button class="tab-btn" onclick="showTab('concediu')">
+    Concediu Medical
+  </button>
+  <button class="tab-btn" onclick="showTab('somaj')">
+    Ajutor Șomaj
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- TAB 1: BRUT ↔ NET                       -->
+<!-- ════════════════════════════════════════ -->
+<div class="page tab-panel active" id="tab-brut-net">
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--navy)"></div>Parametri calcul</div>
+    <div class="card-body">
+      <div class="mode-toggle">
+        <button class="mode-btn active" onclick="setMode('brut-net')">Brut → Net</button>
+        <button class="mode-btn" onclick="setMode('net-brut')">Net → Brut</button>
+      </div>
+      <div class="field">
+        <label id="main-label">Salariu Brut</label>
+        <div class="input-wrap">
+          <input type="number" id="main-input" placeholder="5000" min="0" step="50" oninput="autoCalc()">
+          <span class="suffix">lei</span>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="field" style="margin-bottom:0">
+          <label>Anul</label>
+          <select id="an" onchange="autoCalc()">
+            <option value="2026" selected>2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Luna</label>
+          <select id="luna" onchange="autoCalc()">
+            <option value="1">Ian</option><option value="2">Feb</option><option value="3">Mar</option>
+            <option value="4">Apr</option><option value="5" selected>Mai</option><option value="6">Iun</option>
+            <option value="7">Iul</option><option value="8">Aug</option><option value="9">Sep</option>
+            <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+          </select>
+        </div>
+      </div>
+      <!-- ADVANCED -->
+      <button class="adv-toggle" id="adv-toggle-btn" onclick="toggleAdv('adv-body','adv-toggle-btn')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        Opțiuni avansate
+      </button>
+      <div class="adv-body" id="adv-body">
+        <div class="toggle-field">
+          <div><span class="lbl">Funcție de bază</span><span class="hint">Contract principal</span></div>
+          <label class="switch"><input type="checkbox" id="functie-baza" checked onchange="autoCalc()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-field">
+          <div><span class="lbl">Scutit impozit venit</span><span class="hint">IT, handicap, defavorizate</span></div>
+          <label class="switch"><input type="checkbox" id="scutit-iv" onchange="autoCalc()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-field">
+          <div><span class="lbl">Sub 26 ani</span><span class="hint">Scutire CASS</span></div>
+          <label class="switch"><input type="checkbox" id="sub26" onchange="autoCalc()"><span class="slider"></span></label>
+        </div>
+        <div style="padding:10px 0 4px">
+          <div class="two-col">
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:4px">Pers. întreținute</label>
+              <select id="nr-pers" onchange="autoCalc()">
+                <option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option>
+              </select>
+            </div>
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:4px">Risc &amp; accidente</label>
+              <div class="input-wrap"><input type="number" id="risc" placeholder="0" min="0" max="20" step="0.1" style="font-size:14px;font-weight:500;padding:8px 36px 8px 10px" oninput="autoCalc()"><span class="suffix">%</span></div>
+            </div>
+          </div>
+          <div class="two-col" style="margin-top:10px">
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:4px">Nr. tichete masă</label>
+              <input type="number" id="nr-tichete" placeholder="0" min="0" style="padding:8px 10px;width:100%;border:1px solid var(--border);border-radius:7px;font-size:14px;font-weight:500;outline:none" oninput="autoCalc()">
+            </div>
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:4px">Val. tichet</label>
+              <div class="input-wrap"><input type="number" id="val-tichet" placeholder="0" step="1" style="font-size:14px;font-weight:500;padding:8px 40px 8px 10px" oninput="autoCalc()"><span class="suffix">lei</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-calc" onclick="calculeaza()">Calculează</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card" id="results-card">
+    <div class="card-header"><div class="dot" style="background:var(--green)"></div>Rezultat — <span id="res-year">2026</span></div>
+    <div class="results-placeholder" id="placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h4"/></svg>
+      <p>Introduceți un salariu și apăsați <strong>Calculează</strong></p>
+    </div>
+    <div class="results-wrap" id="results-wrap">
+      <div class="info-box yellow" id="facilitate-note" style="display:none">
+        ✦ Scutire 300 lei salariu minim — CAS, CASS și IV calculate pe <strong id="brut-ef-val">0</strong> lei
+      </div>
+      <div class="res-section">
+        <div class="res-section-title">Angajat</div>
+        <div class="res-row"><span class="name">Salariu Brut</span><span class="val" id="r-brut">—</span></div>
+        <div class="res-row" id="row-fara-taxe" style="display:none"><span class="name">Fără taxe (facilitate)</span><span class="val dim" id="r-fara-taxe">—</span></div>
+        <div class="res-row"><span class="name">CAS (pensie) <span class="pct">25%</span></span><span class="val minus" id="r-cas">—</span></div>
+        <div class="res-row"><span class="name">CASS (sănătate) <span class="pct" id="lbl-cass-pct">10%</span></span><span class="val minus" id="r-cass">—</span></div>
+        <div class="res-row" id="row-dp"><span class="name">Deducere personală</span><span class="val dim" id="r-dp">—</span></div>
+        <div class="res-row"><span class="name">Impozit venit <span class="pct" id="lbl-iv-pct">10%</span></span><span class="val minus" id="r-iv">—</span></div>
+      </div>
+      <div class="res-total-row"><span class="name">Salariu Net</span><span class="val" id="r-net">—</span></div>
+      <div class="res-section">
+        <div class="res-section-title">Angajator</div>
+        <div class="res-row"><span class="name">CAM <span class="pct" id="lbl-cam-pct">2.25%</span></span><span class="val minus" id="r-cam">—</span></div>
+      </div>
+      <div class="res-complet-row"><span class="name">Cost total firmă (Complet)</span><span class="val" id="r-complet">—</span></div>
+      <div class="res-section">
+        <div class="res-section-title">Total taxe la stat</div>
+        <div class="res-row"><span class="name">Taxe angajat</span><span class="val" id="r-taxe-angajat">—</span></div>
+        <div class="res-row"><span class="name">Taxe angajator</span><span class="val" id="r-taxe-angajator">—</span></div>
+        <div class="res-row" style="border-top:1px solid var(--gray-100);padding-top:9px;margin-top:3px">
+          <span class="name" style="font-weight:700">Total</span>
+          <span class="val" style="font-size:16px" id="r-total-taxe">—</span>
+        </div>
+      </div>
+      <div class="tax-bar-wrap">
+        <div class="tax-bar-label">Distribuție salariu complet</div>
+        <div class="tax-bar">
+          <div class="seg-net" id="bar-net" style="width:58%"></div>
+          <div class="seg-angajat" id="bar-angajat" style="width:30%"></div>
+          <div class="seg-angajator" id="bar-angajator" style="width:12%"></div>
+        </div>
+        <div class="tax-legend">
+          <div class="tax-leg-item"><div class="tax-leg-dot" style="background:var(--green)"></div>Net <span id="leg-net-pct" style="font-weight:700"></span></div>
+          <div class="tax-leg-item"><div class="tax-leg-dot" style="background:var(--accent)"></div>Taxe angajat <span id="leg-ang-pct" style="font-weight:700"></span></div>
+          <div class="tax-leg-item"><div class="tax-leg-dot" style="background:#f59e0b"></div>Taxe angajator <span id="leg-angor-pct" style="font-weight:700"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-brut-net -->
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- TAB 2: PART-TIME                        -->
+<!-- ════════════════════════════════════════ -->
+<div class="page tab-panel" id="tab-part-time">
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--blue)"></div>Parametri Part-time</div>
+    <div class="card-body">
+
+      <div class="field">
+        <label>Normă de lucru</label>
+        <div class="norm-btns">
+          <button class="norm-btn" onclick="setNorm(0.25)">¼ normă<br><small>2 ore/zi</small></button>
+          <button class="norm-btn" onclick="setNorm(0.5)">½ normă<br><small>4 ore/zi</small></button>
+          <button class="norm-btn" onclick="setNorm(0.75)">¾ normă<br><small>6 ore/zi</small></button>
+          <button class="norm-btn" onclick="setNorm(1)">Normă completă</button>
+        </div>
+        <label>Salariu Brut Part-time</label>
+        <div class="input-wrap">
+          <input type="number" id="pt-brut" placeholder="2025" min="0" step="10" oninput="autoCalcPT()">
+          <span class="suffix">lei</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--gray-400);margin-top:4px" id="pt-norm-hint">Salariu minim ½ normă (2026): 2.025 lei</div>
+      </div>
+
+      <div class="two-col">
+        <div class="field" style="margin-bottom:0">
+          <label>Anul</label>
+          <select id="pt-an" onchange="autoCalcPT()">
+            <option value="2026" selected>2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Funcție de bază</label>
+          <select id="pt-functie" onchange="autoCalcPT()">
+            <option value="1">Da</option>
+            <option value="0">Nu</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="info-box blue" style="margin:14px 0 0">
+        <strong>Din 2020:</strong> Eliminarea supraimpozitării part-time — CAS și CASS se calculează proporțional la brutul real, nu la salariul minim întreg.
+      </div>
+
+      <button class="btn-calc blue" onclick="calcPT()">Calculează Part-time</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--blue)"></div>Rezultat Part-time</div>
+    <div class="results-placeholder" id="pt-placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <p>Introduceți brutul part-time și calculați</p>
+    </div>
+    <div class="results-wrap" id="pt-results">
+      <div class="res-section">
+        <div class="res-section-title">Angajat</div>
+        <div class="res-row"><span class="name">Salariu Brut</span><span class="val" id="pt-r-brut">—</span></div>
+        <div class="res-row"><span class="name">CAS 25%</span><span class="val minus" id="pt-r-cas">—</span></div>
+        <div class="res-row"><span class="name">CASS 10%</span><span class="val minus" id="pt-r-cass">—</span></div>
+        <div class="res-row" id="pt-row-dp"><span class="name">Deducere personală</span><span class="val dim" id="pt-r-dp">—</span></div>
+        <div class="res-row"><span class="name">Impozit venit 10%</span><span class="val minus" id="pt-r-iv">—</span></div>
+      </div>
+      <div class="res-total-row blue-bg"><span class="name">Salariu Net Part-time</span><span class="val" id="pt-r-net">—</span></div>
+      <div class="res-section">
+        <div class="res-section-title">Angajator</div>
+        <div class="res-row"><span class="name">CAM 2.25%</span><span class="val minus" id="pt-r-cam">—</span></div>
+      </div>
+      <div class="res-complet-row"><span class="name">Cost total firmă</span><span class="val" id="pt-r-complet">—</span></div>
+      <div class="res-section">
+        <div class="res-section-title">Echivalent normă completă</div>
+        <div class="res-row"><span class="name">Brut normat</span><span class="val dim" id="pt-r-brut-full">—</span></div>
+        <div class="res-row"><span class="name">Net normat estimat</span><span class="val dim" id="pt-r-net-full">—</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-part-time -->
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- TAB 3: CONCEDIU MEDICAL                 -->
+<!-- ════════════════════════════════════════ -->
+<div class="page tab-panel" id="tab-concediu">
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--teal)"></div>Parametri Concediu Medical</div>
+    <div class="card-body">
+
+      <div class="field">
+        <label>Tipul concediului</label>
+        <div class="type-pills">
+          <button class="type-pill active" onclick="setCMType('normal',this)">Boală obișnuită (75%)</button>
+          <button class="type-pill" onclick="setCMType('accident',this)">Accident muncă (100%)</button>
+          <button class="type-pill" onclick="setCMType('urgenta',this)">Urgență medicală (75%)</button>
+          <button class="type-pill" onclick="setCMType('cancer',this)">Boli speciale (80%)</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Media brut lunar — ultimele 6 luni</label>
+        <div class="input-wrap">
+          <input type="number" id="cm-medie-brut" placeholder="5000" min="0" step="100" oninput="autoCalcCM()">
+          <span class="suffix">lei</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--gray-400);margin-top:4px">Media salariului brut din ultimele 6 luni lucrate</div>
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Zile calendaristice CM</label>
+          <input type="number" id="cm-zile" placeholder="10" min="1" max="183" step="1" style="padding:9px 10px;width:100%;border:1px solid var(--border);border-radius:7px;font-size:15px;font-weight:600;outline:none" oninput="autoCalcCM()">
+        </div>
+        <div class="field">
+          <label>Zile lucr./lună (med.)</label>
+          <input type="number" id="cm-zile-lun" value="21" min="15" max="23" step="1" style="padding:9px 10px;width:100%;border:1px solid var(--border);border-radius:7px;font-size:15px;font-weight:600;outline:none" oninput="autoCalcCM()">
+        </div>
+      </div>
+
+      <div class="info-box teal" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;margin:0 0 4px">
+        <strong>Regula 5 zile:</strong> Primele 5 zile sunt plătite de angajator, zilele 6+ de FNUASS (casa de sănătate). Ambele sunt suportate din fondul de 10% CASS.
+      </div>
+
+      <button class="btn-calc teal" onclick="calcCM()">Calculează Indemnizație</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--teal)"></div>Rezultat Concediu Medical</div>
+    <div class="results-placeholder" id="cm-placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 12h6M12 9v6"/><circle cx="12" cy="12" r="9"/></svg>
+      <p>Introduceți datele și calculați indemnizația</p>
+    </div>
+    <div class="results-wrap" id="cm-results">
+      <div class="res-section">
+        <div class="res-section-title">Baza de calcul</div>
+        <div class="res-row"><span class="name">Media brut lunar</span><span class="val" id="cm-r-medie">—</span></div>
+        <div class="res-row"><span class="name">Indemnizație zilnică brută</span><span class="val" id="cm-r-zilnic">—</span></div>
+        <div class="res-row"><span class="name">Cotă aplicată</span><span class="val" id="cm-r-cota">—</span></div>
+        <div class="res-row"><span class="name">Zile concediu medical</span><span class="val" id="cm-r-zile">—</span></div>
+      </div>
+      <div class="res-section">
+        <div class="res-section-title">Plată angajator (primele 5 zile)</div>
+        <div class="res-row"><span class="name">Zile plătite angajator</span><span class="val" id="cm-r-zile-ang">—</span></div>
+        <div class="res-row"><span class="name">Indemnizație brută</span><span class="val plus" id="cm-r-ang-brut">—</span></div>
+        <div class="res-row"><span class="name">Impozit 10%</span><span class="val minus" id="cm-r-ang-iv">—</span></div>
+        <div class="res-row"><span class="name">Net angajator</span><span class="val" id="cm-r-ang-net">—</span></div>
+      </div>
+      <div class="res-section">
+        <div class="res-section-title">Plată FNUASS (zilele 6+)</div>
+        <div class="res-row"><span class="name">Zile plătite FNUASS</span><span class="val" id="cm-r-zile-fnuass">—</span></div>
+        <div class="res-row"><span class="name">Indemnizație brută</span><span class="val plus" id="cm-r-fnuass-brut">—</span></div>
+        <div class="res-row"><span class="name">Impozit 10%</span><span class="val minus" id="cm-r-fnuass-iv">—</span></div>
+        <div class="res-row"><span class="name">Net FNUASS</span><span class="val" id="cm-r-fnuass-net">—</span></div>
+      </div>
+      <div class="res-total-row teal-bg"><span class="name">Total Net Primit</span><span class="val" id="cm-r-total-net">—</span></div>
+      <div class="info-box blue" style="margin:12px 18px 18px">
+        Indemnizația se impozitează cu 10% impozit pe venit. Nu se datorează CAS și CASS pe indemnizația de boală.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-concediu -->
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- TAB 4: AJUTOR ȘOMAJ                     -->
+<!-- ════════════════════════════════════════ -->
+<div class="page tab-panel" id="tab-somaj">
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--amber)"></div>Parametri Ajutor Șomaj</div>
+    <div class="card-body">
+
+      <div class="field">
+        <label>Media salariu brut — ultimele 12 luni</label>
+        <div class="input-wrap">
+          <input type="number" id="sj-medie-brut" placeholder="5000" min="0" step="100" oninput="autoCalcSJ()">
+          <span class="suffix">lei</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--gray-400);margin-top:4px">Dacă nu aveți 12 luni lucrate, introduceți 0 (elev/student absolvent)</div>
+      </div>
+
+      <div class="field">
+        <label>Stagiu de cotizare</label>
+        <select id="sj-stagiu" onchange="autoCalcSJ()">
+          <option value="abs">Elev / Student absolvent (fără stagiu)</option>
+          <option value="1">1 – 3 ani</option>
+          <option value="3">3 – 5 ani</option>
+          <option value="5">5 – 10 ani</option>
+          <option value="10">10 – 20 ani</option>
+          <option value="20">Peste 20 ani</option>
+        </select>
+      </div>
+
+      <div class="info-box yellow" style="margin:0 0 8px">
+        <strong>ISR (Indicator Social de Referință) 2026:</strong> 660 lei.<br>
+        Ajutorul de șomaj = ISR + % din medie brut, în funcție de stagiu.
+      </div>
+
+      <button class="btn-calc amber" onclick="calcSJ()">Calculează Ajutor Șomaj</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="dot" style="background:var(--amber)"></div>Rezultat Ajutor Șomaj</div>
+    <div class="results-placeholder" id="sj-placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M17 20H7a2 2 0 01-2-2V9l5-5h7a2 2 0 012 2v12a2 2 0 01-2 2z"/><path d="M9 9h1M9 13h6M9 17h6"/></svg>
+      <p>Introduceți stagiul și media salarială</p>
+    </div>
+    <div class="results-wrap" id="sj-results">
+      <div class="duration-badge" id="sj-duration-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span id="sj-duration-text">—</span>
+      </div>
+      <div class="res-section">
+        <div class="res-section-title">Calcul indemnizație</div>
+        <div class="res-row"><span class="name">ISR (bază fixă)</span><span class="val" id="sj-r-isr">660 lei</span></div>
+        <div class="res-row"><span class="name">Cotă suplimentară</span><span class="val" id="sj-r-cota">—</span></div>
+        <div class="res-row"><span class="name">Sumă suplimentară</span><span class="val plus" id="sj-r-sup">—</span></div>
+        <div class="res-row" style="border-top:1px solid var(--gray-100);padding-top:9px;margin-top:3px">
+          <span class="name" style="font-weight:700">Total brut lunar</span>
+          <span class="val" style="font-size:16px" id="sj-r-brut">—</span>
+        </div>
+      </div>
+      <div class="res-section">
+        <div class="res-section-title">Rețineri din ajutor</div>
+        <div class="res-row"><span class="name">CAS 25%</span><span class="val minus" id="sj-r-cas">—</span></div>
+        <div class="res-row"><span class="name">CASS 10%</span><span class="val minus" id="sj-r-cass">—</span></div>
+        <div class="res-row"><span class="name">Impozit venit 10%</span><span class="val minus" id="sj-r-iv">—</span></div>
+      </div>
+      <div class="res-total-row amber-bg"><span class="name">Ajutor Net / lună</span><span class="val" id="sj-r-net">—</span></div>
+      <div class="res-section">
+        <div class="res-section-title">Perioadă de acordare</div>
+        <div class="res-row"><span class="name">Număr luni</span><span class="val" id="sj-r-luni">—</span></div>
+        <div class="res-row"><span class="name">Total net estimat</span><span class="val" id="sj-r-total">—</span></div>
+      </div>
+      <div class="info-box green" style="margin:12px 18px 18px">
+        Înregistrarea la AJOFM trebuie făcută în max. <strong>60 zile</strong> de la data încetării contractului de muncă. Ajutorul se acordă după 30 de zile de la înregistrare.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-somaj -->
+
+<footer>Calculator orientativ — Codul Fiscal 2026. ISR = 660 lei. Valorile sunt indicative, cu rotunjiri la leu întreg.</footer>
+
+<script>
+// ════════════════════════════════════════════════
+// CONSTANTE FISCALE
+// ════════════════════════════════════════════════
+const FISCAL = {
+  2026: { CAS:0.25, CASS:0.10, IV:0.10, CAM:0.0225, SAL_MIN:4050, FARA_TAXE:300, ISR:660 },
+  2025: { CAS:0.25, CASS:0.10, IV:0.10, CAM:0.0225, SAL_MIN:4050, FARA_TAXE:300, ISR:660 },
+  2024: { CAS:0.25, CASS:0.10, IV:0.10, CAM:0.0225, SAL_MIN:3700, FARA_TAXE:200, ISR:660 },
+};
+
+// ════════════════════════════════════════════════
+// DEDUCERE PERSONALĂ
+// dp_max = SAL_MIN × 0.20 + nrPers × 150
+// p_max = SAL_MIN + 2000 + nrPers × 300
+// ════════════════════════════════════════════════
+function calcDP(brut, nrPers, functieBase, tichete, an) {
+  if (!functieBase) return 0;
+  const { SAL_MIN } = FISCAL[an];
+  const dp_max = Math.round(SAL_MIN * 0.20) + nrPers * 150;
+  const p_max  = SAL_MIN + 2000 + nrPers * 300;
+  const baza   = brut + tichete;
+  if (baza <= SAL_MIN) return dp_max;
+  if (baza >= p_max)   return 0;
+  return Math.max(0, Math.round(dp_max * (p_max - baza) / 2000));
+}
+
+// ════════════════════════════════════════════════
+// CALCUL NET (core)
+// ════════════════════════════════════════════════
+function calcNet(brut, { nrPers=0, functieBase=true, scutitIV=false, sub26=false,
+                         risc=0, nrTichete=0, valTichet=0, an=2026 } = {}) {
+  const f = FISCAL[an];
+  const tichete   = nrTichete * valTichet;
+  const fara_taxe = brut <= f.SAL_MIN ? f.FARA_TAXE : 0;
+  const brut_ef   = brut - fara_taxe;
+  const CAS  = Math.round(brut_ef * f.CAS);
+  const CASS = sub26 ? 0 : Math.round(brut_ef * f.CASS);
+  const DP   = calcDP(brut, nrPers, functieBase, tichete, an);
+  const baza_IV = Math.max(0, brut_ef - CAS - CASS - DP + tichete);
+  const IV  = scutitIV ? 0 : Math.round(baza_IV * f.IV);
+  const CAM_pct = f.CAM + risc / 100;
+  const CAM = Math.round(brut_ef * CAM_pct);
+  return { CAS, CASS, DP, IV, CAM, NET: brut - CAS - CASS - IV,
+           COMPLET: brut + CAM, fara_taxe, brut_ef, tichete, CAM_pct };
+}
+
+// ════════════════════════════════════════════════
+// CALCUL BRUT (iterativ)
+// ════════════════════════════════════════════════
+function calcBrut(netTarget, params) {
+  const f = FISCAL[params.an || 2026];
+  let brut = Math.round(netTarget / (1 - f.CAS - f.CASS - f.IV*(1-f.CAS-f.CASS)));
+  for (let i = 0; i < 100; i++) {
+    const r = calcNet(brut, params);
+    const diff = r.NET - netTarget;
+    if (Math.abs(diff) <= 0.5) break;
+    brut -= Math.round(diff);
+    if (brut < 0) { brut = 0; break; }
+  }
+  return brut;
+}
+
+// ════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════
+const fmt = n => n.toLocaleString('ro-RO') + ' lei';
+const pct = n => (n * 100).toFixed(1) + '%';
+
+// ════════════════════════════════════════════════
+// TAB NAVIGATION
+// ════════════════════════════════════════════════
+function showTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const ids = ['brut-net','part-time','concediu','somaj'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + id);
+  });
+}
+
+function toggleAdv(bodyId, btnId) {
+  document.getElementById(btnId).classList.toggle('open');
+  document.getElementById(bodyId).classList.toggle('open');
+}
+
+// ════════════════════════════════════════════════
+// TAB 1: BRUT ↔ NET
+// ════════════════════════════════════════════════
+let mode = 'brut-net';
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach((b,i) => {
+    b.classList.toggle('active', (m==='brut-net'&&i===0)||(m==='net-brut'&&i===1));
+  });
+  document.getElementById('main-label').textContent = m==='brut-net' ? 'Salariu Brut' : 'Salariu Net';
+  document.getElementById('main-input').placeholder  = m==='brut-net' ? '5000' : '3000';
+  document.getElementById('placeholder').style.display = 'flex';
+  document.getElementById('results-wrap').classList.remove('visible');
+  document.getElementById('facilitate-note').style.display = 'none';
+}
+function getParams() {
+  return {
+    an:         parseInt(document.getElementById('an').value),
+    nrPers:     parseInt(document.getElementById('nr-pers').value),
+    functieBase: document.getElementById('functie-baza').checked,
+    scutitIV:   document.getElementById('scutit-iv').checked,
+    sub26:      document.getElementById('sub26').checked,
+    risc:       parseFloat(document.getElementById('risc').value)||0,
+    nrTichete:  parseInt(document.getElementById('nr-tichete').value)||0,
+    valTichet:  parseFloat(document.getElementById('val-tichet').value)||0,
+  };
+}
+function renderResults(brut, r, an) {
+  const { CAS, CASS, DP, IV, CAM, NET, COMPLET, fara_taxe, brut_ef, CAM_pct } = r;
+  document.getElementById('res-year').textContent = an;
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('results-wrap').classList.add('visible');
+  const note = document.getElementById('facilitate-note');
+  const rowFT = document.getElementById('row-fara-taxe');
+  if (fara_taxe > 0) {
+    note.style.display = 'block';
+    document.getElementById('brut-ef-val').textContent = brut_ef;
+    rowFT.style.display = 'flex';
+    document.getElementById('r-fara-taxe').textContent = fmt(fara_taxe);
+  } else { note.style.display = 'none'; rowFT.style.display = 'none'; }
+  document.getElementById('r-brut').textContent  = fmt(brut);
+  document.getElementById('r-cas').textContent   = '− ' + fmt(CAS);
+  document.getElementById('r-cass').textContent  = CASS===0 ? '0 lei (scutit)' : '− ' + fmt(CASS);
+  document.getElementById('lbl-cass-pct').textContent = CASS===0 ? 'scutit' : '10%';
+  const rowDP = document.getElementById('row-dp');
+  rowDP.style.display = DP > 0 ? 'flex' : 'none';
+  document.getElementById('r-dp').textContent = '−' + DP + ' lei (baza imp.)';
+  document.getElementById('r-iv').textContent  = IV===0 ? '0 lei (scutit)' : '− ' + fmt(IV);
+  document.getElementById('lbl-iv-pct').textContent = IV===0 ? 'scutit' : '10%';
+  document.getElementById('r-net').textContent      = fmt(NET);
+  document.getElementById('r-cam').textContent      = '− ' + fmt(CAM);
+  document.getElementById('lbl-cam-pct').textContent = (CAM_pct*100).toFixed(2) + '%';
+  document.getElementById('r-complet').textContent  = fmt(COMPLET);
+  const taxeA = CAS+CASS+IV, taxeAng = CAM, totalT = taxeA+taxeAng;
+  document.getElementById('r-taxe-angajat').textContent   = fmt(taxeA);
+  document.getElementById('r-taxe-angajator').textContent = fmt(taxeAng);
+  document.getElementById('r-total-taxe').textContent     = fmt(totalT);
+  const pN = (NET/COMPLET*100).toFixed(1), pA = (taxeA/COMPLET*100).toFixed(1), pAng = (taxeAng/COMPLET*100).toFixed(1);
+  document.getElementById('bar-net').style.width       = pN+'%';
+  document.getElementById('bar-angajat').style.width   = pA+'%';
+  document.getElementById('bar-angajator').style.width = pAng+'%';
+  document.getElementById('leg-net-pct').textContent   = pN+'%';
+  document.getElementById('leg-ang-pct').textContent   = pA+'%';
+  document.getElementById('leg-angor-pct').textContent = pAng+'%';
+}
+function calculeaza() {
+  const val = parseFloat(document.getElementById('main-input').value);
+  if (!val || val <= 0) return;
+  const params = getParams();
+  let brut = mode==='brut-net' ? Math.round(val) : calcBrut(Math.round(val), params);
+  renderResults(brut, calcNet(brut, params), params.an);
+}
+let debTimer;
+function autoCalc() { clearTimeout(debTimer); debTimer = setTimeout(() => { const v = parseFloat(document.getElementById('main-input').value); if(v>0) calculeaza(); }, 420); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('main-input').addEventListener('keydown', e => { if(e.key==='Enter') calculeaza(); });
+});
+
+// ════════════════════════════════════════════════
+// TAB 2: PART-TIME
+// ════════════════════════════════════════════════
+let ptNormFactor = 0.5;
+function setNorm(f) {
+  ptNormFactor = f;
+  document.querySelectorAll('.norm-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const an = parseInt(document.getElementById('pt-an').value)||2026;
+  const salMin = FISCAL[an].SAL_MIN;
+  const suggested = Math.round(salMin * f);
+  document.getElementById('pt-brut').value = suggested;
+  const desc = {0.25:'¼ normă (2 ore/zi)',0.5:'½ normă (4 ore/zi)',0.75:'¾ normă (6 ore/zi)',1:'Normă completă (8 ore/zi)'};
+  document.getElementById('pt-norm-hint').textContent = (desc[f]||'') + ' — minim ' + suggested.toLocaleString('ro-RO') + ' lei';
+  autoCalcPT();
+}
+function calcPT() {
+  const brut = parseInt(document.getElementById('pt-brut').value)||0;
+  if (brut <= 0) return;
+  const an = parseInt(document.getElementById('pt-an').value)||2026;
+  const functieBase = document.getElementById('pt-functie').value === '1';
+  const r = calcNet(brut, { an, functieBase });
+  // Echivalent normă completă (estimat proporțional)
+  const brutFull = ptNormFactor > 0 ? Math.round(brut / ptNormFactor) : brut;
+  const rFull    = calcNet(brutFull, { an, functieBase });
+  document.getElementById('pt-placeholder').style.display = 'none';
+  document.getElementById('pt-results').classList.add('visible');
+  document.getElementById('pt-r-brut').textContent    = fmt(brut);
+  document.getElementById('pt-r-cas').textContent     = '− ' + fmt(r.CAS);
+  document.getElementById('pt-r-cass').textContent    = '− ' + fmt(r.CASS);
+  const rowDP = document.getElementById('pt-row-dp');
+  rowDP.style.display = r.DP > 0 ? 'flex' : 'none';
+  document.getElementById('pt-r-dp').textContent      = '−' + r.DP + ' lei';
+  document.getElementById('pt-r-iv').textContent      = '− ' + fmt(r.IV);
+  document.getElementById('pt-r-net').textContent     = fmt(r.NET);
+  document.getElementById('pt-r-cam').textContent     = '− ' + fmt(r.CAM);
+  document.getElementById('pt-r-complet').textContent = fmt(r.COMPLET);
+  document.getElementById('pt-r-brut-full').textContent = fmt(brutFull);
+  document.getElementById('pt-r-net-full').textContent  = fmt(rFull.NET);
+}
+function autoCalcPT() { clearTimeout(debTimer); debTimer = setTimeout(() => { const v = parseInt(document.getElementById('pt-brut').value); if(v>0) calcPT(); }, 420); }
+
+// ════════════════════════════════════════════════
+// TAB 3: CONCEDIU MEDICAL
+// ════════════════════════════════════════════════
+let cmCota = 0.75;
+function setCMType(type, el) {
+  document.querySelectorAll('.type-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  cmCota = {normal:0.75, accident:1.0, urgenta:0.75, cancer:0.80}[type];
+  autoCalcCM();
+}
+function calcCM() {
+  const medieBrut = parseFloat(document.getElementById('cm-medie-brut').value)||0;
+  const zileCM    = parseInt(document.getElementById('cm-zile').value)||0;
+  const zileLuna  = parseInt(document.getElementById('cm-zile-lun').value)||21;
+  if (medieBrut <= 0 || zileCM <= 0) return;
+
+  // Baza zilnică (din medie lunară brută)
+  const zilnicBrut = medieBrut / zileLuna;
+  // Indemnizație zilnică brută
+  const indemZilnicBrut = zilnicBrut * cmCota;
+
+  // Zile angajator (primele 5) vs FNUASS (restul)
+  const zileAng   = Math.min(5, zileCM);
+  const zileFNUASS = Math.max(0, zileCM - 5);
+
+  function calcIndem(zile) {
+    if (zile <= 0) return { brut: 0, iv: 0, net: 0 };
+    const brut = Math.round(indemZilnicBrut * zile);
+    const iv   = Math.round(brut * 0.10);
+    return { brut, iv, net: brut - iv };
+  }
+
+  const ang   = calcIndem(zileAng);
+  const fnuass = calcIndem(zileFNUASS);
+  const totalNet = ang.net + fnuass.net;
+
+  document.getElementById('cm-placeholder').style.display = 'none';
+  document.getElementById('cm-results').classList.add('visible');
+
+  document.getElementById('cm-r-medie').textContent   = fmt(Math.round(medieBrut));
+  document.getElementById('cm-r-zilnic').textContent  = Math.round(indemZilnicBrut) + ' lei/zi';
+  document.getElementById('cm-r-cota').textContent    = (cmCota*100) + '%';
+  document.getElementById('cm-r-zile').textContent    = zileCM + ' zile';
+  document.getElementById('cm-r-zile-ang').textContent    = zileAng + ' zile';
+  document.getElementById('cm-r-ang-brut').textContent    = fmt(ang.brut);
+  document.getElementById('cm-r-ang-iv').textContent      = '− ' + fmt(ang.iv);
+  document.getElementById('cm-r-ang-net').textContent     = fmt(ang.net);
+  document.getElementById('cm-r-zile-fnuass').textContent = zileFNUASS + ' zile' + (zileFNUASS===0 ? ' (nu e cazul)' : '');
+  document.getElementById('cm-r-fnuass-brut').textContent = fmt(fnuass.brut);
+  document.getElementById('cm-r-fnuass-iv').textContent   = '− ' + fmt(fnuass.iv);
+  document.getElementById('cm-r-fnuass-net').textContent  = fmt(fnuass.net);
+  document.getElementById('cm-r-total-net').textContent   = fmt(totalNet);
+}
+function autoCalcCM() { clearTimeout(debTimer); debTimer = setTimeout(calcCM, 420); }
+
+// ════════════════════════════════════════════════
+// TAB 4: AJUTOR ȘOMAJ
+// ════════════════════════════════════════════════
+const SOMAJ_CONFIG = {
+  abs: { cota: 0,    luni: 6,  label: '6 luni (absolvent)' },
+  1:   { cota: 0,    luni: 6,  label: '6 luni' },
+  3:   { cota: 0.03, luni: 6,  label: '6 luni' },
+  5:   { cota: 0.05, luni: 9,  label: '9 luni' },
+  10:  { cota: 0.07, luni: 12, label: '12 luni' },
+  20:  { cota: 0.10, luni: 12, label: '12 luni' },
+};
+function calcSJ() {
+  const medieBrut = parseFloat(document.getElementById('sj-medie-brut').value)||0;
+  const stagiu    = document.getElementById('sj-stagiu').value;
+  const cfg       = SOMAJ_CONFIG[stagiu];
+  const ISR       = 660;
+
+  let brutBrut, cas, cass, iv;
+  if (stagiu === 'abs') {
+    // Absolvent: 50% ISR, fără calcul CAS/CASS
+    brutBrut = Math.round(ISR * 0.50);
+    cas = 0; cass = 0;
+    iv = Math.round(brutBrut * 0.10);
+  } else {
+    const sup    = Math.round(medieBrut * cfg.cota);
+    brutBrut = ISR + sup;
+    cas  = Math.round(brutBrut * 0.25);
+    cass = Math.round(brutBrut * 0.10);
+    iv   = Math.round(Math.max(0, brutBrut - cas - cass) * 0.10);
+  }
+  const netLunar = brutBrut - cas - cass - iv;
+  const sup      = brutBrut - ISR;
+
+  document.getElementById('sj-placeholder').style.display = 'none';
+  document.getElementById('sj-results').classList.add('visible');
+
+  document.getElementById('sj-duration-text').textContent =
+    'Perioadă: ' + cfg.label + ' — înregistrare max. 60 zile de la încetarea CIM';
+  document.getElementById('sj-r-isr').textContent  = fmt(ISR);
+  document.getElementById('sj-r-cota').textContent = stagiu==='abs' ? '50% ISR (fix)' : (cfg.cota*100)+'% din medie brut';
+  document.getElementById('sj-r-sup').textContent  = sup > 0 ? '+' + fmt(sup) : '—';
+  document.getElementById('sj-r-brut').textContent = fmt(brutBrut);
+  document.getElementById('sj-r-cas').textContent  = cas  > 0 ? '− ' + fmt(cas)  : '0 lei (absolvent)';
+  document.getElementById('sj-r-cass').textContent = cass > 0 ? '− ' + fmt(cass) : '0 lei (absolvent)';
+  document.getElementById('sj-r-iv').textContent   = '− ' + fmt(iv);
+  document.getElementById('sj-r-net').textContent  = fmt(netLunar);
+  document.getElementById('sj-r-luni').textContent = cfg.luni + ' luni';
+  document.getElementById('sj-r-total').textContent = fmt(netLunar * cfg.luni);
+}
+function autoCalcSJ() { clearTimeout(debTimer); debTimer = setTimeout(() => { const v = parseFloat(document.getElementById('sj-medie-brut').value); if(v>=0) calcSJ(); }, 420); }
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('main-input').addEventListener('keydown', e => { if(e.key==='Enter') calculeaza(); });
+});
+</script>
+</body>
+</html>

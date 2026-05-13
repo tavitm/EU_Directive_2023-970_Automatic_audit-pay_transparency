@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailed Use Cases - EU Directive 2023/970 Compliance System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #ddd;
+        }
+        .nav-tabs button {
+            padding: 12px 20px;
+            background: white;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        .nav-tabs button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .nav-tabs button:hover {
+            color: #667eea;
+        }
+        .use-case-section {
+            display: none;
+        }
+        .use-case-section.active {
+            display: block;
+        }
+        .use-case {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .use-case h2 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .use-case h3 {
+            color: #333;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        .metadata {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .metadata-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .metadata-value {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+        .actors {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .actor {
+            background: #e8eef7;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #333;
+        }
+        .actor strong {
+            color: #667eea;
+        }
+        .step {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+        }
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .step-content {
+            display: inline-block;
+            flex: 1;
+        }
+        .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .step-detail {
+            font-size: 13px;
+            color: #666;
+            margin-left: 38px;
+            margin-top: 4px;
+        }
+        .decision-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #155724;
+        }
+        .error-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #721c24;
+        }
+        .compliance-note {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #0c5460;
+        }
+        .acceptance-criteria {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .acceptance-criteria h4 {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .criteria-list {
+            list-style: none;
+            margin-left: 0;
+        }
+        .criteria-list li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 13px;
+            color: #444;
+        }
+        .criteria-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        .data-flow {
+            background: #f0f4ff;
+            border: 1px solid #c7d9ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+        }
+        .workflow-phases {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .phase {
+            flex: 1;
+            min-width: 150px;
+            background: #e8eef7;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        .phase.completed {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .phase.current {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        table th {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #667eea;
+        }
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        table tr:hover {
+            background: #f9f9f9;
+        }
+        .icon {
+            font-size: 18px;
+            margin-right: 5px;
+        }
+        @media (max-width: 768px) {
+            .metadata {
+                grid-template-columns: 1fr;
+            }
+            .actors {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Detailed Use Cases - ITERAȚIA 5</h1>
+            <p>Step-by-step workflows for EU Directive 2023/970 compliance implementation</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab(event, 'uc1')">UC1: Job Evaluation</button>
+            <button class="tab-btn" onclick="showTab(event, 'uc2')">UC2: Salary Data</button>
+            <button class="tab-btn" onclick="showTab(event, 'uc3')">UC3: Gap Analysis</button>
+            <button class="tab-btn" onclick="showTab(event, 'uc4')">UC4: Corrective Measures</button>
+            <button class="tab-btn" onclick="showTab(event, 'uc5')">UC5: Employee Requests</button>
+        </div>
+
+        <!-- USE CASE 1: JOB EVALUATION SETUP -->
+        <div id="uc1" class="use-case-section active">
+            <div class="use-case">
+                <h2><span class="icon">⚙️</span>UC1: Job Evaluation Setup & Methodology Definition</h2>
+
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Actor(s)</span>
+                        <span class="metadata-value">Compliance Officer, HR Specialist</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Trigger</span>
+                        <span class="metadata-value">System initialization or methodology update</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Duration</span>
+                        <span class="metadata-value">15-30 minutes</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Directive Reference</span>
+                        <span class="metadata-value">Art. 4 (Job Evaluation Criteria)</span>
+                    </div>
+                </div>
+
+                <h3>Narrative Description</h3>
+                <p>The Compliance Officer establishes the organization's job evaluation methodology to ensure objective, non-discriminatory assessment of job value. This foundational workflow defines the criteria and weighting that will be applied across all salary gap analysis activities.</p>
+
+                <h3>Pre-conditions</h3>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>User has "Compliance Officer" or "HR Specialist" role with Job Management permissions</li>
+                    <li>System has been initialized and is in operational state</li>
+                    <li>Organization has not yet defined evaluation criteria (first-time setup)</li>
+                </ul>
+
+                <h3>Main Flow</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Open Job Evaluation Methodology Interface</div>
+                        <div class="step-detail">Compliance Officer navigates to Administration → Job Management → Evaluation Criteria. System displays the Job Evaluation form with default criteria template.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Review Default Criteria Framework</div>
+                        <div class="step-detail">System presents the 7 standard job evaluation criteria: Competencies (25%), Effort (15%), Responsibility (25%), Working Conditions (10%), Complexity (10%), Autonomy (10%), Impact on Organization (5%). Officer reviews these criteria and their weighting.</div>
+                    </span>
+                </div>
+
+                <div class="decision-box">
+                    <strong>Decision Point:</strong> Does the organization want to use default criteria or customize them?
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3A</span>
+                    <span class="step-content">
+                        <div class="step-title">[If Using Defaults] Confirm Criteria</div>
+                        <div class="step-detail">Officer clicks "Use Default Criteria". System validates that weights total 100% and displays confirmation dialog: "These criteria will apply to all 1,234 existing jobs and future positions."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3B</span>
+                    <span class="step-content">
+                        <div class="step-title">[If Customizing] Edit Criteria Weights</div>
+                        <div class="step-detail">Officer clicks "Customize". Form becomes editable. Officer adjusts weights for each criterion. System provides real-time validation: "Total weight is 98% (must equal 100%)" displayed in red warning box. Officer adjusts until total equals 100%.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Define Scoring Scales</div>
+                        <div class="step-detail">For each criterion, officer defines scoring scale (1-5 points). Example: Competencies: 1=Basic, 2=Intermediate, 3=Proficient, 4=Advanced, 5=Expert. System allows predefined scales or custom definitions.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Add Justification Guidelines</div>
+                        <div class="step-detail">Officer enters guidance text for evaluators explaining how to assess each criterion. Example for "Responsibility": "Consider scope of decisions, budget authority, team leadership, and impact on business outcomes."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Set Approval & Activation</div>
+                        <div class="step-detail">Officer selects "Activate Methodology". System displays confirmation: "This methodology will apply to all new job evaluations. Existing evaluations remain unchanged unless manually recalculated."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">System Audit Logging</div>
+                        <div class="step-detail">System records: User ID (pseudonymized), Timestamp, Action ("Methodology Activated"), Criteria Weights (encrypted), IP Address, Change Summary. Entry added to immutable audit trail.</div>
+                    </span>
+                </div>
+
+                <div class="success-box">
+                    <strong>✓ Success Outcome:</strong> Job evaluation methodology is now active. Compliance Officer receives confirmation email. System is ready for job evaluation workflow (UC2 prerequisite).
+                </div>
+
+                <h3>Alternative Flows</h3>
+                <div class="step">
+                    <span class="step-number">A1</span>
+                    <span class="step-content">
+                        <div class="step-title">Methodology Update After Activation</div>
+                        <div class="step-detail">If officer clicks "Update Active Methodology", system displays: "1,234 jobs currently evaluated with v1 methodology. New jobs will use updated criteria. Update 1,234 existing evaluations?" Officer can choose to update all (30-min batch job) or apply new methodology to new jobs only.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">A2</span>
+                    <span class="step-content">
+                        <div class="step-title">Save as Draft</div>
+                        <div class="step-detail">Officer clicks "Save as Draft" without activating. Methodology is saved but not applied. System shows "Status: Draft" badge. Can be edited or deleted before activation.</div>
+                    </span>
+                </div>
+
+                <h3>Error Scenarios</h3>
+                <div class="error-box">
+                    <strong>E1 - Invalid Weight Total:</strong> If criteria weights don't sum to 100%, form shows red error: "Total weight is 95%. Please adjust criteria to reach 100%." Submit button is disabled.
+                </div>
+
+                <div class="error-box">
+                    <strong>E2 - Negative Score Impact:</strong> If officer enters negative scoring (e.g., -2 to 5), system warns: "Negative scores may distort pay gap analysis. Consider using 1-5 scale." Shows confirmation dialog to proceed.
+                </div>
+
+                <div class="error-box">
+                    <strong>E3 - Permission Denied:</strong> If user lacks Compliance Officer role, form is read-only with gray overlay and message: "You do not have permission to modify job evaluation methodology. Contact your HR Administrator."
+                </div>
+
+                <h3>Acceptance Criteria</h3>
+                <div class="acceptance-criteria">
+                    <h4>Functional Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>System displays job evaluation form with 7 default criteria and weight fields</li>
+                        <li>Real-time validation prevents activation if weights don't total 100%</li>
+                        <li>Officer can customize weights and save either as draft or activate immediately</li>
+                        <li>Activation applies new methodology to all subsequent job evaluations</li>
+                        <li>System prevents unauthorized access (non-Compliance Officers see read-only view)</li>
+                    </ul>
+                </div>
+
+                <div class="acceptance-criteria">
+                    <h4>Compliance & Security Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>Every methodology change logged to immutable audit trail with timestamp and user ID</li>
+                        <li>Audit log entries include full change details (before/after weights, approver)</li>
+                        <li>User ID stored pseudonymized (SHA-256 hash) in audit log</li>
+                        <li>System records which jobs use which methodology version for traceability</li>
+                        <li>Email notification sent to all Compliance Officers when methodology activated</li>
+                    </ul>
+                </div>
+
+                <div class="compliance-note">
+                    <strong>🔒 Directive 2023/970 Compliance:</strong> Article 4 requires job evaluation based on objective criteria. This use case ensures methodology is documented, applied consistently, and auditable. Pseudonymized audit logging satisfies GDPR Article 25 (data protection by design).
+                </div>
+
+                <h3>Data Entities Involved</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Entity</th>
+                            <th>Field</th>
+                            <th>Storage/Protection</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>JobEvaluationCriteria</td>
+                            <td>criteriaId, name, weight, description, scoringScale</td>
+                            <td>Unencrypted (non-personal data)</td>
+                        </tr>
+                        <tr>
+                            <td>EvaluationMethodology</td>
+                            <td>methodologyId, version, criteria[], status, activatedAt, activatedBy</td>
+                            <td>activatedBy field pseudonymized (SHA-256)</td>
+                        </tr>
+                        <tr>
+                            <td>AuditLog</td>
+                            <td>logId, timestamp, userId, action, changeDetails, ipAddress</td>
+                            <td>Immutable append-only, userId pseudonymized, encrypted at rest</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- USE CASE 2: SALARY DATA INTRODUCTION -->
+        <div id="uc2" class="use-case-section">
+            <div class="use-case">
+                <h2><span class="icon">📊</span>UC2: Salary Data Introduction & Pseudonymization</h2>
+
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Actor(s)</span>
+                        <span class="metadata-value">HR Specialist, Data Manager</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Trigger</span>
+                        <span class="metadata-value">Initial data load or monthly payroll sync</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Duration</span>
+                        <span class="metadata-value">30-60 minutes (depending on dataset size)</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Directive Reference</span>
+                        <span class="metadata-value">Art. 5 (Data Minimization), GDPR Art. 32 (Encryption)</span>
+                    </div>
+                </div>
+
+                <h3>Narrative Description</h3>
+                <p>HR Specialist imports employee salary data into the system. The system applies pseudonymization at import time, converting direct identifiers (names, employee IDs) into irreversible hashes. This ensures salary data is analyzed without personally identifying individuals, satisfying GDPR requirements for data minimization.</p>
+
+                <h3>Pre-conditions</h3>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>User has "HR Specialist" or "Data Manager" role with Employee Management permissions</li>
+                    <li>Job evaluation methodology is already activated (UC1 completed)</li>
+                    <li>CSV/Excel file with employee data is available (columns: EmployeeID, FirstName, LastName, Department, JobTitle, GrossSalary, Gender, StartDate)</li>
+                    <li>System is configured with pseudonymization algorithm (SHA-256 hashing)</li>
+                </ul>
+
+                <h3>Main Flow</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Access Bulk Import Interface</div>
+                        <div class="step-detail">HR Specialist navigates to Employee Management → Bulk Import. System displays upload interface with guidance: "Upload CSV or Excel file containing employee salary data. Data will be pseudonymized on import."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Select and Upload File</div>
+                        <div class="step-detail">Specialist clicks "Choose File", selects employees_2024.csv (2,341 records). System displays file preview: "2,341 employees detected. Columns: EmployeeID, FirstName, LastName, Department, JobTitle, GrossSalary, Gender, StartDate"</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Configure Column Mapping</div>
+                        <div class="step-detail">System auto-detects column structure. Specialist reviews mapping:
+                        <div class="data-flow">
+                          EmployeeID → Pseudonymization Key
+                          FirstName, LastName → Discard (not needed after pseudonymization)
+                          Department → Keep (for gap analysis by department)
+                          JobTitle → Keep (for job evaluation link)
+                          GrossSalary → Keep (core data for analysis)
+                          Gender → Keep (protected characteristic for gap analysis)
+                          StartDate → Keep (tenure analysis)
+                        </div>
+                        Specialist confirms or adjusts mapping. System validates "FirstName and LastName will be permanently discarded during import. Proceed?"</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Data Quality Validation</div>
+                        <div class="step-detail">System performs validation scan:
+                        <div class="error-box">
+                          • 3 records have missing GrossSalary (rows 421, 892, 1,756) → Highlighted as errors
+                          • 12 records have invalid Gender values ("M/F/Other" expected, found "Male/Female") → Warnings
+                          • 0 records have duplicate EmployeeID → OK
+                        </div>
+                        Specialist is prompted: "Found 3 errors and 12 warnings. Import will fail for error rows. Fix data and re-upload or continue with 2,338 valid records?"</div>
+                    </span>
+                </div>
+
+                <div class="decision-box">
+                    <strong>Decision Point:</strong> Continue with 2,338 records or halt import to fix source data?
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5A</span>
+                    <span class="step-content">
+                        <div class="step-title">[If Continuing] Confirm Pseudonymization</div>
+                        <div class="step-detail">Specialist reviews pseudonymization confirmation:
+                        <div class="compliance-note">
+                          "⚠️ WARNING: The following data will be PERMANENTLY REMOVED during import:
+                          • FirstName (1st identifier)
+                          • LastName (2nd identifier)
+                          • EmployeeID (original employee ID)
+
+                          Only the pseudonymized hash will be stored. You will not be able to reverse-engineer employee identities from the imported data.
+
+                          Reason: GDPR Article 4 - Pseudonymization ensures salary data cannot be linked to identified individuals during gap analysis."
+                        </div>
+                        Specialist must click "I understand - proceed with pseudonymization" to continue.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5B</span>
+                    <span class="step-content">
+                        <div class="step-title">[If Fixing Data] Export Error Report</div>
+                        <div class="step-detail">Specialist clicks "Download Error Report". System generates CSV with flagged rows and reasons. Specialist fixes source data in HR system (Workday, SAP) and re-uploads.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Execute Pseudonymization Import</div>
+                        <div class="step-detail">System processes 2,338 records through pseudonymization pipeline:
+                        <div class="data-flow">
+                          For each employee record:
+                          1. Hash = SHA-256(EmployeeID + "salt123")
+                          2. Create: Employee_Pseudonymized {
+                             hash: "a4b5c6d7...",
+                             department: "Engineering",
+                             jobTitle: "Senior Developer",
+                             grossSalary: 85000,
+                             gender: "M",
+                             startDate: "2020-03-15"
+                            }
+                          3. Original EmployeeID and names DELETED
+                          4. Store encrypted in database
+                        </div>
+                        Status bar shows: "Processing 2,338 records... 45% complete. Est. 2 minutes remaining."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Verify Import Completion</div>
+                        <div class="step-detail">Import completes. System displays:
+                        <div class="success-box">
+                          ✓ Import Successful
+                          • 2,338 employee records pseudonymized and imported
+                          • 3 records failed (missing salary data)
+                          • Pseudonymized data linked to 1,456 evaluated jobs
+                          • 882 employees lack job evaluations (warning: these cannot be included in gap analysis)
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <span class="step-content">
+                        <div class="step-title">Audit Logging & Reporting</div>
+                        <div class="step-detail">System records:
+                        <div class="data-flow">
+                          AuditLog Entry:
+                          - Timestamp: 2024-05-13 10:45:22 UTC
+                          - UserId: <SHA-256 hash of HR Specialist ID>
+                          - Action: "BULK_IMPORT_EMPLOYEES"
+                          - RecordsProcessed: 2338
+                          - RecordsFailed: 3
+                          - PseudonymizationAlgorithm: "SHA-256"
+                          - DataRetention: "Salary data retained for 3 years per EU regulations"
+                          - Status: "COMPLETED"
+                        </div>
+                        Specialist receives email: "Bulk import completed. 2,338 employees now pseudonymized in system. Next step: Run salary gap analysis or evaluate remaining 882 employees."</div>
+                    </span>
+                </div>
+
+                <div class="success-box">
+                    <strong>✓ Success Outcome:</strong> Salary data is now pseudonymized and ready for gap analysis. Identifiable information has been permanently removed. System maintains encrypted connection between pseudonymous records and job evaluations for analysis purposes.
+                </div>
+
+                <h3>Alternative Flows</h3>
+                <div class="step">
+                    <span class="step-number">A1</span>
+                    <span class="step-content">
+                        <div class="step-title">Monthly Salary Update (Incremental)</div>
+                        <div class="step-detail">For monthly updates, Specialist uploads only changed/new records (e.g., 48 new employees, 312 salary changes). System matches pseudonymous records: if EmployeeID "E1234" was previously imported as hash "a4b5c6d7...", it updates the existing pseudonymous record with new salary. No duplicate hashes created.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">A2</span>
+                    <span class="step-content">
+                        <div class="step-title">Re-import with Updated Salary Data</div>
+                        <div class="step-detail">Specialist clicks "Replace All Employee Data". System displays warning: "This will delete all 2,338 existing pseudonymized records and re-import. Any gap analysis reports based on old data will become invalid. Proceed?" This allows complete refresh without manual deletion.</div>
+                    </span>
+                </div>
+
+                <h3>Error Scenarios</h3>
+                <div class="error-box">
+                    <strong>E1 - Invalid File Format:</strong> If specialist uploads .txt or unsupported format, system shows: "File format not supported. Please upload .csv or .xlsx file."
+                </div>
+
+                <div class="error-box">
+                    <strong>E2 - Missing Required Columns:</strong> If file lacks GrossSalary column, import fails with: "Required column 'GrossSalary' not found. Cannot calculate pay gaps without salary data."
+                </div>
+
+                <div class="error-box">
+                    <strong>E3 - Encryption Failure:</strong> If pseudonymization process fails (e.g., disk full), system rolls back: "Pseudonymization failed at record 1,245. Imported 1,244 records only. Check disk space and retry."
+                </div>
+
+                <div class="error-box">
+                    <strong>E4 - Permission Denied:</strong> If user lacks Employee Management permission, system blocks upload: "You do not have permission to import salary data. Contact your HR Administrator."
+                </div>
+
+                <h3>Acceptance Criteria</h3>
+                <div class="acceptance-criteria">
+                    <h4>Functional Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>System accepts CSV and Excel files with employee salary data</li>
+                        <li>Column mapping interface allows flexible data structure configuration</li>
+                        <li>Data quality validation detects missing or invalid values before import</li>
+                        <li>Pseudonymization removes identifiable information (EmployeeID, FirstName, LastName) irreversibly</li>
+                        <li>Pseudonymized records maintain link to job evaluations for analysis</li>
+                        <li>Import status clearly shows records processed, failed, and warnings</li>
+                    </ul>
+                </div>
+
+                <div class="acceptance-criteria">
+                    <h4>Compliance & Security Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>SHA-256 hashing applied with consistent salt for pseudonymization</li>
+                        <li>Original EmployeeID and names PERMANENTLY deleted (not reversible)</li>
+                        <li>Pseudonymized data encrypted at rest using AES-256</li>
+                        <li>Bulk import logged to immutable audit trail with record counts and user pseudonym</li>
+                        <li>System confirms pseudonymization warning before proceeding</li>
+                        <li>Audit trail maintains data retention policy (3 years per EU regulations)</li>
+                    </ul>
+                </div>
+
+                <div class="compliance-note">
+                    <strong>🔒 GDPR & Directive 2023/970 Compliance:</strong> Pseudonymization (Article 4 GDPR) ensures salary data cannot identify individuals. Combined with role-based access controls, this satisfies Article 5 (data minimization) and Article 32 (encryption). Deletion of identifiable information removes individuals from direct salary analysis while maintaining aggregate gap analysis capability.
+                </div>
+            </div>
+        </div>
+
+        <!-- USE CASE 3: TRANSPARENCY ANALYSIS & GAP CALCULATION -->
+        <div id="uc3" class="use-case-section">
+            <div class="use-case">
+                <h2><span class="icon">📈</span>UC3: Salary Transparency Analysis & Pay Gap Calculation</h2>
+
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Actor(s)</span>
+                        <span class="metadata-value">HR Specialist, Compliance Officer, Manager</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Trigger</span>
+                        <span class="metadata-value">Quarterly review or on-demand analysis</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Duration</span>
+                        <span class="metadata-value">5-15 minutes (automated calculation)</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Directive Reference</span>
+                        <span class="metadata-value">Art. 7 (Pay Gap Calculation), Art. 8 (Data Disclosure)</span>
+                    </div>
+                </div>
+
+                <h3>Narrative Description</h3>
+                <p>HR Specialist initiates automated salary gap analysis. System calculates gender-based and protected characteristic-based salary gaps using pseudonymized data. Results are presented in standardized format with transparent methodology. Gaps exceeding threshold require justification entry (UC4). Drill-down capability allows analysis by department, job level, and tenure.</p>
+
+                <h3>Pre-conditions</h3>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Salary data has been imported and pseudonymized (UC2 completed)</li>
+                    <li>Job evaluations are complete for at least 80% of employees</li>
+                    <li>User has "HR Specialist" or "Compliance Officer" role</li>
+                    <li>System has minimum 100 employees (threshold for statistical validity)</li>
+                </ul>
+
+                <h3>Main Flow</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Access Gap Analysis Module</div>
+                        <div class="step-detail">HR Specialist navigates to Analysis → Pay Gap Analysis. System displays dashboard overview: "Latest analysis: 2024-04-30. Organization: 2,338 employees, 1,456 evaluated jobs. Next mandatory report due: 2024-12-31."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Configure Analysis Parameters</div>
+                        <div class="step-detail">Specialist selects analysis scope:
+                        <div class="data-flow">
+                          Time Period: Last 12 months (auto-populated)
+                          Scope: Organization-wide (default) OR by Department
+                          Grouping: Overall + By Gender (required by Directive)
+                          Including: Active employees only (exclude UNPAID_LEAVE, TERMINATED)
+                          Minimum Group Size: 10 (statistical validity threshold)
+                        </div>
+                        Specialist can adjust parameters. System validates minimum employee count in each group.</div>
+                    </span>
+                </div>
+
+                <div class="decision-box">
+                    <strong>Decision Point:</strong> Run organization-wide analysis or analyze by department?
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Execute Gap Calculation Algorithm</div>
+                        <div class="step-detail">System processes pseudonymized salary data through gap calculation engine:
+                        <div class="data-flow">
+                          Algorithm: ((avg_salary_male - avg_salary_female) / avg_salary_female) × 100
+
+                          Step 1: Group pseudonymized employees by gender
+                          - Male: 1,234 employees, avg salary €58,400
+                          - Female: 1,104 employees, avg salary €54,200
+
+                          Step 2: Control for job evaluation scores
+                          - Male avg job score: 68.5 points
+                          - Female avg job score: 67.8 points
+                          - Confidence: Difference is statistically insignificant (p > 0.05)
+
+                          Step 3: Calculate raw gap
+                          Gap = ((58,400 - 54,200) / 54,200) × 100 = 7.75%
+
+                          Step 4: Flag for analysis
+                          Raw gap: 7.75% (exceeds 5% threshold → Requires justification)
+                        </div>
+                        Status: "Calculating gaps... Processing 2,338 employee records. ~20 seconds."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Display Results Dashboard</div>
+                        <div class="step-detail">System presents comprehensive analysis results:
+                        <div class="success-box">
+                          ✓ ANALYSIS COMPLETE - Organization-Wide Pay Gap (12-month period)
+
+                          Overall Gender Gap: 7.75% (REQUIRES JUSTIFICATION)
+                          • Methodology: Raw average salary comparison by gender
+                          • Methodology: Adjusted for job evaluation scores (controls for role complexity)
+
+                          Unadjusted Gap: 7.75% favor males
+                          Adjusted Gap: 3.2% favor males (controls for job evaluation differences)
+
+                          Group Distribution:
+                          • Female employees: 1,104 (47%)
+                          • Male employees: 1,234 (53%)
+
+                          Statistical Significance: p-value = 0.018 (significant at 95% confidence)
+                          Recommendation: Gap is statistically significant and above 5% threshold. Justification required per Article 5.
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Drill-Down Analysis by Department</div>
+                        <div class="step-detail">Specialist clicks "View by Department" to analyze underlying causes. System displays department-level breakdown:
+                        <table style="margin: 15px 0;">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Female Avg</th>
+                                    <th>Male Avg</th>
+                                    <th>Gap %</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Engineering</td>
+                                    <td>€62,500</td>
+                                    <td>€65,800</td>
+                                    <td>5.3%</td>
+                                    <td style="color: #ffc107;">⚠️ Requires Justification</td>
+                                </tr>
+                                <tr>
+                                    <td>HR & Admin</td>
+                                    <td>€38,200</td>
+                                    <td>€37,900</td>
+                                    <td>-0.8%</td>
+                                    <td style="color: #28a745;">✓ No Gap</td>
+                                </tr>
+                                <tr>
+                                    <td>Sales</td>
+                                    <td>€48,300</td>
+                                    <td>€52,100</td>
+                                    <td>7.8%</td>
+                                    <td style="color: #dc3545;">⚠️ Significant Gap</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        Specialist can drill into Engineering dept: Engineering > Job Title > Seniority level for root cause analysis.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Export Analysis Report</div>
+                        <div class="step-detail">Specialist clicks "Export Report". System generates PDF with: Executive Summary, Methodology Explanation, Detailed Gap Calculations, Department Breakdown, Statistical Analysis, Chart Visualizations, Compliance Statement. Report is marked: "CONFIDENTIAL - Internal Use Only" with watermark.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step_number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Flag Gaps for Justification Workflow</div>
+                        <div class="step-detail">System identifies gaps ≥5% and automatically creates justification tasks:
+                        <div class="compliance-note">
+                          Justification Task 1: Engineering Department (5.3% gap)
+                          Justification Task 2: Sales Department (7.8% gap)
+
+                          These tasks are assigned to Department Managers and Compliance Officer for root cause analysis and corrective action planning (triggers UC4).
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <span class="step-content">
+                        <div class="step-title">Audit Logging & Traceability</div>
+                        <div class="step-detail">System records analysis to immutable audit trail:
+                        <div class="data-flow">
+                          AuditLog Entry:
+                          - Timestamp: 2024-05-13 14:22:00 UTC
+                          - UserId: <SHA-256 hash of HR Specialist>
+                          - Action: "PAY_GAP_ANALYSIS_EXECUTED"
+                          - EmployeeCount: 2338
+                          - OverallGap: 7.75%
+                          - DepartmentsAnalyzed: 8
+                          - JustificationsCreated: 2
+                          - Algorithm: "Raw + Adjusted for Job Evaluation"
+                          - Status: "COMPLETED"
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="success-box">
+                    <strong>✓ Success Outcome:</strong> Salary gap analysis complete. Organization-wide and departmental gaps identified. Gaps ≥5% flagged for justification. Results exported as PDF report. Audit trail documents analysis parameters and findings.
+                </div>
+
+                <h3>Alternative Flows</h3>
+                <div class="step">
+                    <span class="step-number">A1</span>
+                    <span class="step-content">
+                        <div class="step-title">Single Department Analysis</div>
+                        <div class="step-detail">Specialist selects "Engineering" department only. System calculates gap for 234 Engineering employees (156 male, 78 female). Displays department-specific results without organization-wide aggregate.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">A2</span>
+                    <span class="step-content">
+                        <div class="step-title">Historical Trend Analysis</div>
+                        <div class="step-detail">Specialist clicks "View Trends". System displays pay gap by quarter over past 24 months. Chart shows: Q1 2023: 8.2%, Q2 2023: 7.9%, ..., Q1 2024: 7.75%. Specialist can assess progress toward pay equity goals.</div>
+                    </span>
+                </div>
+
+                <h3>Error Scenarios</h3>
+                <div class="error-box">
+                    <strong>E1 - Insufficient Data:</strong> If fewer than 100 employees or < 30% job evaluation coverage, system displays: "Cannot calculate reliable pay gap. Minimum 100 employees required. Currently 67 employees with complete data."
+                </div>
+
+                <div class="error-box">
+                    <strong>E2 - Small Group Size Warning:</strong> If a department has fewer than 10 employees, system warns: "Department 'Corporate Governance' has 8 employees (below 10-person minimum). Gap calculation omitted to protect statistical integrity. Consider analyzing with nearby periods."
+                </div>
+
+                <div class="error-box">
+                    <strong>E3 - Missing Job Evaluations:</strong> If 400 employees lack job evaluations, system warns: "822 employees (35%) lack job evaluations. Adjusted gap calculation unavailable. Unadjusted gap shown. Evaluate remaining employees for full analysis."
+                </div>
+
+                <h3>Acceptance Criteria</h3>
+                <div class="acceptance-criteria">
+                    <h4>Functional Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>System calculates gender-based pay gap using standardized formula</li>
+                        <li>Results display both raw and job-evaluation-adjusted gaps</li>
+                        <li>Dashboard shows department-level and organization-wide analysis</li>
+                        <li>Drill-down capability allows granular analysis (department → job → seniority)</li>
+                        <li>System flags gaps ≥5% for justification workflow</li>
+                        <li>Export functionality generates PDF reports with methodology and results</li>
+                    </ul>
+                </div>
+
+                <div class="acceptance-criteria">
+                    <h4>Compliance & Security Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>Gap calculation performed on pseudonymized data only (never on identified employees)</li>
+                        <li>Analysis logged to audit trail with timestamp, user, parameters, and results</li>
+                        <li>Statistical validity checks enforce minimum group sizes (10 employees)</li>
+                        <li>Reports marked "CONFIDENTIAL" and watermarked</li>
+                        <li>Results compared to prior analyses for trend tracking</li>
+                        <li>Directive Article 7 methodology documented in methodology section of exported report</li>
+                    </ul>
+                </div>
+
+                <div class="compliance-note">
+                    <strong>🔒 Directive 2023/970 Compliance:</strong> Article 7 mandates pay gap calculation. This use case implements required methodology: comparison of average salary by gender, with statistical significance testing. Pseudonymized data analysis satisfies GDPR while enabling gap identification. Audit logging provides traceability required by Article 8 (Data Disclosure).
+                </div>
+            </div>
+        </div>
+
+        <!-- USE CASE 4: CORRECTIVE MEASURES & JUSTIFICATIONS -->
+        <div id="uc4" class="use-case-section">
+            <div class="use-case">
+                <h2><span class="icon">✅</span>UC4: Corrective Measures & Justification Workflow</h2>
+
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Actor(s)</span>
+                        <span class="metadata-value">Manager, HR Specialist, Compliance Officer</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Trigger</span>
+                        <span class="metadata-value">Pay gap analysis identifies gap ≥5%</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Duration</span>
+                        <span class="metadata-value">3-7 days (approval workflow)</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Directive Reference</span>
+                        <span class="metadata-value">Art. 5 (Justification for Gaps)</span>
+                    </div>
+                </div>
+
+                <h3>Narrative Description</h3>
+                <p>When salary gap analysis reveals gaps ≥5%, the system creates justification tasks. Department Manager documents root causes and proposes corrective measures (e.g., salary adjustments, hiring strategy changes, job evaluation recalibration). HR Specialist reviews and Compliance Officer approves. Documentation becomes evidence for regulatory compliance.</p>
+
+                <h3>Pre-conditions</h3>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Pay gap analysis completed, gap ≥5% identified (UC3 completed)</li>
+                    <li>Justification task automatically created by system</li>
+                    <li>Manager has access to pseudonymized gap data by job level and tenure</li>
+                    <li>System configured with justification template and approval workflows</li>
+                </ul>
+
+                <h3>Main Flow</h3>
+                <div class="workflow-phases">
+                    <div class="phase completed">Phase 1: Detection</div>
+                    <div class="phase current">Phase 2: Justification</div>
+                    <div class="phase">Phase 3: Approval</div>
+                    <div class="phase">Phase 4: Implementation</div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Manager Receives Justification Task</div>
+                        <div class="step-detail">System automatically creates task: "Pay Gap Detected: Engineering Department (5.3% gap)". Manager receives email notification: "A significant pay gap has been detected in your department. Please document the reason and propose corrective measures within 5 business days."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Access Justification Form & Gap Context</div>
+                        <div class="step-detail">Manager logs in and navigates to Compliance → Justifications → Engineering Gap Task. System displays:
+                        <div class="data-flow">
+                          Gap Context (Pseudonymized):
+                          - Overall Engineering Gap: 5.3% (female €62,500 avg, male €65,800 avg)
+                          - By Job Level:
+                            • Senior Engineers (n=45): 6.8% gap
+                            • Mid-Level Engineers (n=89): 4.2% gap
+                            • Junior Engineers (n=100): 1.1% gap (no gap)
+                          - By Tenure:
+                            • 5+ years: 7.1% gap
+                            • 2-5 years: 3.8% gap
+                            • <2 years: 0.9% gap (no gap)
+                        </div>
+                        Analysis shows gap is concentrated among Senior Engineers with 5+ years tenure.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Manager Documents Root Cause Analysis</div>
+                        <div class="step-detail">Manager fills justification form with root cause analysis:
+                        <div class="data-flow">
+                          Root Causes Identified:
+
+                          1. Historical Hiring Imbalance (40% of gap explained)
+                             "Senior engineering cohort (5+ years) was recruited during 2018-2019
+                             when tech industry had fewer female candidates. Senior female engineers
+                             represent only 22% of cohort vs. 40% in current hiring."
+
+                          2. Promotion Timing Differences (35% of gap)
+                             "Male senior engineers promoted ~1.5 years earlier on average.
+                             3 recent female engineers reached senior level in 2023-2024;
+                             salaries will reach parity in next review cycle."
+
+                          3. Market Salary Variation (25% of gap)
+                             "Senior engineers with AI/ML specialization (predominantly male in
+                             cohort) command 8-12% premium. We adjusted comp in 2024 to attract
+                             female AI specialists."
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Propose Corrective Measures</div>
+                        <div class="step-detail">Manager enters corrective action plan:
+                        <div class="data-flow">
+                          Corrective Measures Proposed:
+
+                          Immediate (Q2 2024):
+                          - Conduct salary review for 3 female senior engineers with 5+ years tenure
+                          - Target: Bring salaries to within 2% of peer males with same job eval score
+                          - Estimated cost: €8,500/year
+                          - Responsibility: HR Specialist (with Compliance approval)
+                          - Timeline: Complete by June 30, 2024
+
+                          Short-term (Q3-Q4 2024):
+                          - Revise senior engineer hiring strategy to increase female candidate pipeline
+                          - Set goal: 45% female senior hires in 2024 (up from 22% historical)
+                          - Responsibility: Recruiting Manager
+                          - Timeline: Implement job postings August 2024
+
+                          Medium-term (2025):
+                          - Establish mentorship program for mid-level female engineers
+                          - Track promotion timing parity
+                          - Goal: Eliminate 2-3 year promotion gap
+                          - Responsibility: Engineering Leadership
+                          - Timeline: Program launch February 2025
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Manager Submission & HR Review</div>
+                        <div class="step-detail">Manager clicks "Submit for Review". System changes status to "Pending HR Review". HR Specialist receives notification: "Justification submitted for Engineering 5.3% gap. Review and assess corrective measures feasibility."
+
+                        HR Specialist reviews proposal and validates:
+                        <div class="decision-box">
+                          ✓ Root cause analysis is thorough and evidence-based
+                          ✓ Proposed salary adjustment (€8,500) is approved in budget
+                          ⚠️ Hiring goal (45% female) may be ambitious; recommend 40% interim target
+                          ✓ Mentorship program aligns with broader DEI initiatives
+                        </div>
+                        HR Specialist can approve with recommendations or request revisions from Manager.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Compliance Officer Final Approval</div>
+                        <div class="step-detail">HR Specialist forwards to Compliance Officer with recommendation: "Approve with modifications to hiring target (40% instead of 45%)."
+
+                        Compliance Officer reviews for regulatory compliance:
+                        <div class="compliance-note">
+                          ✓ Justification adequately explains 5.3% gap
+                          ✓ Corrective measures are concrete and time-bound
+                          ✓ Plan includes salary equity adjustment (immediate mitigation)
+                          ✓ Long-term measures address systemic causes (hiring, promotion parity)
+                          ✓ Plan is documented and auditable
+
+                          COMPLIANCE FINDING: Gap justification satisfies Article 5 requirements.
+                          If measures are implemented as proposed, organization demonstrates good-faith
+                          effort to eliminate unjustified gender pay gap.
+                        </div>
+                        Compliance Officer clicks "Approve". System records approval decision.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Implementation & Monitoring</div>
+                        <div class="step-detail">Once approved, system creates implementation tasks:
+                        <div class="success-box">
+                          ✓ JUSTIFICATION APPROVED
+
+                          Implementation Tasks Created:
+                          1. [Q2 2024] Salary review for 3 female senior engineers (Assigned to: HR Specialist)
+                          2. [Q3 2024] Implement revised senior engineer hiring strategy (Assigned to: Recruiting)
+                          3. [Q4 2024] Launch mentorship program (Assigned to: Engineering Leadership)
+
+                          Next Gap Analysis: November 2024 (will reassess whether corrective measures reduced gap)
+                        </div>
+
+                        System sets reminder: "Q3 2024: Review progress on corrective measures. Have hiring targets been met? Are salary adjustments in place?"</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <span class="step_number">8</span>
+                    <span class="step-content">
+                        <div class="step-title">Audit Logging & Documentation</div>
+                        <div class="step-detail">System records complete justification workflow to audit trail:
+                        <div class="data-flow">
+                          AuditLog Entries:
+                          - [2024-05-13 10:00] Justification task created (Gap 5.3% detected in Engineering)
+                          - [2024-05-15 14:30] Justification submitted by Manager (root causes + corrective measures)
+                          - [2024-05-16 09:45] HR Review completed (approved with recommendations)
+                          - [2024-05-17 11:20] Compliance Officer approved justification
+                          - [2024-05-17 11:21] Implementation tasks created
+
+                          Documentation includes:
+                          - Original gap analysis and context data
+                          - Manager's root cause analysis
+                          - Corrective measure proposal with timeline
+                          - All reviewer comments and approvals
+                          - Implementation task assignments
+                        </div>
+                        This creates evidence trail demonstrating organization's compliance efforts for potential regulatory review.</div>
+                    </span>
+                </div>
+
+                <div class="success-box">
+                    <strong>✓ Success Outcome:</strong> Gap justification documented and approved. Corrective measures assigned to responsible parties with deadlines. Implementation tracked. Documentation available for regulatory audit (Article 5 compliance evidence).
+                </div>
+
+                <h3>Alternative Flows</h3>
+                <div class="step">
+                    <span class="step-number">A1</span>
+                    <span class="step-content">
+                        <div class="step-title">Justification Rejected by HR or Compliance</div>
+                        <div class="step-detail">If HR Specialist finds justification insufficient ("Root cause analysis does not adequately explain gap. Please provide additional detail on promotion timeline differences."), Manager is notified. System returns task to "In Progress" with comments. Manager has 5 days to revise and resubmit.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">A2</span>
+                    <span class="step-content">
+                        <div class="step-title">Objectively Unjustified Gap</div>
+                        <div class="step-detail">If Manager cannot adequately justify gap (e.g., "No explanation provided") or Compliance Officer determines gap is unjustified, system flags for escalation: "OBJECTIVELY UNJUSTIFIED GAP: Corrective salary adjustment is MANDATORY within 90 days. Escalated to CFO and Compliance Officer for immediate action."</div>
+                    </span>
+                </div>
+
+                <h3>Error Scenarios</h3>
+                <div class="error-box">
+                    <strong>E1 - Insufficient Justification:</strong> If Manager provides only 1-2 sentences, system warns: "Justification appears incomplete. Please provide detailed analysis of root causes (minimum 100 words recommended)."
+                </div>
+
+                <div class="error-box">
+                    <strong>E2 - Missing Corrective Measures:</strong> If Manager fails to propose corrective measures, system blocks submission: "Corrective measures must be specified. Article 5 requires explanation of gap AND action plan to address it."
+                </div>
+
+                <div class="error-box">
+                    <strong>E3 - Approval Timeout:</strong> If justification is not approved/rejected within 10 days, system escalates to Compliance Officer with reminder: "Justification for Engineering gap pending approval for 10 days. Please review and render decision."
+                </div>
+
+                <h3>Acceptance Criteria</h3>
+                <div class="acceptance-criteria">
+                    <h4>Functional Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>System automatically creates justification task when gap ≥5% detected</li>
+                        <li>Manager can access gap context (pseudonymized drill-down by job level/tenure)</li>
+                        <li>Justification form allows detailed root cause documentation</li>
+                        <li>Manager proposes concrete corrective measures with timelines</li>
+                        <li>Multi-stage approval workflow (HR review → Compliance approval)</li>
+                        <li>Approved measures converted to implementation tasks with assignments</li>
+                    </ul>
+                </div>
+
+                <div class="acceptance-criteria">
+                    <h4>Compliance & Security Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>Gap analysis context available to Manager (role-based access)</li>
+                        <li>Complete workflow logged to immutable audit trail</li>
+                        <li>All comments, approvals, and revisions recorded with timestamp</li>
+                        <li>Implementation tasks tracked and monitored until completion</li>
+                        <li>Justification documentation available for regulatory audit</li>
+                        <li>Non-compliance (unjustified gap) escalated automatically to CFO/Compliance</li>
+                    </ul>
+                </div>
+
+                <div class="compliance-note">
+                    <strong>🔒 Directive 2023/970 Compliance:</strong> Article 5 requires employers to justify any gender pay gap ≥ 5% and implement corrective measures. This use case documents the justification process and creates auditable evidence of compliance efforts. Rejection of inadequate justifications and escalation of unjustified gaps ensures organization cannot ignore identified disparities.
+                </div>
+            </div>
+        </div>
+
+        <!-- USE CASE 5: EMPLOYEE TRANSPARENCY REQUESTS -->
+        <div id="uc5" class="use-case-section">
+            <div class="use-case">
+                <h2><span class="icon">👤</span>UC5: Employee Salary Transparency Requests (Article 10)</h2>
+
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Actor(s)</span>
+                        <span class="metadata-value">Employee, HR Specialist</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Trigger</span>
+                        <span class="metadata-value">Employee initiates transparency request</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Duration</span>
+                        <span class="metadata-value">15 days (legal response time)</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Directive Reference</span>
+                        <span class="metadata-value">Art. 10 (Right to Information)</span>
+                    </div>
+                </div>
+
+                <h3>Narrative Description</h3>
+                <p>Directive 2023/970 grants employees the right to request information about salary distribution and comparison with colleagues in the same job. The system enables self-service transparency requests while protecting privacy through pseudonymization. HR Specialist processes requests and provides comparative data within 15-day legal deadline.</p>
+
+                <h3>Pre-conditions</h3>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Employee is logged into system with verified identity</li>
+                    <li>Employee is an active employee in pseudonymized salary dataset</li>
+                    <li>System has minimum 3 other employees in same job title for meaningful comparison</li>
+                    <li>HR Specialist has processed employee record</li>
+                </ul>
+
+                <h3>Main Flow</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Employee Initiates Request</div>
+                        <div class="step-detail">Employee navigates to Self-Service → Salary Transparency Request. System displays: "You have the right under EU Directive 2023/970 to receive information about salary ranges for your job title. This request will be processed within 15 days."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Employee Submits Request</div>
+                        <div class="step-detail">Employee fills request form:
+                        <div class="data-flow">
+                          Request Details:
+                          - Employee confirms current job title: "Senior Software Engineer"
+                          - Employee selects comparison criteria:
+                            ☑ Show salary distribution for same job title (required)
+                            ☑ Show breakdown by gender (optional)
+                            ☑ Show breakdown by experience level (optional)
+                            ☐ Show individual colleague salaries (NOT available - privacy protected)
+
+                          Employee clicks "Submit Request"
+                          System confirms: "Your request has been submitted. You will receive response within 15 business days."
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">System Validates Employee Eligibility</div>
+                        <div class="step-detail">System checks: Is employee "Senior Software Engineer" in database? Are there ≥3 other Senior Software Engineers for meaningful comparison? System finds: 23 other Senior Software Engineers (15 male, 8 female). Eligibility confirmed. Request routed to HR Specialist queue.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">HR Specialist Processes Request</div>
+                        <div class="step-detail">HR Specialist receives task: "Salary Transparency Request from Employee [pseudonym]. Job: Senior Software Engineer. Due: 2024-05-28."
+
+                        Specialist navigates to request and system displays:
+                        <div class="data-flow">
+                          Employee Transparency Request
+
+                          Requesting Employee Salary Data (Pseudonymized):
+                          - Job Title: Senior Software Engineer
+                          - Salary: €72,500
+                          - Gender: Female
+                          - Tenure: 4 years
+                          - Job Eval Score: 74 points
+
+                          Peer Comparison Group (All Senior Software Engineers):
+                          - Total in role: 24 employees (including requesting employee)
+                          - Comparison window: Same department, same job evaluation band
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Generate Transparency Response</div>
+                        <div class="step-detail">HR Specialist clicks "Generate Response". System creates personalized transparency report:
+                        <div class="success-box">
+                          ✓ SALARY TRANSPARENCY RESPONSE
+                          EU Directive 2023/970, Article 10
+
+                          Your Job: Senior Software Engineer
+                          Your Salary: €72,500 (base + standard benefits)
+                          Your Job Evaluation Score: 74 points
+                          Your Tenure: 4 years
+
+                          SALARY DISTRIBUTION FOR YOUR JOB TITLE:
+
+                          All 24 Senior Software Engineers:
+                          • Minimum salary: €68,000
+                          • Lower quartile: €70,200
+                          • Median: €73,400
+                          • Upper quartile: €76,800
+                          • Maximum salary: €82,300
+                          • Average: €73,910
+
+                          YOUR POSITION: €72,500 (just below median - 1.9% below peer average)
+
+                          BY GENDER (24 employees):
+                          • Female engineers (n=8): Avg €71,625, Your salary: €72,500 (above female peer avg by +1.2%)
+                          • Male engineers (n=16): Avg €74,650, Gap: -€2,150 vs. male peer avg
+
+                          ANALYSIS:
+                          Your salary is below the average for your role (€72,500 vs €73,910). This may reflect:
+                          - Your relative tenure within the peer group (some colleagues have 6-8 years in role)
+                          - Recent promotions of colleagues
+                          - Job evaluation score variation (range: 70-78 points in peer group)
+
+                          WHAT THIS MEANS:
+                          You can compare your salary to peers in the same role. Individual colleague salaries are NOT disclosed (privacy protected). This data is pseudonymized and cannot be linked to specific individuals.
+
+                          NEXT STEPS:
+                          If you believe your salary should be reviewed, contact your Manager or HR directly.
+                          You have the right to request salary review under company pay equity policy.
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">HR Specialist Reviews & Approves Response</div>
+                        <div class="step-detail">HR Specialist reviews auto-generated response for accuracy. Checks:
+                        <div class="decision-box">
+                          ✓ Data is pseudonymized (no individual names disclosed)
+                          ✓ Statistics are accurate (peer count, salary ranges)
+                          ✓ Response includes constructive context (job eval, tenure factors)
+                          ✓ Response explains next steps (salary review process)
+                        </div>
+                        Specialist approves response and clicks "Send to Employee".</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Employee Receives Response</div>
+                        <div class="step-detail">Employee receives email: "Your salary transparency request has been processed. Log in to view your personalized salary comparison report."
+
+                        Employee logs into system and views transparency report. Report clearly shows:
+                        - Employee's salary in context of peers
+                        - Distribution statistics (median, quartiles)
+                        - Gender-based breakdown (showing potential gap)
+                        - Contextual factors (tenure, job evaluation)
+                        - No individual colleague names or specific salaries</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <span class="step-content">
+                        <div class="step-title">Audit Logging & Compliance Documentation</div>
+                        <div class="step-detail">System records complete request lifecycle:
+                        <div class="data-flow">
+                          AuditLog Entries:
+                          - [2024-05-13 09:30] Transparency request submitted by Employee [pseudonym]
+                          - [2024-05-13 09:31] Request validated (24 peers in comparison group)
+                          - [2024-05-13 14:15] Response generated by HR Specialist [pseudonym]
+                          - [2024-05-13 14:30] Response reviewed and approved by HR Specialist [pseudonym]
+                          - [2024-05-13 14:31] Response delivered to Employee
+                          - Response processing time: 5 hours (within 15-day requirement)
+
+                          COMPLIANCE STATUS: ✓ Article 10 - Right to Information satisfied
+                        </div>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="success-box">
+                    <strong>✓ Success Outcome:</strong> Employee receives detailed salary transparency information. Data is pseudonymized (protects peer privacy). Employee understands how salary compares to peers and contextual factors. Request processed within legal deadline. Audit trail documents compliance.
+                </div>
+
+                <h3>Alternative Flows</h3>
+                <div class="step">
+                    <span class="step-number">A1</span>
+                    <span class="step-content">
+                        <div class="step-title">Employee Requests Detailed Job Evaluation Context</div>
+                        <div class="step-detail">Employee asks HR: "Can I see why my salary is below the median?" HR Specialist can provide job evaluation score breakdown: "Your score (74 points) vs. peer average (75.2 points). Your evaluation noted 'Mentoring' slightly below peer average. This accounts for ~€800 of salary difference."</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">A2</span>
+                    <span class="step-content">
+                        <div class="step-title">Employee Contests Evaluation Score</div>
+                        <div class="step-detail">Employee uses transparency report to request evaluation review: "My score (74) is lower than peers with same responsibilities. Please reconsider evaluation." System routes request to Manager for re-evaluation. If score is adjusted upward, salary is recalculated per pay equity policy.</div>
+                    </span>
+                </div>
+
+                <h3>Error Scenarios</h3>
+                <div class="error-box">
+                    <strong>E1 - Insufficient Peer Group:</strong> If employee works in niche role with only 2 other people, system blocks request: "Cannot provide meaningful comparison (only 3 people in role). Transparency report would not provide statistical validity. Contact HR directly for individual salary review."
+                </div>
+
+                <div class="error-box">
+                    <strong>E2 - Non-Active Employee:</strong> If employee is on unpaid leave or contract has ended, system shows: "Transparency reports are available to active employees only. If you were recently separated, contact HR with your request."
+                </div>
+
+                <div class="error-box">
+                    <strong>E3 - Request Exceeds 15-Day Deadline:</strong> If HR Specialist has not processed request by day 12, system sends reminder: "Transparency request due in 3 days. Please generate and deliver response to maintain compliance."
+                </div>
+
+                <h3>Acceptance Criteria</h3>
+                <div class="acceptance-criteria">
+                    <h4>Functional Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>Employee can self-initiate transparency request through self-service portal</li>
+                        <li>System validates employee is active and has peer group for comparison</li>
+                        <li>System auto-generates personalized salary comparison report</li>
+                        <li>Report shows salary distribution, gender breakdown, contextual factors</li>
+                        <li>Report does NOT disclose individual colleague names or salaries</li>
+                        <li>HR Specialist reviews and approves before delivery</li>
+                        <li>Employee receives response within 15 business days</li>
+                    </ul>
+                </div>
+
+                <div class="acceptance-criteria">
+                    <h4>Compliance & Security Requirements</h4>
+                    <ul class="criteria-list">
+                        <li>All data in response is pseudonymized (no colleague identification)</li>
+                        <li>Request and response logged to immutable audit trail with timestamps</li>
+                        <li>Processing time tracked and monitored against 15-day legal deadline</li>
+                        <li>Response includes appropriate contextual explanations (job eval, tenure factors)</li>
+                        <li>System prevents over-disclosure (cannot request individual colleague salaries)</li>
+                        <li>Employee has right to follow-up salary review request based on transparency response</li>
+                    </ul>
+                </div>
+
+                <div class="compliance-note">
+                    <strong>🔒 Directive 2023/970 Compliance:</strong> Article 10 grants employees right to information about salary distribution. This use case implements self-service transparency requests with 15-day response deadline (Art. 10.1). Pseudonymization protects colleague privacy while enabling meaningful comparison. Audit logging provides evidence of compliance with disclosure obligations.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px; padding: 20px; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #667eea;">
+            <h3 style="color: #667eea; margin-top: 0;">Cross-Use Case Dependencies</h3>
+            <p style="margin: 0; font-size: 14px; color: #333;">
+                <strong>UC1 → UC2 → UC3 → UC4 → UC5</strong><br>
+                Job evaluation methodology (UC1) must be defined before salary data (UC2) can be properly evaluated. Salary data enables gap calculation (UC3). Gaps ≥5% trigger justification workflow (UC4). Employees can request transparency information (UC5) at any time during process.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(evt, tabName) {
+            var i, tabcontent, tabbtns;
+            tabcontent = document.getElementsByClassName("use-case-section");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tabbtns = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tabbtns.length; i++) {
+                tabbtns[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>

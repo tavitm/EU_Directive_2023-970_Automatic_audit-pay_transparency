@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Specifications - Pay Transparency Compliance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .section {
+            margin-bottom: 60px;
+        }
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .subsection {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .subsection-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .endpoint {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9em;
+            margin-right: 15px;
+            min-width: 60px;
+            text-align: center;
+        }
+        .method.get { background: #4CAF50; }
+        .method.post { background: #2196F3; }
+        .method.put { background: #FF9800; }
+        .method.delete { background: #f44336; }
+        .method.patch { background: #9C27B0; }
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            color: #333;
+            flex: 1;
+        }
+        .endpoint-desc {
+            padding: 15px 20px;
+            color: #666;
+            font-size: 0.95em;
+        }
+        .endpoint-body {
+            padding: 15px 20px;
+            background: #fafafa;
+            border-top: 1px solid #ddd;
+        }
+        .endpoint-body h4 {
+            color: #333;
+            margin: 10px 0 8px 0;
+            font-size: 0.95em;
+        }
+        .schema {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        .response-code {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-right: 10px;
+            font-family: monospace;
+        }
+        .response-code.success { background: #c8e6c9; color: #2e7d32; }
+        .response-code.client-error { background: #ffccbc; color: #d84315; }
+        .response-code.server-error { background: #ffcdd2; color: #c62828; }
+        .auth-header {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 4px solid #ff9800;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .rbac-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-left: 4px solid #2196f3;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .audit-info {
+            background: #f3e5f5;
+            padding: 15px;
+            border-left: 4px solid #9c27b0;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .compliance-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-left: 4px solid #4caf50;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .toc {
+            background: #f0f0f0;
+            padding: 20px 30px;
+            border-bottom: 1px solid #ddd;
+        }
+        .toc h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .toc ul {
+            list-style: none;
+            columns: 2;
+        }
+        .toc li {
+            margin: 8px 0;
+        }
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .error-response {
+            background: #ffebee;
+            padding: 12px;
+            border-left: 3px solid #f44336;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .success-response {
+            background: #e8f5e9;
+            padding: 12px;
+            border-left: 3px solid #4caf50;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .highlight {
+            background: #fff9c4;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+        .footer {
+            background: #f0f0f0;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>API Specifications</h1>
+            <p>Pay Transparency Compliance System - EU Directive 2023/970</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Version 1.0 | Date: May 2026</p>
+        </div>
+
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#overview">1. API Overview</a></li>
+                <li><a href="#auth">2. Authentication & Authorization</a></li>
+                <li><a href="#standards">3. API Standards</a></li>
+                <li><a href="#jobs">4. Job Management Endpoints</a></li>
+                <li><a href="#employees">5. Employee & Salary Endpoints</a></li>
+                <li><a href="#analysis">6. Gap Analysis Endpoints</a></li>
+                <li><a href="#justifications">7. Justifications Endpoints</a></li>
+                <li><a href="#reports">8. Reports Endpoints</a></li>
+                <li><a href="#audit">9. Audit & Security Endpoints</a></li>
+                <li><a href="#error">10. Error Handling</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <!-- 1. API OVERVIEW -->
+            <div class="section" id="overview">
+                <h2 class="section-title">1. API Overview</h2>
+
+                <div class="subsection">
+                    <div class="subsection-title">Base URL</div>
+                    <div class="schema">https://api.transparency.internal/v1</div>
+                    <p style="margin-top: 10px;"><strong>Note:</strong> All endpoints require HTTPS/TLS 1.2+. Plain HTTP is rejected with 403 Forbidden.</p>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">System Architecture</div>
+                    <p>The API is organized into 6 logical modules:</p>
+                    <table>
+                        <tr>
+                            <th>Module</th>
+                            <th>Base Path</th>
+                            <th>Purpose</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Jobs</strong></td>
+                            <td>/jobs</td>
+                            <td>Job positions, evaluations, categories</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Employees</strong></td>
+                            <td>/employees</td>
+                            <td>Employee data (pseudonymized), salary components</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analysis</strong></td>
+                            <td>/analysis</td>
+                            <td>Pay gap calculations, drill-down, trends</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Justifications</strong></td>
+                            <td>/justifications</td>
+                            <td>Gap justifications, workflow approvals</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reports</strong></td>
+                            <td>/reports</td>
+                            <td>Official exports (PDF, XML, CSV)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Audit</strong></td>
+                            <td>/audit</td>
+                            <td>Immutable logs, compliance verification</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Global Standards</div>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Request Format:</strong> JSON (application/json)</li>
+                        <li><strong>Response Format:</strong> JSON with standardized envelope</li>
+                        <li><strong>Timestamps:</strong> ISO 8601 UTC (e.g., 2026-05-13T14:30:00Z)</li>
+                        <li><strong>Pagination:</strong> offset/limit model (default limit: 50, max: 500)</li>
+                        <li><strong>Sorting:</strong> Multi-field sort via ?sort=field1,-field2 (- for descending)</li>
+                        <li><strong>Filtering:</strong> Query string parameters with operators (?field[gte]=100)</li>
+                        <li><strong>Rate Limiting:</strong> 1000 requests/hour per API key (429 Too Many Requests)</li>
+                        <li><strong>Idempotency:</strong> All state-changing requests require Idempotency-Key header</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. AUTHENTICATION & AUTHORIZATION -->
+            <div class="section" id="auth">
+                <h2 class="section-title">2. Authentication & Authorization</h2>
+
+                <div class="subsection">
+                    <div class="subsection-title">Authentication Method</div>
+                    <p>All endpoints (except /health) require JWT Bearer token authentication.</p>
+                    <div class="auth-header">
+                        <strong>Request Header:</strong><br>
+                        <code>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code>
+                        <p style="margin-top: 10px;">JWT is obtained via POST /auth/login with username/password or SAML2 SSO endpoint.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">JWT Token Structure</div>
+                    <div class="schema">{
+  "sub": "user_id_12345",
+  "name": "John Smith",
+  "email": "john@company.internal",
+  "roles": ["hr_specialist"],
+  "department": "HR",
+  "department_id": "dept_001",
+  "permissions": ["read:jobs", "write:salaries", "read:analysis"],
+  "iat": 1715590200,
+  "exp": 1715676600,
+  "aud": "transparency-api"
+}</div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Role-Based Access Control (RBAC)</div>
+                    <table>
+                        <tr>
+                            <th>Role</th>
+                            <th>Permissions</th>
+                            <th>Data Access Scope</th>
+                        </tr>
+                        <tr>
+                            <td><strong>HR Specialist</strong></td>
+                            <td>All create/read/write/delete for Jobs, Employees, Salary Data. Workflow initiation.</td>
+                            <td>All departments in company</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manager</strong></td>
+                            <td>Read jobs, employees (own dept), approve justifications. Cannot delete or bulk import.</td>
+                            <td>Own department only</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compliance Officer</strong></td>
+                            <td>Read all. Validate justifications. Generate official reports. Access audit logs.</td>
+                            <td>All departments (read-only)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Employee</strong></td>
+                            <td>Read own salary info (pseudonymized). Submit Art. 10 requests. View own justifications.</td>
+                            <td>Own salary record only</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CFO</strong></td>
+                            <td>Read reports. View cost analysis. Dashboard metrics.</td>
+                            <td>Aggregate company data only</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Authorization Header Requirements</div>
+                    <div class="rbac-info">
+                        <strong>Authorization Context Headers (on every request):</strong><br>
+                        <code>X-User-Role: hr_specialist</code><br>
+                        <code>X-Department-ID: dept_001</code><br>
+                        <code>X-User-ID: user_12345</code>
+                        <p style="margin-top: 10px;"><strong>Enforcement:</strong> API enforces role+department at business logic layer, not just UI layer. All filtering is server-side (immutable). Unauthorized access returns 403 Forbidden.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. API STANDARDS -->
+            <div class="section" id="standards">
+                <h2 class="section-title">3. API Standards & Conventions</h2>
+
+                <div class="subsection">
+                    <div class="subsection-title">Standard Request Envelope</div>
+                    <div class="schema">{
+  "action": "POST",
+  "resource": "job",
+  "timestamp": "2026-05-13T14:30:00Z",
+  "request_id": "req_abc123xyz",
+  "data": { /* endpoint-specific payload */ },
+  "metadata": {
+    "idempotency_key": "idem_key_12345",
+    "version": "1.0"
+  }
+}</div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Standard Response Envelope (Success)</div>
+                    <div class="success-response">
+                        <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": { /* response payload */ },
+  "meta": {
+    "request_id": "req_abc123xyz",
+    "timestamp": "2026-05-13T14:30:01Z",
+    "execution_time_ms": 245
+  }
+}</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Standard Response Envelope (Error)</div>
+                    <div class="error-response">
+                        <div class="schema">{
+  "status": "error",
+  "code": 400,
+  "error": {
+    "type": "validation_error",
+    "message": "Invalid salary component type",
+    "details": [
+      {
+        "field": "component_type",
+        "issue": "must be one of: BASE, BONUS, BENEFITS, OTHER",
+        "value": "INVALID"
+      }
+    ]
+  },
+  "meta": {
+    "request_id": "req_abc123xyz",
+    "timestamp": "2026-05-13T14:30:01Z"
+  }
+}</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Pagination Response Format</div>
+                    <div class="schema">{
+  "status": "success",
+  "data": [ /* array of items */ ],
+  "pagination": {
+    "offset": 0,
+    "limit": 50,
+    "total": 342,
+    "has_more": true,
+    "next_offset": 50
+  }
+}</div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Filtering & Search Operators</div>
+                    <table>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Example</th>
+                            <th>Meaning</th>
+                        </tr>
+                        <tr>
+                            <td><code>[eq]</code></td>
+                            <td>?status[eq]=active</td>
+                            <td>Exact match</td>
+                        </tr>
+                        <tr>
+                            <td><code>[ne]</code></td>
+                            <td>?status[ne]=deleted</td>
+                            <td>Not equal</td>
+                        </tr>
+                        <tr>
+                            <td><code>[gte]</code></td>
+                            <td>?salary[gte]=3000</td>
+                            <td>Greater than or equal</td>
+                        </tr>
+                        <tr>
+                            <td><code>[lte]</code></td>
+                            <td>?salary[lte]=5000</td>
+                            <td>Less than or equal</td>
+                        </tr>
+                        <tr>
+                            <td><code>[in]</code></td>
+                            <td>?status[in]=active,pending</td>
+                            <td>In list</td>
+                        </tr>
+                        <tr>
+                            <td><code>[contains]</code></td>
+                            <td>?job_title[contains]=Manager</td>
+                            <td>Substring match (case-insensitive)</td>
+                        </tr>
+                        <tr>
+                            <td><code>[date_gte]</code></td>
+                            <td>?created_at[date_gte]=2026-01-01</td>
+                            <td>Date on or after</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. JOB MANAGEMENT ENDPOINTS -->
+            <div class="section" id="jobs">
+                <h2 class="section-title">4. Job Management Endpoints</h2>
+
+                <!-- POST /jobs -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/jobs</span>
+                    </div>
+                    <div class="endpoint-desc">Create a new job position</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4 style="margin-top: 15px;">Request Body:</h4>
+                        <div class="schema">{
+  "job_code": "JOB-001",
+  "job_title": "Senior Software Engineer",
+  "department_id": "dept_001",
+  "description": "Design and develop backend services",
+  "equal_value_category": "IT_TECHNICAL",
+  "salary_band_min": 3500,
+  "salary_band_max": 6000,
+  "approved_by_manager": true
+}</div>
+
+                        <h4>Response (201 Created):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 201,
+  "data": {
+    "job_id": "job_12345",
+    "job_code": "JOB-001",
+    "job_title": "Senior Software Engineer",
+    "created_at": "2026-05-13T14:30:00Z",
+    "created_by": "user_001",
+    "version": 1,
+    "status": "draft"
+  }
+}</div>
+                        </div>
+
+                        <h4>Validation Rules:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>job_code: Unique, alphanumeric + hyphen, max 50 chars, required</li>
+                            <li>job_title: Required, max 200 chars</li>
+                            <li>department_id: Must exist, required</li>
+                            <li>equal_value_category: Required, must be valid EVC code</li>
+                            <li>salary_band: salary_min &lt; salary_max, both positive decimals</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit Logging:</strong> Job creation is logged with user_id, timestamp, and full payload. Cannot be deleted or tampered with.
+                        </div>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 4:</strong> Job must have objective criteria defined. This endpoint only creates the job definition; criteria are assigned via PUT /jobs/:id/evaluation.
+                        </div>
+
+                        <h4>Error Responses:</h4>
+                        <div class="error-response">
+                            <span class="response-code client-error">400</span> Invalid job_code format or duplicate<br>
+                            <span class="response-code client-error">403</span> Insufficient RBAC role<br>
+                            <span class="response-code client-error">404</span> Department not found<br>
+                            <span class="response-code server-error">500</span> Database transaction failed
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GET /jobs -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/jobs</span>
+                    </div>
+                    <div class="endpoint-desc">List all jobs with filtering, sorting, pagination</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist, manager, compliance_officer</span>
+
+                        <h4>Query Parameters:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Example</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>offset</td>
+                                <td>int</td>
+                                <td>?offset=0</td>
+                                <td>Pagination offset (default: 0)</td>
+                            </tr>
+                            <tr>
+                                <td>limit</td>
+                                <td>int</td>
+                                <td>?limit=50</td>
+                                <td>Items per page (default: 50, max: 500)</td>
+                            </tr>
+                            <tr>
+                                <td>status</td>
+                                <td>string</td>
+                                <td>?status=approved</td>
+                                <td>Filter by status: draft, pending_approval, approved, archived</td>
+                            </tr>
+                            <tr>
+                                <td>department_id</td>
+                                <td>string</td>
+                                <td>?department_id=dept_001</td>
+                                <td>Filter by department (manager scope enforcement)</td>
+                            </tr>
+                            <tr>
+                                <td>sort</td>
+                                <td>string</td>
+                                <td>?sort=-created_at,job_title</td>
+                                <td>Sort fields (- for descending)</td>
+                            </tr>
+                        </table>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": [
+    {
+      "job_id": "job_12345",
+      "job_code": "JOB-001",
+      "job_title": "Senior Software Engineer",
+      "department_id": "dept_001",
+      "equal_value_category": "IT_TECHNICAL",
+      "status": "approved",
+      "version": 2,
+      "created_at": "2026-05-13T14:30:00Z",
+      "last_evaluated_at": "2026-05-13T16:00:00Z"
+    }
+  ],
+  "pagination": {
+    "offset": 0,
+    "limit": 50,
+    "total": 342,
+    "has_more": true
+  }
+}</div>
+                        </div>
+
+                        <div class="rbac-info">
+                            <strong>Scope Filtering:</strong> Manager role only sees jobs in their department. HR Specialist sees all. Results are filtered server-side before returning.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GET /jobs/:id -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/jobs/:job_id</span>
+                    </div>
+                    <div class="endpoint-desc">Retrieve single job with all evaluation details</div>
+                    <div class="endpoint-body">
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": {
+    "job_id": "job_12345",
+    "job_code": "JOB-001",
+    "job_title": "Senior Software Engineer",
+    "department_id": "dept_001",
+    "description": "Design and develop backend services",
+    "equal_value_category": "IT_TECHNICAL",
+    "status": "approved",
+    "version": 2,
+    "evaluation": {
+      "evaluation_id": "eval_98765",
+      "criteria_scores": {
+        "competencies": 90,
+        "effort": 85,
+        "responsibility": 88,
+        "conditions": 75,
+        "complexity": 92,
+        "autonomy": 80,
+        "impact": 70
+      },
+      "weighted_score": 84.5,
+      "evaluated_at": "2026-05-13T16:00:00Z",
+      "evaluated_by": "user_002"
+    },
+    "salary_band": {
+      "min": 3500,
+      "max": 6000
+    },
+    "created_at": "2026-05-13T14:30:00Z",
+    "created_by": "user_001"
+  }
+}</div>
+                        </div>
+
+                        <h4>Error Response (404 Not Found):</h4>
+                        <div class="error-response">
+                            <span class="response-code client-error">404</span> Job not found
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /jobs/:id/evaluation -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/jobs/:job_id/evaluation</span>
+                    </div>
+                    <div class="endpoint-desc">Evaluate job on 7 weighted criteria (per Directiva Art. 4)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "criteria_scores": {
+    "competencies": 90,
+    "effort": 85,
+    "responsibility": 88,
+    "conditions": 75,
+    "complexity": 92,
+    "autonomy": 80,
+    "impact": 70
+  },
+  "evaluation_notes": "Evaluated by job analysis committee"
+}</div>
+
+                        <h4>Calculation (Server-Side):</h4>
+                        <p style="margin: 10px 0;">Weighted Score = Σ(score × weight)</p>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Criterion</th>
+                                <th>Weight</th>
+                            </tr>
+                            <tr>
+                                <td>Competencies</td>
+                                <td>25%</td>
+                            </tr>
+                            <tr>
+                                <td>Effort</td>
+                                <td>15%</td>
+                            </tr>
+                            <tr>
+                                <td>Responsibility</td>
+                                <td>25%</td>
+                            </tr>
+                            <tr>
+                                <td>Working Conditions</td>
+                                <td>10%</td>
+                            </tr>
+                            <tr>
+                                <td>Complexity</td>
+                                <td>10%</td>
+                            </tr>
+                            <tr>
+                                <td>Autonomy</td>
+                                <td>10%</td>
+                            </tr>
+                            <tr>
+                                <td>Impact</td>
+                                <td>5%</td>
+                            </tr>
+                        </table>
+
+                        <h4>Validation Rules:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Each score: integer 0-100, required</li>
+                            <li>Weights are immutable and hardcoded (not user-configurable)</li>
+                            <li>Equal Value Category auto-assigned based on weighted_score ranges</li>
+                        </ul>
+
+                        <h4>Response (201 Created):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 201,
+  "data": {
+    "evaluation_id": "eval_98765",
+    "job_id": "job_12345",
+    "weighted_score": 84.5,
+    "equal_value_category": "IT_TECHNICAL",
+    "status": "approved",
+    "evaluated_at": "2026-05-13T16:00:00Z"
+  }
+}</div>
+                        </div>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 4:</strong> Jobs must be evaluated using objective, non-discriminatory criteria. This endpoint implements the weighting specified in Art. 4(2).
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit Logging:</strong> All evaluation scores and weighted calculations are logged. Immutable historical record maintained.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /jobs/bulk-import -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/jobs/bulk-import</span>
+                    </div>
+                    <div class="endpoint-desc">Import jobs from CSV file with format validation and duplicate detection (per TS-M1-003)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4>Request (multipart/form-data):</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>file</code>: CSV file, max 50MB</li>
+                            <li><code>format</code>: "csv" or "xlsx"</li>
+                        </ul>
+
+                        <h4>CSV Format Required Columns:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Column</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td>job_code</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                                <td>JOB-001</td>
+                            </tr>
+                            <tr>
+                                <td>job_title</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                                <td>Engineer</td>
+                            </tr>
+                            <tr>
+                                <td>department_code</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                                <td>IT</td>
+                            </tr>
+                            <tr>
+                                <td>description</td>
+                                <td>string</td>
+                                <td>No</td>
+                                <td>Designs systems</td>
+                            </tr>
+                            <tr>
+                                <td>equal_value_category</td>
+                                <td>string</td>
+                                <td>Yes</td>
+                                <td>IT_TECHNICAL</td>
+                            </tr>
+                        </table>
+
+                        <h4>Response (202 Accepted):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 202,
+  "data": {
+    "import_id": "imp_12345",
+    "file_name": "jobs_2026_05.csv",
+    "total_rows": 150,
+    "status": "processing",
+    "progress": 0,
+    "errors": [],
+    "created_at": "2026-05-13T14:30:00Z"
+  }
+}</div>
+                        </div>
+
+                        <h4>Processing Guarantees:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Atomic:</strong> All rows succeed or all rollback. No partial imports.</li>
+                            <li><strong>Idempotent:</strong> Duplicate imports (same file) within 24h are rejected</li>
+                            <li><strong>Validated:</strong> Format validation before DB transaction</li>
+                            <li><strong>Logged:</strong> Entire operation logged with user_id and file hash</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Import operation logged with row count, user, timestamp, file checksum (SHA-256). Rollback reason logged if failed.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GET /jobs/:id/versions -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/jobs/:job_id/versions</span>
+                    </div>
+                    <div class="endpoint-desc">Retrieve version history of a job (created, modified, evaluated)</div>
+                    <div class="endpoint-body">
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": [
+    {
+      "version": 2,
+      "action": "evaluation_added",
+      "timestamp": "2026-05-13T16:00:00Z",
+      "changed_by": "user_002",
+      "changes": {
+        "evaluation_id": "eval_98765",
+        "weighted_score": 84.5
+      }
+    },
+    {
+      "version": 1,
+      "action": "created",
+      "timestamp": "2026-05-13T14:30:00Z",
+      "changed_by": "user_001",
+      "changes": { /* full job data */ }
+    }
+  ],
+  "pagination": { /* ... */ }
+}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. EMPLOYEE & SALARY ENDPOINTS -->
+            <div class="section" id="employees">
+                <h2 class="section-title">5. Employee & Salary Data Endpoints</h2>
+
+                <!-- POST /employees/bulk-import (pseudonymized) -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/employees/bulk-import</span>
+                    </div>
+                    <div class="endpoint-desc">Import employees with irreversible pseudonymization (per GDPR Art. 32 & TS-M2-001)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4>Request (multipart/form-data):</h4>
+                        <div class="schema">{
+  "file": "employees_2026_05.csv",
+  "format": "csv",
+  "gender_column_index": 4,
+  "salary_column_index": 5
+}</div>
+
+                        <h4>Input CSV Format:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Column</th>
+                                <th>Type</th>
+                                <th>Notes</th>
+                            </tr>
+                            <tr>
+                                <td>employee_id</td>
+                                <td>string</td>
+                                <td>Internal ID, max 50 chars</td>
+                            </tr>
+                            <tr>
+                                <td>employee_name</td>
+                                <td>string</td>
+                                <td><strong>Pseudonymized server-side</strong> using irreversible SHA-256</td>
+                            </tr>
+                            <tr>
+                                <td>gender</td>
+                                <td>enum</td>
+                                <td>M or F only (required for pay gap analysis)</td>
+                            </tr>
+                            <tr>
+                                <td>job_code</td>
+                                <td>string</td>
+                                <td>Must exist, linked to job evaluation</td>
+                            </tr>
+                            <tr>
+                                <td>base_salary</td>
+                                <td>decimal</td>
+                                <td>Gross monthly, must be &gt; 0</td>
+                            </tr>
+                        </table>
+
+                        <h4>Pseudonymization Process (Server-Side):</h4>
+                        <div class="compliance-info">
+                            <strong>Algorithm:</strong> One-way SHA-256(employee_name + salt)<br>
+                            <strong>Output:</strong> EMP_XXXXX (deterministic, same input always produces same pseudonym)<br>
+                            <strong>Irreversibility:</strong> No reverse mapping stored. Cannot decrypt pseudonym back to name.<br>
+                            <strong>Data Preserved:</strong> Gender, salary, job assignment preserved; only name anonymized.<br>
+                            <strong>GDPR Compliance:</strong> Meets Art. 32 pseudonymization requirement. No PII stored in salary tables.
+                        </div>
+
+                        <h4>Response (202 Accepted):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 202,
+  "data": {
+    "import_id": "imp_emp_12345",
+    "total_rows": 250,
+    "status": "processing",
+    "pseudonym_sample": "EMP_a7f3b9c1",
+    "created_at": "2026-05-13T14:30:00Z"
+  }
+}</div>
+                        </div>
+
+                        <h4>Validation Rules:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Salary &gt; 0 and &lt; 500,000 (sanity check)</li>
+                            <li>Gender is M or F only</li>
+                            <li>Job code must be approved before employee link</li>
+                            <li>No duplicate pseudonyms across imports (idempotency check)</li>
+                            <li>Atomic: all rows or rollback</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit Trail:</strong> Import logged with row count, user_id, file hash. Pseudonymization algorithm and salt logged (for compliance verification, not reversal).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /employees/:id/salary-components -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/employees/:employee_id/salary-components</span>
+                    </div>
+                    <div class="endpoint-desc">Add salary component to employee (base, bonus, benefits, other)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "component_type": "BONUS",
+  "amount": 500.00,
+  "effective_date": "2026-05-01",
+  "valid_until": "2026-12-31",
+  "description": "Q2 performance bonus"
+}</div>
+
+                        <h4>Component Types (Enum):</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Included in Gap Calc</th>
+                            </tr>
+                            <tr>
+                                <td>BASE</td>
+                                <td>Base salary (immutable once approved)</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>BONUS</td>
+                                <td>Performance or annual bonus</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>BENEFITS</td>
+                                <td>Non-cash benefits (car, insurance, etc.)</td>
+                                <td>Yes (monetized value)</td>
+                            </tr>
+                            <tr>
+                                <td>OTHER</td>
+                                <td>Other compensation</td>
+                                <td>No (excluded from pay gap)</td>
+                            </tr>
+                        </table>
+
+                        <h4>Response (201 Created):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 201,
+  "data": {
+    "component_id": "comp_12345",
+    "employee_id": "emp_9876",
+    "component_type": "BONUS",
+    "amount": 500.00,
+    "effective_date": "2026-05-01",
+    "created_at": "2026-05-13T14:30:00Z",
+    "version": 1
+  }
+}</div>
+                        </div>
+
+                        <h4>Validation Rules:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Amount: positive decimal, max 2 decimal places</li>
+                            <li>effective_date ≤ valid_until (if both provided)</li>
+                            <li>Type must be one of: BASE, BONUS, BENEFITS, OTHER</li>
+                            <li>Version history maintained (immutable previous versions)</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit Logging:</strong> All salary component changes logged with before/after values, user_id, timestamp.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUT /employees/:id/job-assignment -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method put">PUT</span>
+                        <span class="endpoint-path">/employees/:employee_id/job-assignment</span>
+                    </div>
+                    <div class="endpoint-desc">Assign employee to a job (one job per employee). Inherits equal value category.</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "job_id": "job_12345",
+  "assignment_date": "2026-05-13",
+  "notes": "Promoted from Junior Engineer"
+}</div>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": {
+    "employee_id": "emp_9876",
+    "job_id": "job_12345",
+    "job_code": "JOB-001",
+    "equal_value_category": "IT_TECHNICAL",
+    "assignment_date": "2026-05-13",
+    "updated_at": "2026-05-13T14:30:00Z"
+  }
+}</data>
+                        </div>
+
+                        <h4>Constraints:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>One job per employee (previous assignment replaced)</li>
+                            <li>Job must be approved status</li>
+                            <li>Job must have evaluation (weighted_score exists)</li>
+                            <li>equal_value_category auto-inherited from job</li>
+                            <li>Previous assignment versioned (audit trail)</li>
+                        </ul>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970:</strong> Employee job assignment determines equal value group for pay gap analysis (Art. 4).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /employees/validate-salary-integrity -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/employees/validate-salary-integrity</span>
+                    </div>
+                    <div class="endpoint-desc">Validate all employee salary data before analysis (per TS-M2-004)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist, compliance_officer</span>
+
+                        <h4>Request Body (optional filters):</h4>
+                        <div class="schema">{
+  "department_id": "dept_001",
+  "period": "2026-05"
+}</div>
+
+                        <h4>Validation Checks (5 rules):</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>#</th>
+                                <th>Check</th>
+                                <th>Failure Condition</th>
+                                <th>Severity</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>All employees have salary</td>
+                                <td>Employee with no salary components</td>
+                                <td>ERROR</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>All employees have job assignment</td>
+                                <td>Employee not linked to job</td>
+                                <td>ERROR</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Salary amounts &gt; 0</td>
+                                <td>Zero or negative salary found</td>
+                                <td>ERROR</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>No duplicate pseudonyms</td>
+                                <td>Same pseudonym for multiple rows</td>
+                                <td>ERROR</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>All jobs approved</td>
+                                <td>Employee linked to draft/unapproved job</td>
+                                <td>WARNING</td>
+                            </tr>
+                        </table>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": {
+    "total_employees_checked": 250,
+    "validation_result": "passed",
+    "errors": [],
+    "warnings": [
+      {
+        "rule": 5,
+        "message": "3 employees linked to pending job approvals",
+        "affected_count": 3
+      }
+    ],
+    "timestamp": "2026-05-13T14:30:00Z"
+  }
+}</div>
+                        </div>
+
+                        <h4>Response with Failures (200 OK with errors):</h4>
+                        <div class="error-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": {
+    "total_employees_checked": 250,
+    "validation_result": "failed",
+    "errors": [
+      {
+        "rule": 1,
+        "message": "Employee missing salary",
+        "affected_count": 5,
+        "employee_samples": ["EMP_a7f3b9c1", "EMP_b8e4c2d2"]
+      },
+      {
+        "rule": 2,
+        "message": "Employee not linked to job",
+        "affected_count": 12
+      }
+    ]
+  }
+}</div>
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Validation result logged with user_id, timestamp, check results, error count.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. GAP ANALYSIS ENDPOINTS -->
+            <div class="section" id="analysis">
+                <h2 class="section-title">6. Gap Analysis Endpoints</h2>
+
+                <!-- POST /analysis/calculate-pay-gap -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/analysis/calculate-pay-gap</span>
+                    </div>
+                    <div class="endpoint-desc">Calculate aggregate pay gap by gender and equal value category (per TS-M3-001)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist, compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "period": "2026-05",
+  "include_categories": ["IT_TECHNICAL", "ADMINISTRATIVE"],
+  "minimum_sample_size": 5
+}</div>
+
+                        <h4>Gap Calculation Formula:</h4>
+                        <div class="compliance-info">
+                            <strong>Formula:</strong> gap_percent = ((avg_salary_M - avg_salary_F) / avg_salary_F) × 100<br>
+                            <strong>Rounding:</strong> 1 decimal place (e.g., 5.3%)<br>
+                            <strong>Flagging:</strong> Gaps ≥ 5% automatically flagged for justification (Art. 5)<br>
+                            <strong>Sample Size:</strong> Minimum N per group (default 5, configurable)
+                        </div>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": {
+    "analysis_id": "analysis_12345",
+    "period": "2026-05",
+    "calculation_timestamp": "2026-05-13T14:30:00Z",
+    "gap_results": [
+      {
+        "equal_value_category": "IT_TECHNICAL",
+        "sample_male": 45,
+        "sample_female": 35,
+        "avg_salary_male": 4850.50,
+        "avg_salary_female": 4625.00,
+        "gap_percent": 4.9,
+        "flagged": false,
+        "status": "no_action_required"
+      },
+      {
+        "equal_value_category": "ADMINISTRATIVE",
+        "sample_male": 12,
+        "sample_female": 28,
+        "avg_salary_male": 2950.00,
+        "avg_salary_female": 2650.00,
+        "gap_percent": 11.3,
+        "flagged": true,
+        "status": "requires_justification"
+      }
+    ],
+    "summary": {
+      "total_gaps_calculated": 2,
+      "gaps_flagged": 1,
+      "overall_avg_gap": 8.1
+    }
+  }
+}</div>
+                        </div>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 5:</strong> Pay gaps ≥ 5% must be justified. This endpoint identifies all flagged gaps requiring Art. 5 justification.
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Calculation logged with period, formula used, sample sizes, results, user_id, timestamp.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /analysis/drill-down -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/analysis/drill-down</span>
+                    </div>
+                    <div class="endpoint-desc">Multi-dimension drill-down analysis (department, level, tenure) - infinite depth (per TS-M3-002)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist, compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "period": "2026-05",
+  "equal_value_category": "IT_TECHNICAL",
+  "drill_dimensions": ["department", "job_level"],
+  "depth": 2
+}</div>
+
+                        <h4>Available Drill Dimensions:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>department</code> - Organizational department</li>
+                            <li><code>job_level</code> - Seniority level (Junior, Mid, Senior, Lead)</li>
+                            <li><code>tenure_band</code> - Years of service (0-2, 2-5, 5-10, 10+)</li>
+                            <li><code>hiring_year</code> - Year hired</li>
+                            <li><code>region</code> - Geographic region</li>
+                        </ul>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": {
+    "analysis_id": "drill_12345",
+    "category": "IT_TECHNICAL",
+    "dimensions": ["department", "job_level"],
+    "tree": {
+      "equal_value_category": "IT_TECHNICAL",
+      "gap_percent": 4.9,
+      "children": [
+        {
+          "dimension": "department",
+          "value": "Engineering",
+          "gap_percent": 3.2,
+          "sample_male": 30,
+          "sample_female": 25,
+          "children": [
+            {
+              "dimension": "job_level",
+              "value": "Senior",
+              "gap_percent": 2.1,
+              "sample_male": 15,
+              "sample_female": 10
+            },
+            {
+              "dimension": "job_level",
+              "value": "Mid",
+              "gap_percent": 4.5,
+              "sample_male": 10,
+              "sample_female": 12
+            }
+          ]
+        }
+      ]
+    }
+  }
+}</div>
+                        </div>
+
+                        <h4>Characteristics:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Infinite depth: Keep drilling as deep as data allows</li>
+                            <li>Sub-category gap calculation: Gap recalculated at each level</li>
+                            <li>Sample sizes: Shown at each node for transparency</li>
+                            <li>Navigation: Clients can traverse tree for data exploration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- POST /analysis/export -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/analysis/export</span>
+                    </div>
+                    <div class="endpoint-desc">Export analysis results in multiple formats (CSV, Excel, PDF) - per TS-M3-003</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist, compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "analysis_id": "analysis_12345",
+  "format": "excel",
+  "include_sections": ["summary", "detail", "drill_down"],
+  "highlight_gaps": true
+}</div>
+
+                        <h4>Supported Formats:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Format</th>
+                                <th>Content</th>
+                                <th>Use Case</th>
+                            </tr>
+                            <tr>
+                                <td>CSV</td>
+                                <td>Flat table (summary + detail rows)</td>
+                                <td>Data import, processing</td>
+                            </tr>
+                            <tr>
+                                <td>Excel (XLSX)</td>
+                                <td>Multiple sheets: Summary, Detail, Drill-down</td>
+                                <td>Executive review, further analysis</td>
+                            </tr>
+                            <tr>
+                                <td>PDF</td>
+                                <td>Formatted report with charts, highlighted gaps</td>
+                                <td>Printing, archival, formal reports</td>
+                            </tr>
+                        </table>
+
+                        <h4>Response (200 OK with file):</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>Content-Type</code>: application/vnd.openxmlformats, text/csv, or application/pdf</li>
+                            <li><code>Content-Disposition</code>: attachment; filename="analysis_2026_05.xlsx"</li>
+                            <li>File is streamed directly in response body</li>
+                        </ul>
+
+                        <h4>Features:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Gap Highlighting:</strong> Gaps ≥ 5% highlighted in red</li>
+                            <li><strong>Summary Sheet:</strong> Key metrics, total gaps, action items</li>
+                            <li><strong>Detail Sheet:</strong> All categories with full calculations</li>
+                            <li><strong>Drill-down:</strong> Multi-level breakdown if requested</li>
+                            <li><strong>Audit Trail:</strong> Export logged with user, format, timestamp</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit Logging:</strong> Export recorded with analysis_id, format, user_id, timestamp, file_hash.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. JUSTIFICATIONS ENDPOINTS -->
+            <div class="section" id="justifications">
+                <h2 class="section-title">7. Justifications Endpoints (Directiva Art. 5)</h2>
+
+                <!-- POST /justifications -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/justifications</span>
+                    </div>
+                    <div class="endpoint-desc">Create justification for flagged pay gap (≥5%) - per Directiva Art. 5 & TS-M4-001</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "gap_id": "gap_12345",
+  "equal_value_category": "ADMINISTRATIVE",
+  "template_type": "seniority",
+  "description": "Pay gap due to different tenure distribution: 80% of females hired in last 2 years, 40% of males",
+  "supporting_files": ["file_id_123", "file_id_124"],
+  "effective_date": "2026-05-13"
+}</div>
+
+                        <h4>Justification Templates (Art. 5 Factors):</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Template</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>seniority</td>
+                                <td>Difference in tenure/years of service</td>
+                            </tr>
+                            <tr>
+                                <td>performance</td>
+                                <td>Performance metrics, bonus history differences</td>
+                            </tr>
+                            <tr>
+                                <td>education</td>
+                                <td>Education level, certifications, qualifications</td>
+                            </tr>
+                            <tr>
+                                <td>market_rate</td>
+                                <td>Market rate differences, skills scarcity</td>
+                            </tr>
+                            <tr>
+                                <td>role_change</td>
+                                <td>Role changes, promotions, transitions</td>
+                            </tr>
+                            <tr>
+                                <td>other</td>
+                                <td>Other objective, non-discriminatory factors</td>
+                            </tr>
+                        </table>
+
+                        <h4>Validation Rules:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Description: minimum 50 characters (must be substantive)</li>
+                            <li>Supporting files: max 5, max 10MB each (PDF, DOCX, XLS preferred)</li>
+                            <li>Template type: required, must be from enum</li>
+                            <li>Gap must be flagged (≥5%) and not already justified</li>
+                        </ul>
+
+                        <h4>Response (201 Created):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 201,
+  "data": {
+    "justification_id": "just_12345",
+    "gap_id": "gap_12345",
+    "status": "pending_manager_approval",
+    "template_type": "seniority",
+    "workflow_stage": 1,
+    "next_approver_role": "manager",
+    "created_at": "2026-05-13T14:30:00Z",
+    "created_by": "user_001"
+  }
+}</div>
+                        </div>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 5:</strong> Justifications must explain pay gaps ≥ 5% based on "objective, non-gender-based factors." Templates ensure structured collection of Art. 5-compliant factors.
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Justification creation logged with gap_id, description hash, supporting files, user_id, timestamp.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUT /justifications/:id/approve -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method put">PUT</span>
+                        <span class="endpoint-path">/justifications/:justification_id/approve</span>
+                    </div>
+                    <div class="endpoint-desc">Manager approval of justification (workflow stage 1) - per TS-M4-002</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">manager</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "decision": "approved",
+  "comments": "Seniority distribution is well documented",
+  "idempotency_key": "idem_mgr_12345"
+}</div>
+
+                        <h4>Workflow Stages:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Stage</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                                <th>Next Stage</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Manager</td>
+                                <td>approve / reject / request_revision</td>
+                                <td>Stage 2 (Compliance) or back to draft</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Compliance Officer</td>
+                                <td>approve / reject</td>
+                                <td>Completed / rejected</td>
+                            </tr>
+                        </table>
+
+                        <h4>Decision Options:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>approved</code> - Justification is sound, move to next stage</li>
+                            <li><code>request_revision</code> - Send back to HR with required changes</li>
+                            <li><code>rejected</code> - Reject outright (requires mandatory comment, min 50 chars)</li>
+                        </ul>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": {
+    "justification_id": "just_12345",
+    "status": "pending_compliance_approval",
+    "workflow_stage": 2,
+    "next_approver_role": "compliance_officer",
+    "decision_timestamp": "2026-05-13T16:00:00Z",
+    "decided_by": "user_mgr_001"
+  }
+}</div>
+                        </div>
+
+                        <h4>Constraints:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Once approved, cannot be modified (locked)</li>
+                            <li>Rejection requires mandatory reason (min 50 chars)</li>
+                            <li>Revision request routes back to HR for changes</li>
+                            <li>All decisions immutably logged with timestamp and user</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Approval decision logged with justification_id, decision, comments, approver_id, timestamp, request_id.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUT /justifications/:id/validate -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method put">PUT</span>
+                        <span class="endpoint-path">/justifications/:justification_id/validate</span>
+                    </div>
+                    <div class="endpoint-desc">Compliance officer validation against Directiva Art. 5 (stage 2) - per TS-M4-003</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "decision": "approved",
+  "art5_compliance_assessment": {
+    "is_objective": true,
+    "is_non_discriminatory": true,
+    "is_properly_documented": true,
+    "comments": "Seniority factor is objective and well-substantiated"
+  },
+  "idempotency_key": "idem_co_12345"
+}</div>
+
+                        <h4>Art. 5 Compliance Validation:</h4>
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 5:</strong><br>
+                            ✓ Objective criteria (not subjective)<br>
+                            ✓ Non-discriminatory (not based on gender, origin, etc.)<br>
+                            ✓ Properly documented (evidence provided)<br>
+                            ✓ Substantial enough to explain gap
+                        </div>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 200,
+  "data": {
+    "justification_id": "just_12345",
+    "status": "approved",
+    "gap_id": "gap_12345",
+    "art5_compliant": true,
+    "certificate_generated": true,
+    "certificate_id": "cert_12345",
+    "validated_at": "2026-05-13T16:30:00Z",
+    "validated_by": "user_co_001"
+  }
+}</div>
+                        </div>
+
+                        <h4>Certificate Generation:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Certificate ID generated if approved (immutable proof)</li>
+                            <li>Marks gap as "justified" for official reports</li>
+                            <li>Certificate includes: gap_id, justification_id, validation_date, validator_id</li>
+                            <li>Certificate hash stored for tamper detection</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Validation decision, Art. 5 assessment, certificate_id, validator_id, timestamp logged immutably.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /justifications/article-10-request -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/justifications/article-10-request</span>
+                    </div>
+                    <div class="endpoint-desc">Employee information request (Directiva Art. 10) - self-service, 30-day response deadline - per TS-M4-004</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">employee</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "employee_pseudonym": "EMP_a7f3b9c1",
+  "request_type": "salary_comparison",
+  "request_details": "I want to understand my salary vs. others in similar roles"
+}</div>
+
+                        <h4>Available Request Types:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>salary_comparison</code> - Compare own salary to equal value category average</li>
+                            <li><code>gap_information</code> - Information about pay gaps affecting own category</li>
+                            <li><code>justification_status</code> - Status of justifications for own category gaps</li>
+                        </ul>
+
+                        <h4>Response (201 Created):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 201,
+  "data": {
+    "request_id": "art10_12345",
+    "employee_pseudonym": "EMP_a7f3b9c1",
+    "status": "submitted",
+    "request_type": "salary_comparison",
+    "deadline": "2026-06-12",
+    "submitted_at": "2026-05-13T14:30:00Z"
+  }
+}</div>
+                        </div>
+
+                        <h4>Auto-Response Content (pseudonymized):</h4>
+                        <div class="compliance-info">
+                            <strong>What employee sees:</strong><br>
+                            - Own salary (visible to self)<br>
+                            - Average salary for own equal value category (aggregated)<br>
+                            - Pay gap for own category (if ≥ 5%)<br>
+                            - Justifications for own category gaps (summary, not per-employee details)<br>
+                            <strong>Never shows:</strong> Other employees' names or individual salaries
+                        </div>
+
+                        <h4>Response Deadline:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>System auto-generates response within 30 days (Art. 10)</li>
+                            <li>Notification sent to employee at deadline</li>
+                            <li>Response includes pseudonym-coded salary data only</li>
+                            <li>Timestamp logged for compliance verification</li>
+                        </ul>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 10:</strong> Employees have right to request information about own salary and relevant pay gaps. Response must be provided within 30 days in pseudonymized form.
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Request logged with employee_pseudonym, request_type, submission_date, deadline, response_date.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. REPORTS ENDPOINTS -->
+            <div class="section" id="reports">
+                <h2 class="section-title">8. Reports Endpoints (Directiva Art. 9)</h2>
+
+                <!-- POST /reports/official-report -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/reports/official-report</span>
+                    </div>
+                    <div class="endpoint-desc">Generate official Directiva Art. 9 report (PDF, signed, no PII) - per TS-M5-001</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "period": "2026-05",
+  "include_sections": [
+    "executive_summary",
+    "gap_analysis",
+    "justified_gaps",
+    "action_plan"
+  ],
+  "signature_key_id": "key_compliance_001"
+}</div>
+
+                        <h4>Report Characteristics (Art. 9):</h4>
+                        <div class="compliance-info">
+                            <strong>Format:</strong> PDF with digital signature<br>
+                            <strong>Content:</strong> Executive summary, gap metrics, justified gaps, action items<br>
+                            <strong>Anonymization:</strong> All PII removed (no employee names)<br>
+                            <strong>Aggregation:</strong> Min 5 employees per group (not shown if N &lt; 5)<br>
+                            <strong>Signature:</strong> Digital signature by compliance_officer<br>
+                            <strong>Hash:</strong> SHA-256 hash included for authenticity verification
+                        </div>
+
+                        <h4>Response (202 Accepted):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "code": 202,
+  "data": {
+    "report_id": "report_12345",
+    "period": "2026-05",
+    "status": "generating",
+    "format": "pdf",
+    "estimated_ready_at": "2026-05-13T15:00:00Z",
+    "report_hash": "sha256_abc123xyz",
+    "signed": true,
+    "signer_id": "user_co_001"
+  }
+}</div>
+                        </div>
+
+                        <h4>Report Structure:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Section</th>
+                                <th>Content</th>
+                            </tr>
+                            <tr>
+                                <td>Executive Summary</td>
+                                <td>Key metrics, gaps, actions taken</td>
+                            </tr>
+                            <tr>
+                                <td>Gap Analysis</td>
+                                <td>Pay gaps by category, flagged gaps, trends</td>
+                            </tr>
+                            <tr>
+                                <td>Justifications</td>
+                                <td>Summary of approved justifications (no PII)</td>
+                            </tr>
+                            <tr>
+                                <td>Action Plan</td>
+                                <td>Corrective measures, timeline, responsible parties</td>
+                            </tr>
+                        </table>
+
+                        <div class="compliance-info">
+                            <strong>Directiva 2023/970 Art. 9:</strong> Official pay gap report must be generated and documented. This endpoint creates the formal, signed report for regulatory compliance.
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Report generation logged with period, sections, signer_id, signature_timestamp, report_hash, file_size.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /reports/export-xml -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/reports/export-xml</span>
+                    </div>
+                    <div class="endpoint-desc">Export machine-readable XML report (XSD-validated, signed) - per TS-M5-002</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "period": "2026-05",
+  "compress": true
+}</div>
+
+                        <h4>XML Structure:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Namespace: https://transparency.internal/schema/report/v1</li>
+                            <li>XSD validation: Enforced by API before export</li>
+                            <li>Digital signature: XML-DSig embedded in document</li>
+                            <li>Compression: Optional GZIP for file size reduction</li>
+                        </ul>
+
+                        <h4>Response (200 OK):</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>Content-Type</code>: application/xml or application/gzip</li>
+                            <li><code>Content-Disposition</code>: attachment; filename="report_2026_05.xml[.gz]"</li>
+                            <li>File streamed in response body</li>
+                        </ul>
+
+                        <h4>Validation & Signing:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>XSD validation: Enforced server-side before export</li>
+                            <li>Digital signature: XML-DSig embedded with certificate chain</li>
+                            <li>Hash: SHA-256 computed for integrity verification</li>
+                            <li>Gzip compression: Optional, preserves signature</li>
+                        </ul>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Export logged with period, compression, signature, file_hash, user_id, timestamp.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /reports/internal-report -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/reports/internal-report</span>
+                    </div>
+                    <div class="endpoint-desc">Internal management report (executive summary, cost analysis, drill-down) - per TS-M5-003</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">hr_specialist, compliance_officer, cfo</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "period": "2026-05",
+  "format": "excel",
+  "include_cost_analysis": true
+}</div>
+
+                        <h4>Report Sections:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Section</th>
+                                <th>Content</th>
+                                <th>Audience</th>
+                            </tr>
+                            <tr>
+                                <td>Executive Summary</td>
+                                <td>Key metrics, gaps, recommendations</td>
+                                <td>Leadership</td>
+                            </tr>
+                            <tr>
+                                <td>Top 5 Gaps</td>
+                                <td>Largest gaps, categories, sample sizes</td>
+                                <td>HR, Finance</td>
+                            </tr>
+                            <tr>
+                                <td>Cost Estimates</td>
+                                <td>Cost to correct each gap (salary adjustment projections)</td>
+                                <td>CFO, Finance</td>
+                            </tr>
+                            <tr>
+                                <td>Implementation Timeline</td>
+                                <td>Phases, milestones, HR resource plan</td>
+                                <td>HR, Management</td>
+                            </tr>
+                            <tr>
+                                <td>Drill-Down Analysis</td>
+                                <td>Department, level, tenure breakdowns</td>
+                                <td>HR, Managers</td>
+                            </tr>
+                        </table>
+
+                        <h4>Cost Analysis Calculation:</h4>
+                        <div class="schema">cost_to_correct = (avg_salary_F * gap_percent / 100) * count_F * 12 months</div>
+
+                        <h4>Response (200 OK):</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>File streamed in response (Excel, PDF, or CSV)</li>
+                            <li><code>Content-Type</code>: application/vnd.openxmlformats, application/pdf, or text/csv</li>
+                            <li>Multiple sheets: Summary, Top 5, Cost, Timeline, Drill-down</li>
+                        </ul>
+
+                        <div class="rbac-info">
+                            <strong>Scope Filtering:</strong> CFO only sees aggregate company data. HR only sees own dept if applicable. Compliance sees all.
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit:</strong> Report generation, format, cost_analysis flag, user_id, timestamp logged.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST /reports/audit-report -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/reports/audit-report</span>
+                    </div>
+                    <div class="endpoint-desc">GDPR audit report (immutable log, 3-year retention, hash chain) - per TS-M5-004</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "period_start": "2023-05-01",
+  "period_end": "2026-05-13",
+  "format": "html"
+}</div>
+
+                        <h4>Audit Log Contents:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Entry</th>
+                                <th>Fields</th>
+                                <th>Immutable?</th>
+                            </tr>
+                            <tr>
+                                <td>User Actions</td>
+                                <td>user_id, action, resource, timestamp, result</td>
+                                <td>Yes (append-only)</td>
+                            </tr>
+                            <tr>
+                                <td>Data Changes</td>
+                                <td>entity_id, before, after, changed_by, timestamp</td>
+                                <td>Yes (append-only)</td>
+                            </tr>
+                            <tr>
+                                <td>Access Events</td>
+                                <td>user_id, resource, access_type, timestamp, result</td>
+                                <td>Yes (append-only)</td>
+                            </tr>
+                            <tr>
+                                <td>Reports Generated</td>
+                                <td>report_id, user_id, timestamp, hash</td>
+                                <td>Yes (append-only)</td>
+                            </tr>
+                        </table>
+
+                        <h4>Immutability Guarantees:</h4>
+                        <div class="compliance-info">
+                            <strong>Append-only:</strong> New entries added, never modified or deleted<br>
+                            <strong>Hash Chain:</strong> Each entry includes hash of previous entry (like blockchain)<br>
+                            <strong>Tamper Detection:</strong> Hash chain validated on every read (breaks if any entry modified)<br>
+                            <strong>Retention:</strong> 3-year retention (deletion happens automatically after 3 years)<br>
+                            <strong>Daily Backup:</strong> Audit log backed up daily to separate, read-only storage
+                        </div>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": {
+    "report_id": "audit_12345",
+    "period": "2023-05-01 to 2026-05-13",
+    "total_entries": 15234,
+    "format": "html",
+    "generated_at": "2026-05-13T16:00:00Z",
+    "generated_by": "user_co_001",
+    "hash_chain_valid": true,
+    "earliest_entry": "2023-05-01T08:00:00Z",
+    "latest_entry": "2026-05-13T15:59:00Z"
+  }
+}</div>
+                        </div>
+
+                        <h4>Report Format Options:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><code>html</code> - Searchable HTML with filtering</li>
+                            <li><code>csv</code> - Flat CSV for analysis tools</li>
+                            <li><code>json</code> - Structured JSON with hash chain metadata</li>
+                        </ul>
+
+                        <div class="compliance-info">
+                            <strong>GDPR Art. 32:</strong> Audit logging required for data processing compliance. This report provides the immutable evidence of system usage and data handling.
+                        </div>
+
+                        <div class="audit-info">
+                            <strong>Audit Recursion:</strong> The audit report generation itself is logged in the audit log (meta-audit).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. AUDIT & SECURITY ENDPOINTS -->
+            <div class="section" id="audit">
+                <h2 class="section-title">9. Audit & Security Endpoints</h2>
+
+                <!-- POST /audit/logs -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/audit/logs</span>
+                    </div>
+                    <div class="endpoint-desc">Query immutable audit logs with filtering and search</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "filters": {
+    "action": "create",
+    "resource_type": "job",
+    "user_id": "user_001",
+    "date_from": "2026-05-01",
+    "date_to": "2026-05-13"
+  },
+  "offset": 0,
+  "limit": 50,
+  "sort": "-timestamp"
+}</div>
+
+                        <h4>Queryable Filters:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>action (create, read, update, delete, approve, reject)</li>
+                            <li>resource_type (job, employee, salary, gap, justification, report, audit)</li>
+                            <li>user_id</li>
+                            <li>resource_id (specific entity ID)</li>
+                            <li>date_from, date_to (ISO 8601 range)</li>
+                            <li>result (success, failure, error)</li>
+                        </ul>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": [
+    {
+      "audit_id": "audit_1001",
+      "action": "create",
+      "resource_type": "job",
+      "resource_id": "job_12345",
+      "user_id": "user_001",
+      "timestamp": "2026-05-13T14:30:00Z",
+      "details": {
+        "job_code": "JOB-001",
+        "job_title": "Engineer"
+      },
+      "result": "success",
+      "hash": "sha256_previous_entry",
+      "chain_hash": "sha256_this_entry"
+    }
+  ],
+  "pagination": { /* ... */ },
+  "hash_chain_valid": true
+}</div>
+                        </div>
+
+                        <h4>Hash Chain Validation:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>Each entry's "chain_hash" includes previous entry's data</li>
+                            <li>Client can validate integrity by recomputing hash chain</li>
+                            <li>If any entry tampered with, hash_chain_valid = false</li>
+                            <li>Tampering immediately detectable</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- POST /security/rbac-verify -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/security/rbac-verify</span>
+                    </div>
+                    <div class="endpoint-desc">Verify RBAC enforcement (API-level filtering, departmental boundaries)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Request Body:</h4>
+                        <div class="schema">{
+  "user_id": "user_001",
+  "resource_type": "employee",
+  "resource_id": "emp_9876",
+  "action": "read",
+  "context": {
+    "user_role": "manager",
+    "user_department": "dept_001"
+  }
+}</div>
+
+                        <h4>Response (200 OK - Allowed):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": {
+    "allowed": true,
+    "reason": "Manager can read employees in own department",
+    "scope_check": {
+      "user_department": "dept_001",
+      "resource_department": "dept_001",
+      "match": true
+    }
+  }
+}</div>
+                        </div>
+
+                        <h4>Response (200 OK - Denied):</h4>
+                        <div class="error-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": {
+    "allowed": false,
+    "reason": "Manager cannot access employees outside own department",
+    "scope_check": {
+      "user_department": "dept_001",
+      "resource_department": "dept_002",
+      "match": false
+    }
+  }
+}</div>
+                        </div>
+
+                        <h4>Verification Notes:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>API-level filtering (not just UI-level)</li>
+                            <li>Departmental boundaries enforced server-side</li>
+                            <li>Employee self-access only for own salary</li>
+                            <li>403 Forbidden returned if access denied</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- GET /security/encryption-status -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/security/encryption-status</span>
+                    </div>
+                    <div class="endpoint-desc">Verify encryption coverage (HTTPS, TLS, at-rest, credentials)</div>
+                    <div class="endpoint-body">
+                        <h4>Required RBAC Role:</h4>
+                        <span class="highlight">compliance_officer</span>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "success",
+  "data": {
+    "https_enforced": true,
+    "tls_version": "1.2+",
+    "cipher_suites": ["TLS_AES_256_GCM_SHA384", "TLS_CHACHA20_POLY1305"],
+    "at_rest_encryption": {
+      "algorithm": "AES-256",
+      "key_location": "AWS KMS (external vault)"
+    },
+    "password_hashing": {
+      "algorithm": "bcrypt",
+      "rounds": 12
+    },
+    "pseudonym_hashing": {
+      "algorithm": "SHA-256",
+      "salt": "stored separately"
+    }
+  }
+}</div>
+                        </div>
+
+                        <h4>Encryption Standards:</h4>
+                        <table style="font-size: 0.85em;">
+                            <tr>
+                                <th>Layer</th>
+                                <th>Standard</th>
+                                <th>Implementation</th>
+                            </tr>
+                            <tr>
+                                <td>In Transit</td>
+                                <td>HTTPS/TLS 1.2+</td>
+                                <td>Enforced on all endpoints</td>
+                            </tr>
+                            <tr>
+                                <td>At Rest</td>
+                                <td>AES-256</td>
+                                <td>Database encryption</td>
+                            </tr>
+                            <tr>
+                                <td>Passwords</td>
+                                <td>bcrypt (12 rounds)</td>
+                                <td>Secure hashing</td>
+                            </tr>
+                            <tr>
+                                <td>Pseudonyms</td>
+                                <td>SHA-256 (irreversible)</td>
+                                <td>One-way hashing</td>
+                            </tr>
+                            <tr>
+                                <td>Key Management</td>
+                                <td>External vault (AWS KMS)</td>
+                                <td>Keys never in app code</td>
+                            </tr>
+                        </table>
+
+                        <div class="compliance-info">
+                            <strong>GDPR Art. 32:</strong> Encryption and key management must meet high security standards. This endpoint verifies compliance.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GET /health -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/health</span>
+                    </div>
+                    <div class="endpoint-desc">System health check (no authentication required)</div>
+                    <div class="endpoint-body">
+                        <h4>Request:</h4>
+                        <p>No authentication required. Used by load balancers and monitoring.</p>
+
+                        <h4>Response (200 OK):</h4>
+                        <div class="success-response">
+                            <div class="schema">{
+  "status": "healthy",
+  "timestamp": "2026-05-13T16:00:00Z",
+  "services": {
+    "api": "up",
+    "database": "up",
+    "cache": "up",
+    "audit_log": "up"
+  },
+  "version": "1.0.0"
+}</div>
+                        </div>
+
+                        <h4>Response (503 Unavailable):</h4>
+                        <div class="error-response">
+                            <div class="schema">{
+  "status": "degraded",
+  "timestamp": "2026-05-13T16:01:00Z",
+  "services": {
+    "api": "up",
+    "database": "up",
+    "cache": "down",
+    "audit_log": "up"
+  }
+}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. ERROR HANDLING -->
+            <div class="section" id="error">
+                <h2 class="section-title">10. Error Handling & Status Codes</h2>
+
+                <div class="subsection">
+                    <div class="subsection-title">HTTP Status Codes</div>
+                    <table>
+                        <tr>
+                            <th>Code</th>
+                            <th>Meaning</th>
+                            <th>When to Use</th>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code success">200</span></td>
+                            <td>OK</td>
+                            <td>Successful GET, PUT, DELETE</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code success">201</span></td>
+                            <td>Created</td>
+                            <td>Successful POST creating resource</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code success">202</span></td>
+                            <td>Accepted</td>
+                            <td>Request accepted for async processing (bulk import)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code client-error">400</span></td>
+                            <td>Bad Request</td>
+                            <td>Invalid input, validation error</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code client-error">401</span></td>
+                            <td>Unauthorized</td>
+                            <td>Missing or invalid JWT token</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code client-error">403</span></td>
+                            <td>Forbidden</td>
+                            <td>Authenticated but insufficient RBAC role/scope</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code client-error">404</span></td>
+                            <td>Not Found</td>
+                            <td>Resource doesn't exist</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code client-error">409</span></td>
+                            <td>Conflict</td>
+                            <td>Resource already exists (duplicate job_code), or workflow state conflict</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code client-error">429</span></td>
+                            <td>Too Many Requests</td>
+                            <td>Rate limit exceeded (1000 requests/hour)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code server-error">500</span></td>
+                            <td>Internal Server Error</td>
+                            <td>Unexpected server error (log and retry)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="response-code server-error">503</span></td>
+                            <td>Service Unavailable</td>
+                            <td>Database down or under maintenance</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Error Response Structure</div>
+                    <div class="error-response">
+                        <div class="schema">{
+  "status": "error",
+  "code": 400,
+  "error": {
+    "type": "validation_error",
+    "message": "Request validation failed",
+    "details": [
+      {
+        "field": "salary",
+        "issue": "must be positive",
+        "value": -500
+      },
+      {
+        "field": "job_code",
+        "issue": "already exists (duplicate)",
+        "value": "JOB-001"
+      }
+    ]
+  },
+  "meta": {
+    "request_id": "req_abc123xyz",
+    "timestamp": "2026-05-13T14:30:01Z"
+  }
+}</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Common Error Scenarios</div>
+                    <table>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Status</th>
+                            <th>Error Type</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>Invalid JWT</td>
+                            <td>401</td>
+                            <td>auth_error</td>
+                            <td>Retry with valid token or login</td>
+                        </tr>
+                        <tr>
+                            <td>Manager trying to access other dept</td>
+                            <td>403</td>
+                            <td>rbac_error</td>
+                            <td>Verify user role and department assignment</td>
+                        </tr>
+                        <tr>
+                            <td>Salary field is negative</td>
+                            <td>400</td>
+                            <td>validation_error</td>
+                            <td>Fix input and retry</td>
+                        </tr>
+                        <tr>
+                            <td>Job code already exists</td>
+                            <td>409</td>
+                            <td>conflict_error</td>
+                            <td>Use different job_code or retrieve existing</td>
+                        </tr>
+                        <tr>
+                            <td>Database transaction failed</td>
+                            <td>500</td>
+                            <td>server_error</td>
+                            <td>Retry with exponential backoff (with Idempotency-Key)</td>
+                        </tr>
+                        <tr>
+                            <td>Rate limit exceeded</td>
+                            <td>429</td>
+                            <td>rate_limit_error</td>
+                            <td>Wait and retry (check Retry-After header)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">Retry Logic</div>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Idempotent requests (POST, PUT with Idempotency-Key):</strong> Safe to retry indefinitely</li>
+                        <li><strong>Transient errors (500, 503, 429):</strong> Retry with exponential backoff (1s, 2s, 4s, 8s, max 32s)</li>
+                        <li><strong>Non-idempotent without key:</strong> Do not retry (risk duplicate records)</li>
+                        <li><strong>Rate limit (429):</strong> Check Retry-After header for wait time</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <p>API Specifications v1.0 | EU Directive 2023/970 Compliance | Last Updated: May 2026</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">For support, contact: api-support@transparency.internal</p>
+        </div>
+    </div>
+</body>
+</html>
