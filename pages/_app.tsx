@@ -149,8 +149,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       ) : (
         <div className="flex h-screen bg-gray-100">
           {/* Sidebar Navigation */}
-          <aside className="w-64 bg-white shadow-md overflow-y-auto">
-            <nav className="p-6">
+          <aside className="w-64 bg-white shadow-md overflow-y-auto flex flex-col">
+            <nav className="p-6 flex-1">
               <div className="mb-8">
                 <h1 className="text-2xl font-bold text-blue-600">Directive 2023/970</h1>
                 <p className="text-sm text-gray-600 mt-1">Pay Transparency System</p>
@@ -238,8 +238,8 @@ function MyApp({ Component, pageProps }: AppProps) {
               </div>
             </nav>
 
-            {/* User Info & Logout */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200 bg-gray-50">
+            {/* User Info & Logout - Fixed at bottom */}
+            <div className="border-t border-gray-200 bg-gray-50 p-6 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="text-sm">
                   <p className="font-medium text-gray-900">{user?.email}</p>
@@ -247,7 +247,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 </div>
                 <button
                   onClick={logout}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 text-lg"
                   title="Logout"
                 >
                   🚪
