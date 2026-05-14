@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Mockups - Pay Transparency System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .screen-section {
+            margin-bottom: 80px;
+            page-break-inside: avoid;
+        }
+        .screen-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .screen-mockup {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .mockup-header {
+            background: #f9f9f9;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .mockup-content {
+            padding: 30px;
+            min-height: 600px;
+            background: white;
+        }
+        .mockup-nav {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .mockup-nav-item {
+            display: inline-block;
+            margin-right: 20px;
+            opacity: 0.8;
+        }
+        .mockup-nav-item.active {
+            opacity: 1;
+            font-weight: bold;
+        }
+        .top-bar {
+            background: #f0f0f0;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .top-bar h2 {
+            font-size: 1.5em;
+            color: #333;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .kpi-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .kpi-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .table-wrapper {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f9f9f9;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        tr:hover {
+            background: #fafafa;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.95em;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-grid.three-col {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #45a049;
+        }
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #da190b;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        .alert-info {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+        .alert-warning {
+            background: #fff3e0;
+            border-color: #ff9800;
+            color: #e65100;
+        }
+        .alert-error {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+        .alert-success {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .badge-primary {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .badge-warning {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .badge-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .badge-danger {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .criteria-score {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .score-input {
+            text-align: center;
+        }
+        .score-input input {
+            width: 100%;
+            max-width: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.85em;
+            color: #666;
+        }
+        .workflow-stage {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .stage-item {
+            text-align: center;
+            flex: 1;
+        }
+        .stage-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 10px;
+        }
+        .stage-item.active .stage-circle {
+            background: #667eea;
+            color: white;
+        }
+        .stage-item.completed .stage-circle {
+            background: #4caf50;
+            color: white;
+        }
+        .stage-arrow {
+            font-size: 1.5em;
+            color: #ccc;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-weight: 500;
+        }
+        .tab:hover {
+            background: #f9f9f9;
+        }
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .rbac-note {
+            background: #e3f2fd;
+            padding: 10px;
+            border-left: 3px solid #2196f3;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #1565c0;
+        }
+        .data-protection-note {
+            background: #f3e5f5;
+            padding: 10px;
+            border-left: 3px solid #9c27b0;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #6a1b9a;
+        }
+        .accessibility-note {
+            background: #e8f5e9;
+            padding: 10px;
+            border-left: 3px solid #4caf50;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #2e7d32;
+        }
+        .interaction-note {
+            background: #fff3e0;
+            padding: 10px;
+            border-left: 3px solid #ff9800;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #e65100;
+        }
+        .chart-placeholder {
+            background: #f9f9f9;
+            border: 2px dashed #ddd;
+            padding: 40px;
+            text-align: center;
+            border-radius: 6px;
+            color: #999;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .drill-down-tree {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+        .tree-node {
+            margin-left: 20px;
+            padding: 10px 0;
+            border-left: 1px solid #ddd;
+            padding-left: 15px;
+        }
+        .tree-node.root {
+            margin-left: 0;
+            border-left: none;
+            padding-left: 0;
+            font-weight: bold;
+        }
+        .gap-value {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .gap-value.flagged {
+            color: #f44336;
+        }
+        .modal-overlay {
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .modal-header {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .field-hint {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .required {
+            color: #f44336;
+        }
+        .page-footer {
+            background: #f0f0f0;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .validation-error {
+            color: #f44336;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+        .success-checkmark {
+            color: #4caf50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>UI Mockups & Wireframes</h1>
+            <p>Pay Transparency Compliance System - EU Directive 2023/970</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Version 1.0 | Interactive Screen Designs</p>
+        </div>
+
+        <div class="content">
+
+            <!-- ===== DASHBOARD SCREEN ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">1. Dashboard (Home Screen)</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary Users:</strong> HR Specialist, Compliance Officer, CFO | <strong>Purpose:</strong> System overview, KPI summary, action items</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Dashboard | Responsive: Mobile / Tablet / Desktop | Role: HR Specialist</div>
+                    <div class="mockup-content">
+                        <!-- Top Navigation -->
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong style="font-size: 1.3em;">Pay Transparency System</strong>
+                            </div>
+                            <div class="user-info" style="color: white;">
+                                <span>John Smith (HR Specialist)</span>
+                                <div class="avatar">JS</div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Menu -->
+                        <div style="background: #f0f0f0; padding: 0 0 0 0; margin: 0 -30px 20px -30px; border-bottom: 1px solid #ddd;">
+                            <div style="padding: 10px 30px; display: flex; gap: 30px;">
+                                <span style="color: #667eea; font-weight: bold; border-bottom: 3px solid #667eea; padding-bottom: 10px;">Dashboard</span>
+                                <span style="cursor: pointer;">Jobs</span>
+                                <span style="cursor: pointer;">Employees</span>
+                                <span style="cursor: pointer;">Analysis</span>
+                                <span style="cursor: pointer;">Justifications</span>
+                                <span style="cursor: pointer;">Reports</span>
+                                <span style="cursor: pointer;">Settings</span>
+                            </div>
+                        </div>
+
+                        <!-- Page Title -->
+                        <div class="top-bar" style="margin: -20px -30px 20px -30px; padding: 15px 30px;">
+                            <h2>Dashboard</h2>
+                            <div style="font-size: 0.9em; color: #666;">May 2026</div>
+                        </div>
+
+                        <!-- KPI Cards -->
+                        <h3 style="margin-bottom: 15px; color: #333;">System Status</h3>
+                        <div class="dashboard-grid">
+                            <div class="kpi-card">
+                                <div class="kpi-label">Total Jobs</div>
+                                <div class="kpi-value">342</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">All approved</div>
+                            </div>
+                            <div class="kpi-card" style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);">
+                                <div class="kpi-label">Employees Assessed</div>
+                                <div class="kpi-value">2,847</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">Complete salary data</div>
+                            </div>
+                            <div class="kpi-card" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
+                                <div class="kpi-label">Pay Gaps Identified</div>
+                                <div class="kpi-value">18</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">≥ 5% threshold</div>
+                            </div>
+                            <div class="kpi-card" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);">
+                                <div class="kpi-label">Gaps Justified</div>
+                                <div class="kpi-value">12/18</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">67% complete</div>
+                            </div>
+                        </div>
+
+                        <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+
+                        <!-- Action Items -->
+                        <h3 style="margin-bottom: 15px; color: #333;">Pending Actions</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Category</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Justify gap: Administrative</strong></td>
+                                        <td><span class="badge badge-warning">11.3%</span></td>
+                                        <td>2026-05-20</td>
+                                        <td><span class="badge badge-danger">Overdue</span></td>
+                                        <td><a href="#" style="color: #667eea; text-decoration: none;">→</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Approve manager review</strong></td>
+                                        <td>Justification #5</td>
+                                        <td>2026-05-18</td>
+                                        <td><span class="badge badge-warning">Due soon</span></td>
+                                        <td><a href="#" style="color: #667eea; text-decoration: none;">→</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Validate Art. 10 requests</strong></td>
+                                        <td>3 pending</td>
+                                        <td>2026-05-25</td>
+                                        <td><span class="badge badge-success">On track</span></td>
+                                        <td><a href="#" style="color: #667eea; text-decoration: none;">→</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Recent Activity</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px;">
+                            <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                                <strong>2026-05-13 14:30</strong> - Salary data imported (250 employees)
+                            </div>
+                            <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                                <strong>2026-05-13 12:15</strong> - Gap analysis calculated for IT_TECHNICAL
+                            </div>
+                            <div style="padding: 8px 0;">
+                                <strong>2026-05-12 16:45</strong> - Justification #3 approved by manager
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="rbac-note"><strong>🔐 RBAC Rules:</strong> CFO sees only KPI cards 1-4. Manager sees only action items for own department. Employee sees only own dashboard tile.</div>
+                    <div class="data-protection-note"><strong>🛡️ Data Protection:</strong> All employee data is pseudonymized in background (SHA-256). Only aggregate metrics displayed.</div>
+                    <div class="accessibility-note"><strong>♿ A11y:</strong> KPI cards use color + numeric labels (not just color). All links keyboard-accessible. ARIA labels for role announcements.</div>
+                </div>
+            </div>
+
+            <!-- ===== JOB MANAGEMENT: CREATE JOB ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">2. Job Management: Create Job</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary User:</strong> HR Specialist | <strong>Purpose:</strong> Define new job positions with evaluation criteria</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Create Job | Status: Draft → Pending Approval → Approved | Role: HR Specialist</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px; display: flex; justify-content: space-between; align-items: center;">
+                            <div><strong>Jobs Management</strong></div>
+                            <div class="user-info" style="color: white;"><span>HR Specialist</span></div>
+                        </div>
+
+                        <div style="background: #f0f0f0; padding: 15px 30px; margin: 0 -30px 20px -30px; border-bottom: 1px solid #ddd;">
+                            <strong>Create New Job</strong> / <a href="#" style="color: #667eea;">List Jobs</a> / <a href="#" style="color: #667eea;">Import</a>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>ℹ️ Draft Mode:</strong> Save this job as a draft. You can return to edit it before submission. Once approved, most fields become read-only.
+                        </div>
+
+                        <form>
+                            <h3 style="margin-bottom: 15px; color: #333;">Job Information</h3>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Job Code <span class="required">*</span></label>
+                                    <input type="text" placeholder="e.g., JOB-001" value="">
+                                    <div class="field-hint">Unique identifier, cannot be changed after approval</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Job Title <span class="required">*</span></label>
+                                    <input type="text" placeholder="e.g., Senior Software Engineer" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Department <span class="required">*</span></label>
+                                    <select>
+                                        <option>-- Select Department --</option>
+                                        <option>Engineering</option>
+                                        <option>Administrative</option>
+                                        <option>Finance</option>
+                                        <option>HR</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Equal Value Category <span class="required">*</span></label>
+                                    <select>
+                                        <option>-- Auto-assign on evaluation --</option>
+                                        <option>IT_TECHNICAL</option>
+                                        <option>ADMINISTRATIVE</option>
+                                        <option>MANAGEMENT</option>
+                                    </select>
+                                    <div class="field-hint">Will be auto-assigned based on weighted job evaluation score</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Job Description</label>
+                                <textarea placeholder="Describe main responsibilities, requirements, etc."></textarea>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Salary Band (Min) <span class="required">*</span></label>
+                                    <input type="number" step="0.01" placeholder="e.g., 3500" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Salary Band (Max) <span class="required">*</span></label>
+                                    <input type="number" step="0.01" placeholder="e.g., 6000" value="">
+                                </div>
+                            </div>
+
+                            <h3 style="margin: 30px 0 15px 0; color: #333;">Evaluation Criteria (Art. 4)</h3>
+                            <div class="alert alert-info">
+                                Enter scores for each criterion (0-100). The system calculates weighted average automatically.
+                            </div>
+
+                            <div class="criteria-score">
+                                <div class="score-input">
+                                    <label style="display: block; margin-bottom: 8px;"><strong>Competencies</strong> (25%)</label>
+                                    <input type="number" min="0" max="100" placeholder="0-100">
+                                </div>
+                                <div class="score-input">
+                                    <label style="display: block; margin-bottom: 8px;"><strong>Effort</strong> (15%)</label>
+                                    <input type="number" min="0" max="100" placeholder="0-100">
+                                </div>
+                                <div class="score-input">
+                                    <label style="display: block; margin-bottom: 8px;"><strong>Responsibility</strong> (25%)</label>
+                                    <input type="number" min="0" max="100" placeholder="0-100">
+                                </div>
+                                <div class="score-input">
+                                    <label style="display: block; margin-bottom: 8px;"><strong>Conditions</strong> (10%)</label>
+                                    <input type="number" min="0" max="100" placeholder="0-100">
+                                </div>
+                                <div class="score-input">
+                                    <label style="display: block; margin-bottom: 8px;"><strong>Complexity</strong> (10%)</label>
+                                    <input type="number" min="0" max="100" placeholder="0-100">
+                                </div>
+                                <div class="score-input">
+                                    <label style="display: block; margin-bottom: 8px;"><strong>Autonomy</strong> (10%)</label>
+                                    <input type="number" min="0" max="100" placeholder="0-100">
+                                </div>
+                            </div>
+
+                            <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                                <strong>Weighted Score Preview:</strong> <span style="color: #667eea; font-size: 1.3em; font-weight: bold;">-- (pending input)</span>
+                                <div style="font-size: 0.9em; color: #666; margin-top: 8px;">Equal Value Category will be auto-assigned based on this score</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox"> Approved by Manager
+                                </label>
+                                <div class="field-hint">Confirm manager has reviewed and approved this job definition</div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary">Save as Draft</button>
+                                <button class="btn btn-success">Save & Submit for Approval</button>
+                                <button class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="data-protection-note"><strong>🛡️ Audit Logging:</strong> Every field change is logged immutably. Job creation cannot be deleted, only archived.</div>
+                    <div class="interaction-note"><strong>⚙️ Workflow:</strong> Job moves from Draft → Pending Approval (manager reviews) → Approved (HR confirms). Once approved, job_code is immutable.</div>
+                </div>
+            </div>
+
+            <!-- ===== JOB EVALUATION ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">3. Job Evaluation (Weighted Criteria)</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary User:</strong> HR Specialist | <strong>Purpose:</strong> Evaluate job on 7 criteria, calculate weighted score, assign to equal value category</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Job Evaluation | Calculation: Server-side weighted average | Post-condition: Auto-assign EVC | Role: HR Specialist</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px; display: flex; justify-content: space-between; align-items: center;">
+                            <div><strong>Job Evaluation: Senior Software Engineer (JOB-001)</strong></div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>Art. 4 Compliance:</strong> Jobs must be evaluated on objective, non-gender criteria. Weighted score determines equal value category automatically.
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Evaluation Form</h3>
+
+                        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                            <thead>
+                                <tr style="background: #f9f9f9;">
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Criterion</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Weight</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Your Score (0-100)</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Weighted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;"><strong>Competencies</strong><div style="font-size: 0.85em; color: #666;">Required knowledge, skills, education</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong>25%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><input type="number" min="0" max="100" value="90" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong style="color: #667eea;">22.5</strong></td>
+                                </tr>
+                                <tr style="background: #fafafa;">
+                                    <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;"><strong>Effort</strong><div style="font-size: 0.85em; color: #666;">Physical/mental exertion required</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong>15%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><input type="number" min="0" max="100" value="85" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong style="color: #667eea;">12.75</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;"><strong>Responsibility</strong><div style="font-size: 0.85em; color: #666;">Budget, team, decision authority</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong>25%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><input type="number" min="0" max="100" value="88" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong style="color: #667eea;">22.0</strong></td>
+                                </tr>
+                                <tr style="background: #fafafa;">
+                                    <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;"><strong>Working Conditions</strong><div style="font-size: 0.85em; color: #666;">Environment hazards, travel, stress</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong>10%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><input type="number" min="0" max="100" value="75" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong style="color: #667eea;">7.5</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;"><strong>Complexity</strong><div style="font-size: 0.85em; color: #666;">Problem-solving difficulty, variety</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong>10%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><input type="number" min="0" max="100" value="92" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong style="color: #667eea;">9.2</strong></td>
+                                </tr>
+                                <tr style="background: #fafafa;">
+                                    <td style="padding: 12px; border-bottom: 1px solid #f0f0f0;"><strong>Autonomy</strong><div style="font-size: 0.85em; color: #666;">Independence in decision-making</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong>10%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><input type="number" min="0" max="100" value="80" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid #f0f0f0;"><strong style="color: #667eea;">8.0</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px; border-bottom: 2px solid #ddd;"><strong>Impact</strong><div style="font-size: 0.85em; color: #666;">Contribution to organizational goals</div></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;"><strong>5%</strong></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;"><input type="number" min="0" max="100" value="70" style="width: 80px; padding: 5px;"></td>
+                                    <td style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;"><strong style="color: #667eea;">3.5</strong></td>
+                                </tr>
+                                <tr style="background: #e3f2fd;">
+                                    <td style="padding: 12px; font-weight: bold;" colspan="2">TOTAL WEIGHTED SCORE</td>
+                                    <td style="padding: 12px; text-align: center;" colspan="2"><strong style="font-size: 1.3em; color: #667eea;">85.45</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                            <strong>Calculation Formula:</strong><br>
+                            Weighted Score = (90 × 0.25) + (85 × 0.15) + (88 × 0.25) + (75 × 0.10) + (92 × 0.10) + (80 × 0.10) + (70 × 0.05)<br>
+                            = 22.5 + 12.75 + 22.0 + 7.5 + 9.2 + 8.0 + 3.5 = <strong>85.45</strong><br><br>
+                            <strong>Equal Value Category (Auto-Assigned):</strong> <span style="color: #667eea; font-weight: bold; font-size: 1.1em;">IT_TECHNICAL</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Evaluation Notes</label>
+                            <textarea placeholder="Any additional notes about this evaluation..." style="height: 80px;"></textarea>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-success">Save Evaluation</button>
+                            <button class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="data-protection-note"><strong>🛡️ Immutability:</strong> Once saved, evaluation is versioned. Previous evaluations are kept for audit trail.</div>
+                    <div class="compliance-info" style="background: #e8f5e9; padding: 10px; border-left: 3px solid #4caf50; margin: 10px 0; font-size: 0.9em; color: #2e7d32;"><strong>✓ Directiva Art. 4:</strong> Weighted score calculation is deterministic and transparent. All weights are hardcoded (not user-configurable).</div>
+                </div>
+            </div>
+
+            <!-- ===== EMPLOYEE IMPORT ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">4. Employee Data Import (Pseudonymization)</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary User:</strong> HR Specialist | <strong>Purpose:</strong> Import employee salary data with server-side pseudonymization (irreversible one-way hashing)</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Employee Bulk Import | Processing: Async (202 Accepted) | Pseudonym: SHA-256(name) | Role: HR Specialist</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px; display: flex; justify-content: space-between; align-items: center;">
+                            <div><strong>Employee Management</strong></div>
+                        </div>
+
+                        <div style="background: #f0f0f0; padding: 15px 30px; margin: 0 -30px 20px -30px; border-bottom: 1px solid #ddd;">
+                            <strong>Import Employees</strong> / <a href="#" style="color: #667eea;">View Employees</a>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <strong>⚠️ GDPR Privacy:</strong> Employee names will be irreversibly pseudonymized (one-way SHA-256 hash). You cannot undo this. Only aggregate salary metrics will be visible.
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Step 1: Select File</h3>
+                        <div style="background: #f9f9f9; padding: 30px; border: 2px dashed #ccc; border-radius: 6px; text-align: center; cursor: pointer; margin: 20px 0;">
+                            <div style="font-size: 2em; color: #ccc; margin-bottom: 10px;">📁</div>
+                            <strong>Drop CSV or Excel file here</strong><br>
+                            <span style="color: #666; font-size: 0.9em;">or click to select</span>
+                            <input type="file" style="display: none;">
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Expected File Format</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Column</th>
+                                        <th>Type</th>
+                                        <th>Required?</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>employee_id</strong></td>
+                                        <td>String</td>
+                                        <td>Yes</td>
+                                        <td>Your internal ID (max 50 chars)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>employee_name</strong></td>
+                                        <td>String</td>
+                                        <td>Yes</td>
+                                        <td>Full name → will be pseudonymized as EMP_xxxxx</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>gender</strong></td>
+                                        <td>M or F</td>
+                                        <td>Yes</td>
+                                        <td>Required for pay gap analysis (preserved, not hashed)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>job_code</strong></td>
+                                        <td>String</td>
+                                        <td>Yes</td>
+                                        <td>Must match existing approved job code</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>base_salary</strong></td>
+                                        <td>Decimal</td>
+                                        <td>Yes</td>
+                                        <td>Gross monthly, must be &gt; 0 (preserved, encrypted at rest)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Example CSV</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto;">
+employee_id,employee_name,gender,job_code,base_salary<br>
+EMP001,Alice Smith,F,JOB-001,4500.00<br>
+EMP002,Bob Johnson,M,JOB-001,4650.00<br>
+EMP003,Carol Davis,F,JOB-002,2850.00<br>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Step 2: Validation Settings</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> <strong>Validate job assignments</strong>
+                            </label>
+                            <div class="field-hint">Check that all job_codes exist and are approved</div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> <strong>Validate salary ranges</strong>
+                            </label>
+                            <div class="field-hint">Check that salary is within job's salary band (if defined)</div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> <strong>Detect duplicates</strong>
+                            </label>
+                            <div class="field-hint">Prevent duplicate pseudonyms across imports</div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox"> <strong>Dry run (test only)</strong>
+                            </label>
+                            <div class="field-hint">Validate without importing (useful for testing)</div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-success">Import & Pseudonymize</button>
+                            <button class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="data-protection-note"><strong>🛡️ Pseudonymization Process:</strong><br>
+                        • Original name: "Alice Smith"<br>
+                        • Pseudonym: EMP_a7f3b9c1 (deterministic SHA-256)<br>
+                        • <strong>Irreversible:</strong> No decryption possible. No reverse mapping stored.<br>
+                        • <strong>Deterministic:</strong> Same name always produces same pseudonym (for consistency)
+                    </div>
+                    <div class="compliance-info" style="background: #e8f5e9; padding: 10px; border-left: 3px solid #4caf50; margin: 10px 0; font-size: 0.9em; color: #2e7d32;"><strong>✓ GDPR Art. 32:</strong> One-way hashing + data minimization meets pseudonymization requirement.</div>
+                </div>
+            </div>
+
+            <!-- ===== GAP ANALYSIS: RESULTS ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">5. Gap Analysis: Results & Drill-Down</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary Users:</strong> HR Specialist, Compliance Officer | <strong>Purpose:</strong> View calculated pay gaps, drill-down by dimensions, export</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Gap Analysis Results | Formula: ((avg_M - avg_F) / avg_F) × 100 | Flagging: ≥ 5% | Role: Compliance Officer</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px; display: flex; justify-content: space-between; align-items: center;">
+                            <div><strong>Pay Gap Analysis</strong></div>
+                        </div>
+
+                        <div style="background: #f0f0f0; padding: 15px 30px; margin: 0 -30px 20px -30px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>Period:</strong> <select style="padding: 5px; border-radius: 3px; border: 1px solid #ccc;"><option>May 2026</option></select>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" style="padding: 5px 15px; font-size: 0.9em;">Export CSV</button>
+                                <button class="btn btn-secondary" style="padding: 5px 15px; font-size: 0.9em;">Export Excel</button>
+                            </div>
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Summary by Equal Value Category</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th style="text-align: center;">Male (N)</th>
+                                        <th style="text-align: center;">Avg Salary (M)</th>
+                                        <th style="text-align: center;">Female (N)</th>
+                                        <th style="text-align: center;">Avg Salary (F)</th>
+                                        <th style="text-align: center;">Gap %</th>
+                                        <th style="text-align: center;">Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>IT_TECHNICAL</strong></td>
+                                        <td style="text-align: center;">45</td>
+                                        <td style="text-align: center;">€4,850.50</td>
+                                        <td style="text-align: center;">35</td>
+                                        <td style="text-align: center;">€4,625.00</td>
+                                        <td style="text-align: center;"><span style="color: #333;">4.9%</span></td>
+                                        <td style="text-align: center;"><span class="badge badge-success">✓ OK</span></td>
+                                        <td><a href="#" style="color: #667eea; text-decoration: none;">Drill ↓</a></td>
+                                    </tr>
+                                    <tr style="background: #ffebee;">
+                                        <td><strong>ADMINISTRATIVE</strong></td>
+                                        <td style="text-align: center;">12</td>
+                                        <td style="text-align: center;">€2,950.00</td>
+                                        <td style="text-align: center;">28</td>
+                                        <td style="text-align: center;">€2,650.00</td>
+                                        <td style="text-align: center;"><span class="gap-value flagged">11.3% ⚠️</span></td>
+                                        <td style="text-align: center;"><span class="badge badge-danger">Flagged</span></td>
+                                        <td><a href="#" style="color: #667eea; text-decoration: none;">Drill ↓</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>MANAGEMENT</strong></td>
+                                        <td style="text-align: center;">8</td>
+                                        <td style="text-align: center;">€6,200.00</td>
+                                        <td style="text-align: center;">5</td>
+                                        <td style="text-align: center;">€6,050.00</td>
+                                        <td style="text-align: center;"><span style="color: #333;">2.5%</span></td>
+                                        <td style="text-align: center;"><span class="badge badge-success">✓ OK</span></td>
+                                        <td><a href="#" style="color: #667eea; text-decoration: none;">Drill ↓</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Drill-Down: ADMINISTRATIVE (Flagged Gap 11.3%)</h3>
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <strong>Gap Calculation:</strong><br>
+                            gap_percent = ((€2,950 - €2,650) / €2,650) × 100 = 11.3% ≥ 5% → <strong>Requires justification (Art. 5)</strong>
+                        </div>
+
+                        <div class="drill-down-tree">
+                            <div class="tree-node root">
+                                ADMINISTRATIVE | Gap: <span class="gap-value flagged">11.3%</span> | M:12 | F:28
+                                <div class="tree-node">
+                                    └─ Department: Finance | Gap: <span class="gap-value flagged">14.2%</span> | M:8 | F:15
+                                        <div class="tree-node">
+                                            └─ Job Level: Senior | Gap: <span class="gap-value">3.5%</span> | M:6 | F:8
+                                        </div>
+                                        <div class="tree-node">
+                                            └─ Job Level: Mid | Gap: <span class="gap-value flagged">18.9%</span> | M:2 | F:7
+                                        </div>
+                                    </div>
+                                    <div class="tree-node">
+                                    └─ Department: HR | Gap: <span style="color: #333;">2.1%</span> | M:4 | F:13
+                                        <div class="tree-node">
+                                            └─ Job Level: Mid | Gap: <span style="color: #333;">4.2%</span> | M:4 | F:13
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                            <strong>Insight:</strong> The 11.3% gap in ADMINISTRATIVE is driven by Finance department (14.2%), specifically at Mid level (18.9%). HR shows no significant gap (2.1%).
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary">Create Justification for ADMINISTRATIVE</button>
+                            <button class="btn btn-secondary">Back to Summary</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="compliance-info" style="background: #e8f5e9; padding: 10px; border-left: 3px solid #4caf50; margin: 10px 0; font-size: 0.9em; color: #2e7d32;"><strong>✓ Directiva Art. 5:</strong> Gaps ≥ 5% must be justified. This screen automatically flags them for action.</div>
+                    <div class="interaction-note"><strong>⚙️ Drill-Down:</strong> Infinite depth navigation. Click any gap to expand and see breakdown by department, level, tenure, etc.</div>
+                </div>
+            </div>
+
+            <!-- ===== JUSTIFICATION WORKFLOW ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">6. Justification Workflow (Art. 5 & Art. 10)</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary Users:</strong> HR Specialist (create), Manager (approve stage 1), Compliance Officer (validate stage 2) | <strong>Purpose:</strong> Justify pay gaps, workflow approvals, Art. 10 employee requests</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Create Justification (Art. 5) | Workflow: HR → Manager (stage 1) → Compliance (stage 2) | Output: Certificate | Role: HR Specialist</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px;">
+                            <strong>Create Justification for Pay Gap</strong>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>Art. 5 Requirement:</strong> Explain pay gaps ≥ 5% based on objective, non-gender-based factors (seniority, performance, education, market rate, etc.)
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Gap Details</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <strong>Category:</strong> ADMINISTRATIVE | <strong>Gap:</strong> 11.3% | <strong>Male Avg:</strong> €2,950 | <strong>Female Avg:</strong> €2,650
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Justification Template</h3>
+                        <div class="form-group">
+                            <label>Select Template <span class="required">*</span></label>
+                            <select>
+                                <option>-- Choose a template --</option>
+                                <option>✓ Seniority / Tenure differences</option>
+                                <option>Performance metrics / Bonuses</option>
+                                <option>Education / Certifications</option>
+                                <option>Market rate / Skills scarcity</option>
+                                <option>Role changes / Promotions</option>
+                                <option>Other objective factors</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description <span class="required">*</span></label>
+                            <textarea placeholder="Explain the objective, non-discriminatory reason for this gap. Minimum 50 characters. Include data/evidence if available." style="height: 120px;"></textarea>
+                            <div class="field-hint">Example: "80% of females in this category were hired in last 2 years (avg tenure 1.5 years). 40% of males have 5+ years tenure (avg 6.2 years). Seniority-based salary increases explain the gap."</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Supporting Documents</label>
+                            <div style="background: #f9f9f9; padding: 20px; border: 2px dashed #ccc; border-radius: 6px; text-align: center;">
+                                <div style="color: #999; margin-bottom: 10px;">📎</div>
+                                <strong>Attach supporting documents</strong><br>
+                                <span style="color: #666; font-size: 0.9em;">Max 5 files, 10MB each (PDF, DOCX, XLS recommended)</span>
+                                <input type="file" multiple style="display: none;">
+                            </div>
+                            <div class="field-hint">Examples: salary adjustment policy, tenure distribution chart, market survey report</div>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Workflow & Approvals</h3>
+                        <div class="workflow-stage">
+                            <div class="stage-item active">
+                                <div class="stage-circle">1</div>
+                                <strong>HR Creates</strong>
+                            </div>
+                            <div class="stage-arrow">→</div>
+                            <div class="stage-item">
+                                <div class="stage-circle">2</div>
+                                <strong>Manager Reviews</strong>
+                            </div>
+                            <div class="stage-arrow">→</div>
+                            <div class="stage-item">
+                                <div class="stage-circle">3</div>
+                                <strong>Compliance Validates</strong>
+                            </div>
+                            <div class="stage-arrow">→</div>
+                            <div class="stage-item">
+                                <div class="stage-circle">✓</div>
+                                <strong>Complete (Certificate)</strong>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>Manager Review:</strong> Manager in ADMINISTRATIVE dept will receive notification to review this justification. They can approve, reject, or request revision.
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary">Save & Route to Manager</button>
+                            <button class="btn btn-secondary">Save as Draft</button>
+                            <button class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANAGER APPROVAL SCREEN -->
+                <div class="screen-mockup" style="margin-top: 30px;">
+                    <div class="mockup-header">Screen: Manager Approval (Stage 1) | Action: Approve / Reject / Request Revision | Role: Manager</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px;">
+                            <strong>Review & Approve Justification</strong>
+                        </div>
+
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 6px; margin: 15px 0; border-left: 4px solid #ff9800;">
+                            <strong>Your Action Required:</strong> Manager approval needed for ADMINISTRATIVE gap justification (11.3%)
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Justification Summary</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px;">
+                            <div style="margin-bottom: 10px;"><strong>Category:</strong> ADMINISTRATIVE | <strong>Gap:</strong> 11.3%</div>
+                            <div style="margin-bottom: 10px;"><strong>Template Used:</strong> Seniority / Tenure differences</div>
+                            <div style="margin-bottom: 10px;"><strong>Description:</strong></div>
+                            <div style="background: white; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                                80% of females in this category were hired in last 2 years (avg tenure 1.5 years). 40% of males have 5+ years tenure (avg 6.2 years). Our seniority-based salary increase policy (2% per year) explains the majority of the gap. This is an objective, non-discriminatory factor.
+                            </div>
+                            <div><strong>Supporting Files:</strong> salary_policy.pdf, tenure_distribution.xlsx, market_survey_2026.pdf</div>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Manager Decision</h3>
+                        <div class="form-group">
+                            <label>Your Decision <span class="required">*</span></label>
+                            <select>
+                                <option>-- Select decision --</option>
+                                <option>✓ Approve (justification is sound)</option>
+                                <option>Request Revision (needs more evidence)</option>
+                                <option>Reject (not justified)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Comments <span class="required">*</span></label>
+                            <textarea placeholder="Explain your decision (required if rejecting or requesting revision)"></textarea>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-success">Approve</button>
+                            <button class="btn btn-secondary">Request Revision</button>
+                            <button class="btn btn-danger">Reject</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="compliance-info" style="background: #e8f5e9; padding: 10px; border-left: 3px solid #4caf50; margin: 10px 0; font-size: 0.9em; color: #2e7d32;"><strong>✓ Directiva Art. 5:</strong> Justifications document objective, non-discriminatory reasons for pay gaps. Compliance officer validates Art. 5 compliance before final approval.</div>
+                </div>
+            </div>
+
+            <!-- ===== ARTICLE 10: EMPLOYEE REQUEST ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">7. Article 10 Request (Employee Information Access)</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary Users:</strong> Employee (request), HR/Compliance (process) | <strong>Purpose:</strong> Employee requests salary comparison info, 30-day response deadline</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Article 10 Employee Request | Access: Pseudonym EMP_xxxxx | Deadline: 30 days | Response: Pseudonymized data</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px;">
+                            <strong>Article 10 Request (Employee Information)</strong>
+                        </div>
+
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 6px; margin: 15px 0; border-left: 4px solid #2196f3;">
+                            <strong>Your Right (Directiva Art. 10):</strong> You can request information about your salary and relevant pay gap information. Response provided within 30 days, in pseudonymized form (no other employee names shown).
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Employee Identification</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px;">
+                            <strong>Your Pseudonym:</strong> EMP_a7f3b9c1 (this is how you're identified in our system)<br>
+                            <div class="field-hint" style="margin-top: 8px;">Your name is not stored. Only this pseudonym is used to maintain your privacy while processing this request.</div>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">What Would You Like to Know?</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="request_type"> <strong>My salary vs. my category average</strong>
+                            </label>
+                            <div class="field-hint">See how your salary compares to the average in your equal value category</div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="request_type"> <strong>Pay gap information for my category</strong>
+                            </label>
+                            <div class="field-hint">See the pay gap for your equal value category and whether it's been justified</div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="request_type"> <strong>Justifications affecting my category</strong>
+                            </label>
+                            <div class="field-hint">View summaries of justifications for any pay gaps in your category (no PII)</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Additional Questions (Optional)</label>
+                            <textarea placeholder="Any specific concerns or questions?"></textarea>
+                        </div>
+
+                        <div style="background: #f0f0f0; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                            <strong>Response Timeline:</strong><br>
+                            Your request will be processed and responded to by <strong>{{ deadline_date }}</strong> (within 30 days as required by Art. 10).
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary">Submit Request</button>
+                            <button class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESPONSE EXAMPLE -->
+                <div class="screen-mockup" style="margin-top: 30px;">
+                    <div class="mockup-header">Screen: Article 10 Response (Pseudonymized) | User: Employee (EMP_a7f3b9c1) | Format: Secure, Pseudonym-only</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px;">
+                            <strong>Your Salary Information (Pseudonymized)</strong>
+                        </div>
+
+                        <div class="alert alert-success">
+                            <strong success-checkmark>✓</strong> Your Article 10 request has been processed. Here is the pseudonymized information:
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Your Salary (Pseudonym: EMP_a7f3b9c1)</h3>
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 6px; margin: 15px 0;">
+                            <strong>Monthly Salary (Base + Components):</strong> €4,500.00<br>
+                            <strong>Equal Value Category:</strong> ADMINISTRATIVE<br>
+                            <strong>Job Level:</strong> Mid
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Category Averages (Aggregate, No PII)</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr>
+                                    <th>Gender</th>
+                                    <th>Count</th>
+                                    <th>Average Salary</th>
+                                    <th>vs Your Salary</th>
+                                </tr>
+                                <tr>
+                                    <td>Male</td>
+                                    <td>12</td>
+                                    <td>€2,950</td>
+                                    <td><strong>+€1,550 (higher)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Female</td>
+                                    <td>28</td>
+                                    <td>€2,650</td>
+                                    <td><strong>+€1,850 (higher)</strong></td>
+                                </tr>
+                                <tr style="background: #f0f0f0;">
+                                    <td colspan="2"><strong>Overall Category Gap:</strong></td>
+                                    <td colspan="2"><strong class="gap-value flagged">11.3%</strong> (males earn 11.3% more on average)</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Gap Justification Summary</h3>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <strong>Status:</strong> <span class="badge badge-success">Justified (Art. 5)</span><br><br>
+                            <strong>Summary of Justification:</strong><br>
+                            The 11.3% gap in the ADMINISTRATIVE category has been justified based on seniority/tenure differences. Employees with longer tenure typically earn more due to annual salary increases. The average male employee in this category has 4.2 years tenure, while the average female employee has 2.1 years tenure. This objective, non-discriminatory factor explains the majority of the gap.
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>ℹ️ Privacy Protection:</strong> This response contains no other employee names or individual salaries. All data is aggregated and pseudonymized as required.
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-secondary">Print / Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="data-protection-note"><strong>🛡️ Pseudonymization:</strong> Employee is identified only by EMP_a7f3b9c1. Their original name is never shown in response. All data aggregated (min N=5).</div>
+                    <div class="compliance-info" style="background: #e8f5e9; padding: 10px; border-left: 3px solid #4caf50; margin: 10px 0; font-size: 0.9em; color: #2e7d32;"><strong>✓ Directiva Art. 10:</strong> Employees have right to request salary information. System auto-generates pseudonymized response within 30 days.</div>
+                </div>
+            </div>
+
+            <!-- ===== REPORTS SCREEN ===== -->
+            <div class="screen-section">
+                <h2 class="screen-title">8. Reports: Official Report & Exports</h2>
+                <p style="margin-bottom: 15px;"><strong>Primary User:</strong> Compliance Officer | <strong>Purpose:</strong> Generate Art. 9 official reports (PDF, XML, CSV), internal management reports, audit logs</p>
+
+                <div class="screen-mockup">
+                    <div class="mockup-header">Screen: Reports Hub | Output Formats: PDF (signed), XML (XSD), CSV, Excel | Role: Compliance Officer</div>
+                    <div class="mockup-content">
+                        <div style="background: #667eea; color: white; padding: 15px 20px; margin: -30px -30px 20px -30px;">
+                            <strong>Reports & Exports</strong>
+                        </div>
+
+                        <div style="background: #f0f0f0; padding: 15px 30px; margin: 0 -30px 20px -30px; border-bottom: 1px solid #ddd;">
+                            <strong>Period:</strong> <select style="padding: 5px;"><option>May 2026</option></select> |
+                            <strong>Generated By:</strong> Compliance Officer (John Smith)
+                        </div>
+
+                        <h3 style="margin: 20px 0 15px 0; color: #333;">Official Reports (Directiva Art. 9)</h3>
+
+                        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; margin: 15px 0; overflow: hidden;">
+                            <div style="background: #f9f9f9; padding: 15px; border-bottom: 1px solid #ddd;">
+                                <strong>📄 Official Pay Gap Report (Art. 9)</strong>
+                            </div>
+                            <div style="padding: 20px;">
+                                <p style="margin-bottom: 10px;">Formal report for regulatory compliance. PDF format with digital signature. All PII removed.</p>
+                                <div style="background: #e8f5e9; padding: 10px; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">
+                                    <strong>✓ Compliance:</strong> XSD validated | Digitally signed | Hash: SHA-256_abc123 | Min N=5 per group
+                                </div>
+                                <div class="btn-group" style="margin-top: 15px;">
+                                    <button class="btn btn-primary">Generate & Download PDF</button>
+                                    <button class="btn btn-secondary">View Preview</button>
+                                    <button class="btn btn-secondary">Sign & Finalize</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; margin: 15px 0; overflow: hidden;">
+                            <div style="background: #f9f9f9; padding: 15px; border-bottom: 1px solid #ddd;">
+                                <strong>📋 Machine-Readable Export (XML)</strong>
+                            </div>
+                            <div style="padding: 20px;">
+                                <p style="margin-bottom: 10px;">Structured XML for data systems and further analysis. XSD-validated, digitally signed, compressed.</p>
+                                <div style="background: #e8f5e9; padding: 10px; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">
+                                    <strong>✓ Validation:</strong> XSD compliant | Embedded signature | GZIP compression | Namespace: transparency.internal/schema/report/v1
+                                </div>
+                                <div class="btn-group" style="margin-top: 15px;">
+                                    <button class="btn btn-primary">Generate XML</button>
+                                    <button class="btn btn-secondary">Generate XML (compressed)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Internal Management Reports</h3>
+
+                        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; margin: 15px 0; overflow: hidden;">
+                            <div style="background: #f9f9f9; padding: 15px; border-bottom: 1px solid #ddd;">
+                                <strong>📊 Internal Executive Report</strong>
+                            </div>
+                            <div style="padding: 20px;">
+                                <p style="margin-bottom: 10px;">Excel format with multiple sheets: executive summary, top gaps, cost estimates, timeline, drill-down.</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary">Generate Excel</button>
+                                    <button class="btn btn-secondary">Generate PDF</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin: 30px 0 15px 0; color: #333;">Audit & Compliance</h3>
+
+                        <div style="background: white; border: 1px solid #ddd; border-radius: 6px; margin: 15px 0; overflow: hidden;">
+                            <div style="background: #f9f9f9; padding: 15px; border-bottom: 1px solid #ddd;">
+                                <strong>🔒 Audit Log Report (GDPR Compliance)</strong>
+                            </div>
+                            <div style="padding: 20px;">
+                                <p style="margin-bottom: 10px;">Immutable audit trail (3-year retention). Hash-chain tamper detection. Append-only log.</p>
+                                <div style="background: #e8f5e9; padding: 10px; border-radius: 4px; margin: 10px 0; font-size: 0.9em;">
+                                    <strong>✓ Guarantee:</strong> Append-only (never delete) | Hash-chain validated | 3-year retention | Daily backup to read-only storage
+                                </div>
+                                <div class="btn-group" style="margin-top: 15px;">
+                                    <button class="btn btn-secondary">Download HTML</button>
+                                    <button class="btn btn-secondary">Download CSV</button>
+                                    <button class="btn btn-secondary">Download JSON</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="compliance-info" style="background: #e8f5e9; padding: 10px; border-left: 3px solid #4caf50; margin: 10px 0; font-size: 0.9em; color: #2e7d32;"><strong>✓ Directiva Art. 9:</strong> Official report required. Signature by compliance officer. All PII removed (min N=5).</strong></div>
+                    <div class="data-protection-note"><strong>🛡️ Audit Logging:</strong> Report generation itself is logged. All exports logged with user_id, timestamp, format, file hash.</div>
+                </div>
+            </div>
+
+            <!-- KEY DESIGN PATTERNS -->
+            <div class="screen-section">
+                <h2 class="screen-title">9. Key Design Patterns & Interaction Guidelines</h2>
+
+                <div class="subsection" style="background: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">✓ Form Validation & Error Handling</h3>
+                    <div class="alert alert-error">
+                        <strong>Inline Errors:</strong> Invalid salary field
+                    </div>
+                    <div style="background: white; padding: 15px; border: 1px solid #f0f0f0; border-radius: 4px;">
+                        <div class="form-group">
+                            <label>Base Salary</label>
+                            <input type="number" value="-500" style="border-color: #f44336;">
+                            <div class="validation-error">✗ Must be greater than 0</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;"><strong>Behavior:</strong> Submit button disabled until all errors cleared. Clear error message with fix suggestion.</div>
+                </div>
+
+                <div class="subsection" style="background: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🔐 RBAC Visibility Rules</h3>
+                    <table style="width: 100%; font-size: 0.9em;">
+                        <tr style="background: #f0f0f0;">
+                            <th style="padding: 10px; text-align: left;">Screen Element</th>
+                            <th style="padding: 10px; text-align: left;">HR Specialist</th>
+                            <th style="padding: 10px; text-align: left;">Manager</th>
+                            <th style="padding: 10px; text-align: left;">Compliance</th>
+                            <th style="padding: 10px; text-align: left;">Employee</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Job Management</td>
+                            <td style="padding: 10px;">✓ Full</td>
+                            <td style="padding: 10px;">✓ Read (own dept)</td>
+                            <td style="padding: 10px;">✓ Read only</td>
+                            <td style="padding: 10px;">✗</td>
+                        </tr>
+                        <tr style="background: #f9f9f9;">
+                            <td style="padding: 10px;">Employee List</td>
+                            <td style="padding: 10px;">✓ Full</td>
+                            <td style="padding: 10px;">✓ (own dept)</td>
+                            <td style="padding: 10px;">✓ Read only</td>
+                            <td style="padding: 10px;">✗ (sees own pseudonym only)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Gap Analysis</td>
+                            <td style="padding: 10px;">✓ Full</td>
+                            <td style="padding: 10px;">✓ (own dept)</td>
+                            <td style="padding: 10px;">✓ Full</td>
+                            <td style="padding: 10px;">✗</td>
+                        </tr>
+                        <tr style="background: #f9f9f9;">
+                            <td style="padding: 10px;">Create Justification</td>
+                            <td style="padding: 10px;">✓</td>
+                            <td style="padding: 10px;">✗ (approve only)</td>
+                            <td style="padding: 10px;">✗ (validate only)</td>
+                            <td style="padding: 10px;">✗</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Art. 10 Employee Request</td>
+                            <td style="padding: 10px;">✗ (process only)</td>
+                            <td style="padding: 10px;">✗</td>
+                            <td style="padding: 10px;">✓ Process</td>
+                            <td style="padding: 10px;">✓ Submit & read response</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="subsection" style="background: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">♿ Accessibility Standards (WCAG 2.1 AA)</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Color + Labels:</strong> KPI cards use both color and text (not color alone)</li>
+                        <li><strong>Keyboard Navigation:</strong> Tab through all form fields, buttons keyboard-accessible</li>
+                        <li><strong>ARIA Labels:</strong> Screen reader support for role announcements (e.g., "alert" for error messages)</li>
+                        <li><strong>Contrast:</strong> All text meets 4.5:1 contrast ratio</li>
+                        <li><strong>Focus Indicators:</strong> Visible focus ring on all interactive elements</li>
+                        <li><strong>Form Validation:</strong> Clear error messages associated with fields (aria-describedby)</li>
+                        <li><strong>Table Headers:</strong> Table cells linked to headers for screen readers</li>
+                    </ul>
+                </div>
+
+                <div class="subsection" style="background: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📱 Responsive Design</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div style="background: white; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                            <strong>Mobile (<576px)</strong><br>
+                            <span style="font-size: 0.85em; color: #666;">Single column layout. Stacked forms. Touch-friendly buttons (44px min).</span>
+                        </div>
+                        <div style="background: white; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                            <strong>Tablet (576-992px)</strong><br>
+                            <span style="font-size: 0.85em; color: #666;">2-column grids. Sidebar navigation collapses. Tables scroll horizontally.</span>
+                        </div>
+                        <div style="background: white; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                            <strong>Desktop (992px+)</strong><br>
+                            <span style="font-size: 0.85em; color: #666;">3-4 column grids. Full sidebar. All features visible.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection" style="background: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🛡️ Data Protection Visual Cues</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Pseudonymization Badge:</strong> EMP_xxxxx labels show employee is pseudonymized</li>
+                        <li><strong>Audit Trail Icons:</strong> 🔒 icon next to immutable fields (cannot edit after approval)</li>
+                        <li><strong>Lock Icons:</strong> Locked fields show 🔒 with tooltip "Cannot modify after approval"</li>
+                        <li><strong>Encryption Status:</strong> HTTPS indicator always visible. "🔐 Encrypted" label on sensitive data</li>
+                        <li><strong>Compliance Badges:</strong> Art. 4 ✓, Art. 5 ✓, GDPR ✓ badges show compliance status</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="page-footer">
+            <p>UI Mockups v1.0 | Interactive Wireframes for All Major Screens | May 2026</p>
+            <p>For Design Review: screenshot mockups, interaction prototypes, and CSS grid specs included in Figma design file (linked separately)</p>
+        </div>
+    </div>
+</body>
+</html>

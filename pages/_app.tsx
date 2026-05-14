@@ -46,27 +46,54 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const login = async (email: string, password: string) => {
     try {
-      // TODO: Call backend auth endpoint
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      // Mock authentication with demo credentials
+      const demoAccounts: {
+        [key: string]: { password: string; role: string; name: string };
+      } = {
+        'employee@example.com': {
+          password: 'password',
+          role: 'EMPLOYEE',
+          name: 'John Employee',
+        },
+        'manager@example.com': {
+          password: 'password',
+          role: 'MANAGER',
+          name: 'Jane Manager',
+        },
+        'hr@example.com': {
+          password: 'password',
+          role: 'HR_SPECIALIST',
+          name: 'HR Admin',
+        },
+        'compliance@example.com': {
+          password: 'password',
+          role: 'COMPLIANCE_OFFICER',
+          name: 'Compliance Officer',
+        },
+      };
 
-      if (!response.ok) {
-        throw new Error('Login failed');
+      // Validate credentials
+      const account = demoAccounts[email.toLowerCase()];
+      if (!account || account.password !== password) {
+        throw new Error('Invalid email or password');
       }
 
-      const data = await response.json();
-      const { token: newToken, user: userData } = data;
+      // Mock token and user data
+      const newToken = `mock-jwt-token-${Date.now()}-${Math.random()}`;
+      const userData = {
+        id: `user-${email.split('@')[0]}`,
+        email,
+        name: account.name,
+        role: account.role,
+      };
 
       setToken(newToken);
       setUser(userData);
-      setRole(userData.role);
+      setRole(account.role);
 
       localStorage.setItem('authToken', newToken);
       localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('role', userData.role);
+      localStorage.setItem('role', account.role);
 
       // Redirect to dashboard
       router.push('/dashboard');
