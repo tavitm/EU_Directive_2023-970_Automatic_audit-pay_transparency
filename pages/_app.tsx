@@ -32,6 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [language, setLanguageState] = useState<Language>('ro');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Initialize auth and language from localStorage
   useEffect(() => {
@@ -145,6 +146,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     logout,
   };
 
+  // Close mobile menu when route changes
+  React.useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [router.pathname]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -169,8 +175,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         ) : (
         <div className="flex h-screen bg-gray-100">
+          {/* Mobile Sidebar Overlay */}
+          {mobileMenuOpen && (
+            <div
+              className="sidebar-overlay mobile-open md:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+            ></div>
+          )}
+
           {/* Sidebar Navigation */}
-          <aside className="w-64 bg-white shadow-md overflow-y-auto flex flex-col">
+          <aside className={`w-64 bg-white shadow-md overflow-y-auto flex flex-col transition-transform md:relative md:translate-x-0 ${
+            mobileMenuOpen ? 'sidebar mobile-open' : 'sidebar'
+          }`}>
             <nav className="p-6 flex-1">
               <div className="mb-8">
                 <h1 className="text-2xl font-bold text-blue-600">Directive 2023/970</h1>
@@ -279,37 +295,50 @@ function MyApp({ Component, pageProps }: AppProps) {
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto">
-            <header className="bg-white shadow-sm border-b border-gray-200 px-8 py-6 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">
+            <header className="bg-white shadow-sm border-b border-gray-200 px-4 md:px-8 py-4 md:py-6 flex justify-between items-center gap-4">
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+                title="Toggle Menu"
+                aria-label="Toggle Navigation Menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 flex-1 md:flex-none truncate">
                 {getPageTitle(router.pathname, language)}
               </h2>
-              {/* Language Switcher */}
-              <div className="flex gap-2">
+
+              {/* Language Switcher - Mobile Optimized */}
+              <div className="flex gap-1 md:gap-2 flex-shrink-0">
                 <button
                   onClick={() => setLanguage('ro')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`px-2 md:px-4 py-2 rounded-lg font-medium transition-colors text-sm md:text-base min-h-10 ${
                     language === 'ro'
                       ? 'bg-blue-100 text-blue-700 border-2 border-blue-600'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
                   }`}
                   title="Română"
                 >
-                  🇷🇴 RO
+                  🇷🇴 <span className="hidden sm:inline">RO</span>
                 </button>
                 <button
                   onClick={() => setLanguage('en')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`px-2 md:px-4 py-2 rounded-lg font-medium transition-colors text-sm md:text-base min-h-10 ${
                     language === 'en'
                       ? 'bg-blue-100 text-blue-700 border-2 border-blue-600'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
                   }`}
                   title="English"
                 >
-                  🇬🇧 EN
+                  🇬🇧 <span className="hidden sm:inline">EN</span>
                 </button>
               </div>
             </header>
-            <div className="p-8">
+            <div className="p-4 md:p-8">
               <Component {...pageProps} />
             </div>
           </main>
