@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
 import { useJustifications } from '@/hooks/useApi';
+import { useLanguage } from '@/utils/useLanguage';
 
 interface Justification {
   id: string;
@@ -43,6 +44,7 @@ export default function JustificationsPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { loading, error } = useJustifications();
+  const { t } = useLanguage();
 
   const [justifications, setJustifications] = useState<Justification[]>([]);
   const [selectedJustification, setSelectedJustification] = useState<JustificationDetail | null>(null);
@@ -182,15 +184,28 @@ export default function JustificationsPage() {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'SUBMITTED':
-        return 'Submitted';
+        return t('justifications.submitted');
       case 'MANAGER_APPROVED':
-        return 'Manager Approved';
+        return t('justifications.managerApproved');
       case 'HR_APPROVED':
-        return 'HR Approved';
+        return t('justifications.hrApproved');
       case 'APPROVED':
-        return 'Approved';
+        return t('justifications.approved');
       case 'REJECTED':
-        return 'Rejected';
+        return t('justifications.rejected');
+      default:
+        return status;
+    }
+  };
+
+  const getApprovalStatusLabel = (status: string) => {
+    switch (status) {
+      case 'PENDING':
+        return t('justifications.awaitingReview');
+      case 'APPROVED':
+        return t('justifications.approved');
+      case 'REJECTED':
+        return t('justifications.rejected');
       default:
         return status;
     }
@@ -202,14 +217,14 @@ export default function JustificationsPage() {
       <div className="card">
         <div className="card-header flex justify-between items-start">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Pay Gap Justifications</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('justifications.title')}</h1>
             <p className="text-sm text-gray-600 mt-2">
-              Manage and track submitted pay gap justifications and their approval status
+              {t('justifications.manageJustifications')}
             </p>
           </div>
           {['MANAGER', 'HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'CFO', 'ADMIN'].includes(role || '') && (
             <a href="/justifications/submit" className="btn btn-primary">
-              Submit New Justification
+              {t('justifications.submitNewJustification')}
             </a>
           )}
         </div>
@@ -218,13 +233,13 @@ export default function JustificationsPage() {
       {/* Filters */}
       <div className="card">
         <div className="card-header">
-          <h2 className="text-lg font-semibold text-gray-900">Filters & Sorting</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('justifications.filtersAndSorting')}</h2>
         </div>
         <div className="card-body">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="form-group mb-0">
               <label htmlFor="status" className="form-label">
-                Status
+                {t('common.status')}
               </label>
               <select
                 id="status"
@@ -232,18 +247,18 @@ export default function JustificationsPage() {
                 onChange={e => setFilters(prev => ({ ...prev, status: e.target.value }))}
                 className="form-select"
               >
-                <option value="">All Statuses</option>
-                <option value="SUBMITTED">Submitted</option>
-                <option value="MANAGER_APPROVED">Manager Approved</option>
-                <option value="HR_APPROVED">HR Approved</option>
-                <option value="APPROVED">Approved</option>
-                <option value="REJECTED">Rejected</option>
+                <option value="">{t('justifications.allStatuses')}</option>
+                <option value="SUBMITTED">{t('justifications.submitted')}</option>
+                <option value="MANAGER_APPROVED">{t('justifications.managerApproved')}</option>
+                <option value="HR_APPROVED">{t('justifications.hrApproved')}</option>
+                <option value="APPROVED">{t('justifications.approved')}</option>
+                <option value="REJECTED">{t('justifications.rejected')}</option>
               </select>
             </div>
 
             <div className="form-group mb-0">
               <label htmlFor="gapCategory" className="form-label">
-                Gap Category
+                {t('justifications.gapCategory')}
               </label>
               <select
                 id="gapCategory"
@@ -251,19 +266,19 @@ export default function JustificationsPage() {
                 onChange={e => setFilters(prev => ({ ...prev, gapCategory: e.target.value }))}
                 className="form-select"
               >
-                <option value="">All Categories</option>
-                <option value="Job Level Distribution">Job Level Distribution</option>
-                <option value="Salary Progression Differences">Salary Progression Differences</option>
-                <option value="Tenure-Related Differences">Tenure-Related Differences</option>
-                <option value="Role or Performance Differences">Role or Performance Differences</option>
-                <option value="Education & Qualifications">Education & Qualifications</option>
-                <option value="Other">Other</option>
+                <option value="">{t('justifications.allCategories')}</option>
+                <option value="Job Level Distribution">{t('justifications.jobLevelDistribution')}</option>
+                <option value="Salary Progression Differences">{t('justifications.salaryProgressionDifferences')}</option>
+                <option value="Tenure-Related Differences">{t('justifications.tenureRelatedDifferences')}</option>
+                <option value="Role or Performance Differences">{t('justifications.roleOrPerformanceDifferences')}</option>
+                <option value="Education & Qualifications">{t('justifications.educationAndQualifications')}</option>
+                <option value="Other">{t('justifications.other')}</option>
               </select>
             </div>
 
             <div className="form-group mb-0">
               <label htmlFor="sortBy" className="form-label">
-                Sort By
+                {t('justifications.sortBy')}
               </label>
               <select
                 id="sortBy"
@@ -271,8 +286,8 @@ export default function JustificationsPage() {
                 onChange={e => setSortBy(e.target.value)}
                 className="form-select"
               >
-                <option value="submittedDate">Most Recent</option>
-                <option value="daysInApproval">Longest in Review</option>
+                <option value="submittedDate">{t('justifications.mostRecent')}</option>
+                <option value="daysInApproval">{t('justifications.longestInReview')}</option>
               </select>
             </div>
 
@@ -285,10 +300,10 @@ export default function JustificationsPage() {
                 {loading ? (
                   <>
                     <span className="spinner mr-2"></span>
-                    Searching...
+                    {t('justifications.searching')}
                   </>
                 ) : (
-                  'Apply Filters'
+                  t('common.apply')
                 )}
               </button>
             </div>
@@ -299,7 +314,7 @@ export default function JustificationsPage() {
       {/* Error Alert */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Error</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
@@ -308,17 +323,17 @@ export default function JustificationsPage() {
       <div className="card">
         <div className="card-header">
           <h2 className="text-lg font-semibold text-gray-900">
-            {justifications.length} Justification{justifications.length !== 1 ? 's' : ''}
+            {justifications.length} {t('justifications.title')}
           </h2>
         </div>
 
         <div className="card-body">
           {justifications.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600 mb-4">No justifications found</p>
+              <p className="text-gray-600 mb-4">{t('justifications.noJustificationsFound')}</p>
               {['MANAGER', 'HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'CFO', 'ADMIN'].includes(role || '') && (
                 <a href="/justifications/submit" className="btn btn-primary">
-                  Submit One Now
+                  {t('justifications.createFirstJustification')}
                 </a>
               )}
             </div>
@@ -339,7 +354,7 @@ export default function JustificationsPage() {
                         </span>
                         {justification.currentApprover && (
                           <span className="badge badge-secondary text-xs">
-                            Awaiting {justification.currentApprover}
+                            {t('justifications.awaiting')} {justification.currentApprover}
                           </span>
                         )}
                       </div>
@@ -348,22 +363,22 @@ export default function JustificationsPage() {
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                         <div>
-                          <p className="text-gray-600">Submitted</p>
+                          <p className="text-gray-600">{t('justifications.submittedDate')}</p>
                           <p className="font-medium text-gray-900">{justification.submittedDate}</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Submitted By</p>
+                          <p className="text-gray-600">{t('justifications.submittedBy')}</p>
                           <p className="font-medium text-gray-900">{justification.submittedBy}</p>
                         </div>
                         {justification.managedGap !== undefined && (
                           <div>
-                            <p className="text-gray-600">Current Gap</p>
+                            <p className="text-gray-600">{t('justifications.currentGap')}</p>
                             <p className="font-medium text-gray-900">{justification.managedGap.toFixed(2)}%</p>
                           </div>
                         )}
                         {justification.targetGap !== undefined && (
                           <div>
-                            <p className="text-gray-600">Target Gap</p>
+                            <p className="text-gray-600">{t('justifications.targetGap')}</p>
                             <p className="font-medium text-gray-900">{justification.targetGap.toFixed(2)}%</p>
                           </div>
                         )}
@@ -371,7 +386,7 @@ export default function JustificationsPage() {
                     </div>
 
                     <div className="ml-4 text-right">
-                      <p className="text-sm text-gray-600">In Review</p>
+                      <p className="text-sm text-gray-600">{t('justifications.inReview')}</p>
                       <p className="text-2xl font-bold text-gray-900">
                         {justification.daysInApproval}d
                       </p>
@@ -445,7 +460,7 @@ export default function JustificationsPage() {
                               : 'badge-warning'
                           }`}
                         >
-                          {approval.status}
+                          {getApprovalStatusLabel(approval.status)}
                         </span>
                         {approval.approvalDate && (
                           <p className="text-xs text-gray-600 mt-1">{approval.approvalDate}</p>
@@ -464,43 +479,43 @@ export default function JustificationsPage() {
               {/* Content */}
               <div className="border-t border-gray-200 pt-6 space-y-4">
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Gap Category</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.gapCategoryLabel')}</h3>
                   <p className="text-gray-700">{selectedJustification.gapCategory}</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Affected Groups</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.affectedGroups')}</h3>
                   <p className="text-gray-700 whitespace-pre-wrap">{selectedJustification.affectedGroups}</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Root Cause</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.rootCause')}</h3>
                   <p className="text-gray-700 whitespace-pre-wrap">{selectedJustification.rootCause}</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Explanation</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.explanation')}</h3>
                   <p className="text-gray-700 whitespace-pre-wrap">{selectedJustification.explanation}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Corrective Measures</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.correctiveMeasures')}</h3>
                     <p className="text-gray-700 text-sm whitespace-pre-wrap">{selectedJustification.correctiveMeasures}</p>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Implementation Timeline</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.implementationTimeline')}</h3>
                     <p className="text-gray-700 text-sm whitespace-pre-wrap">{selectedJustification.implementationTimeline}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Expected Outcome</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.expectedOutcome')}</h3>
                     <p className="text-gray-700 text-sm whitespace-pre-wrap">{selectedJustification.expectedOutcome}</p>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Quantifiable Targets</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.quantifiableTargets')}</h3>
                     <p className="text-gray-700 text-sm whitespace-pre-wrap">{selectedJustification.quantifiableTargets}</p>
                   </div>
                 </div>
@@ -509,10 +524,10 @@ export default function JustificationsPage() {
 
             <div className="border-t border-gray-200 px-6 py-4 flex gap-3">
               <button onClick={() => window.print()} className="btn btn-secondary">
-                Print
+                {t('common.print')}
               </button>
               <button onClick={() => setSelectedJustification(null)} className="btn btn-secondary ml-auto">
-                Close
+                {t('common.close')}
               </button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
 import { useJustifications } from '@/hooks/useApi';
+import { useLanguage } from '@/utils/useLanguage';
 
 interface JustificationForm {
   gapCategory: string;
@@ -19,6 +20,7 @@ export default function JustificationSubmitPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { submitJustification, loading, error } = useJustifications();
+  const { t } = useLanguage();
 
   const [step, setStep] = useState<'select' | 'details' | 'measures' | 'review' | 'submitted'>('select');
   const [gapSelection, setGapSelection] = useState('');
@@ -45,33 +47,33 @@ export default function JustificationSubmitPage() {
   const gapCategories = [
     {
       id: 'job_level_distribution',
-      label: 'Job Level Distribution',
-      description: 'Difference in male/female distribution across job levels',
+      label: t('justifications.gapCategory.jobLevelDistribution.label'),
+      description: t('justifications.gapCategory.jobLevelDistribution.description'),
     },
     {
       id: 'salary_progression',
-      label: 'Salary Progression Differences',
-      description: 'Variations in career progression or raise patterns',
+      label: t('justifications.gapCategory.salaryProgression.label'),
+      description: t('justifications.gapCategory.salaryProgression.description'),
     },
     {
       id: 'tenure_related',
-      label: 'Tenure-Related Differences',
-      description: 'Pay gaps attributed to differences in tenure',
+      label: t('justifications.gapCategory.tenureRelated.label'),
+      description: t('justifications.gapCategory.tenureRelated.description'),
     },
     {
       id: 'role_performance',
-      label: 'Role or Performance Differences',
-      description: 'Pay gaps due to role-specific factors or performance metrics',
+      label: t('justifications.gapCategory.rolePerformance.label'),
+      description: t('justifications.gapCategory.rolePerformance.description'),
     },
     {
       id: 'education_qualifications',
-      label: 'Education & Qualifications',
-      description: 'Differences in education levels or certifications',
+      label: t('justifications.gapCategory.education.label'),
+      description: t('justifications.gapCategory.education.description'),
     },
     {
       id: 'other',
-      label: 'Other',
-      description: 'Other business-related factors',
+      label: t('justifications.gapCategory.other.label'),
+      description: t('justifications.gapCategory.other.description'),
     },
   ];
 
@@ -97,33 +99,33 @@ export default function JustificationSubmitPage() {
     const errors: Record<string, string> = {};
 
     if (currentStep === 'select' && !gapSelection) {
-      errors.gapSelection = 'Please select a gap category';
+      errors.gapSelection = t('justifications.validation.selectGapCategory');
     }
 
     if (currentStep === 'details') {
       if (!formData.affectedGroups.trim()) {
-        errors.affectedGroups = 'Please describe affected groups';
+        errors.affectedGroups = t('justifications.validation.describeAffectedGroups');
       }
       if (!formData.rootCause.trim()) {
-        errors.rootCause = 'Please explain the root cause';
+        errors.rootCause = t('justifications.validation.explainRootCause');
       }
       if (!formData.explanation.trim()) {
-        errors.explanation = 'Please provide a detailed explanation';
+        errors.explanation = t('justifications.validation.provideDetailedExplanation');
       }
     }
 
     if (currentStep === 'measures') {
       if (!formData.correctiveMeasures.trim()) {
-        errors.correctiveMeasures = 'Please describe corrective measures';
+        errors.correctiveMeasures = t('justifications.validation.describeCorrectiveMeasures');
       }
       if (!formData.implementationTimeline.trim()) {
-        errors.implementationTimeline = 'Please specify implementation timeline';
+        errors.implementationTimeline = t('justifications.validation.specifyImplementationTimeline');
       }
       if (!formData.expectedOutcome.trim()) {
-        errors.expectedOutcome = 'Please describe expected outcome';
+        errors.expectedOutcome = t('justifications.validation.describeExpectedOutcome');
       }
       if (!formData.quantifiableTargets.trim()) {
-        errors.quantifiableTargets = 'Please set quantifiable targets';
+        errors.quantifiableTargets = t('justifications.validation.setQuantifiableTargets');
       }
     }
 
@@ -176,9 +178,9 @@ export default function JustificationSubmitPage() {
       {/* Header */}
       <div className="card">
         <div className="card-header">
-          <h1 className="text-2xl font-bold text-gray-900">Submit Pay Gap Justification</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('justifications.submit.title')}</h1>
           <p className="text-sm text-gray-600 mt-2">
-            Explain identified pay gaps and describe corrective measures per EU Directive 2023/970
+            {t('justifications.submit.description')}
           </p>
         </div>
       </div>
@@ -203,10 +205,10 @@ export default function JustificationSubmitPage() {
                       {idx + 1}
                     </div>
                     <span className="ml-2 text-sm font-medium text-gray-700">
-                      {s === 'select' && 'Select Gap'}
-                      {s === 'details' && 'Gap Details'}
-                      {s === 'measures' && 'Corrective Measures'}
-                      {s === 'review' && 'Review'}
+                      {s === 'select' && t('justifications.submit.step.selectGap')}
+                      {s === 'details' && t('justifications.submit.step.gapDetails')}
+                      {s === 'measures' && t('justifications.submit.step.correctiveMeasures')}
+                      {s === 'review' && t('justifications.submit.step.review')}
                     </span>
                   </div>
                   {idx < 3 && <div className="flex-1 h-1 bg-gray-200 mx-4"></div>}
@@ -220,7 +222,7 @@ export default function JustificationSubmitPage() {
       {/* Error Alert */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Submission Error</p>
+          <p className="font-medium">{t('justifications.submit.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
@@ -229,8 +231,8 @@ export default function JustificationSubmitPage() {
       {step === 'select' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 1: Select Gap Category</h2>
-            <p className="text-sm text-gray-600 mt-2">Which category best describes the identified pay gap?</p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('justifications.submit.step1Title')}</h2>
+            <p className="text-sm text-gray-600 mt-2">{t('justifications.submit.step1Description')}</p>
           </div>
 
           <div className="card-body space-y-3">
@@ -267,10 +269,10 @@ export default function JustificationSubmitPage() {
 
           <div className="card-footer flex gap-3">
             <button onClick={() => router.push('/analysis')} className="btn btn-secondary">
-              Cancel
+              {t('common.cancel')}
             </button>
             <button onClick={handleNext} className="btn btn-primary">
-              Continue
+              {t('common.continue')}
             </button>
           </div>
         </div>
@@ -280,26 +282,26 @@ export default function JustificationSubmitPage() {
       {step === 'details' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 2: Gap Details</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('justifications.submit.step2Title')}</h2>
             <p className="text-sm text-gray-600 mt-2">
-              Category: {gapCategories.find(c => c.id === gapSelection)?.label}
+              {t('justifications.submit.category')}: {gapCategories.find(c => c.id === gapSelection)?.label}
             </p>
           </div>
 
           <div className="card-body space-y-6">
             <div className="form-group">
               <label htmlFor="affectedGroups" className="form-label">
-                Affected Groups
+                {t('justifications.submit.affectedGroups')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                Describe which groups are affected (e.g., "Male vs Female employees in Engineering")
+                {t('justifications.submit.affectedGroupsHelper')}
               </p>
               <textarea
                 id="affectedGroups"
                 name="affectedGroups"
                 value={formData.affectedGroups}
                 onChange={handleInputChange}
-                placeholder="E.g., Female engineers have lower average salary compared to male engineers..."
+                placeholder={t('justifications.submit.affectedGroupsPlaceholder')}
                 className="form-textarea"
                 rows={3}
               ></textarea>
@@ -308,17 +310,17 @@ export default function JustificationSubmitPage() {
 
             <div className="form-group">
               <label htmlFor="rootCause" className="form-label">
-                Root Cause Analysis
+                {t('justifications.submit.rootCauseAnalysis')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                What factors contribute to this pay gap?
+                {t('justifications.submit.rootCauseHelper')}
               </p>
               <textarea
                 id="rootCause"
                 name="rootCause"
                 value={formData.rootCause}
                 onChange={handleInputChange}
-                placeholder="E.g., Different distribution of employees across job levels, experience requirements, work patterns..."
+                placeholder={t('justifications.submit.rootCausePlaceholder')}
                 className="form-textarea"
                 rows={3}
               ></textarea>
@@ -327,17 +329,17 @@ export default function JustificationSubmitPage() {
 
             <div className="form-group">
               <label htmlFor="explanation" className="form-label">
-                Detailed Explanation
+                {t('justifications.submit.detailedExplanation')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                Provide comprehensive justification for the identified pay gap
+                {t('justifications.submit.detailedExplanationHelper')}
               </p>
               <textarea
                 id="explanation"
                 name="explanation"
                 value={formData.explanation}
                 onChange={handleInputChange}
-                placeholder="Provide detailed analysis supporting your justification..."
+                placeholder={t('justifications.submit.detailedExplanationPlaceholder')}
                 className="form-textarea"
                 rows={4}
               ></textarea>
@@ -347,10 +349,10 @@ export default function JustificationSubmitPage() {
 
           <div className="card-footer flex gap-3">
             <button onClick={handleBack} className="btn btn-secondary">
-              Back
+              {t('common.back')}
             </button>
             <button onClick={handleNext} disabled={loading} className="btn btn-primary">
-              Continue
+              {t('common.continue')}
             </button>
           </div>
         </div>
@@ -360,26 +362,26 @@ export default function JustificationSubmitPage() {
       {step === 'measures' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 3: Corrective Measures</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('justifications.submit.step3Title')}</h2>
             <p className="text-sm text-gray-600 mt-2">
-              Describe planned actions to address the identified pay gap
+              {t('justifications.submit.step3Description')}
             </p>
           </div>
 
           <div className="card-body space-y-6">
             <div className="form-group">
               <label htmlFor="correctiveMeasures" className="form-label">
-                Corrective Measures
+                {t('justifications.submit.correctiveMeasures')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                What specific actions will be taken to address this gap?
+                {t('justifications.submit.correctiveMeasuresHelper')}
               </p>
               <textarea
                 id="correctiveMeasures"
                 name="correctiveMeasures"
                 value={formData.correctiveMeasures}
                 onChange={handleInputChange}
-                placeholder="E.g., Salary adjustments, career development programs, changed recruitment criteria..."
+                placeholder={t('justifications.submit.correctiveMeasuresPlaceholder')}
                 className="form-textarea"
                 rows={3}
               ></textarea>
@@ -390,17 +392,17 @@ export default function JustificationSubmitPage() {
 
             <div className="form-group">
               <label htmlFor="implementationTimeline" className="form-label">
-                Implementation Timeline
+                {t('justifications.submit.implementationTimeline')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                When will these measures be implemented?
+                {t('justifications.submit.implementationTimelineHelper')}
               </p>
               <textarea
                 id="implementationTimeline"
                 name="implementationTimeline"
                 value={formData.implementationTimeline}
                 onChange={handleInputChange}
-                placeholder="E.g., Phase 1 (Q2 2026): Salary reviews, Phase 2 (Q3 2026): Career development program launch..."
+                placeholder={t('justifications.submit.implementationTimelinePlaceholder')}
                 className="form-textarea"
                 rows={3}
               ></textarea>
@@ -411,17 +413,17 @@ export default function JustificationSubmitPage() {
 
             <div className="form-group">
               <label htmlFor="expectedOutcome" className="form-label">
-                Expected Outcome
+                {t('justifications.submit.expectedOutcome')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                What is the expected impact of these measures?
+                {t('justifications.submit.expectedOutcomeHelper')}
               </p>
               <textarea
                 id="expectedOutcome"
                 name="expectedOutcome"
                 value={formData.expectedOutcome}
                 onChange={handleInputChange}
-                placeholder="E.g., Reduction of pay gap from 8% to 3% within 12 months..."
+                placeholder={t('justifications.submit.expectedOutcomePlaceholder')}
                 className="form-textarea"
                 rows={3}
               ></textarea>
@@ -430,17 +432,17 @@ export default function JustificationSubmitPage() {
 
             <div className="form-group">
               <label htmlFor="quantifiableTargets" className="form-label">
-                Quantifiable Targets
+                {t('justifications.submit.quantifiableTargets')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                Set specific, measurable goals for addressing the gap
+                {t('justifications.submit.quantifiableTargetsHelper')}
               </p>
               <textarea
                 id="quantifiableTargets"
                 name="quantifiableTargets"
                 value={formData.quantifiableTargets}
                 onChange={handleInputChange}
-                placeholder="E.g., Target: Reduce adjusted gap to &lt;5% by Q4 2026, Increase female representation in senior roles to 40% by end of 2027..."
+                placeholder={t('justifications.submit.quantifiableTargetsPlaceholder')}
                 className="form-textarea"
                 rows={3}
               ></textarea>
@@ -451,10 +453,10 @@ export default function JustificationSubmitPage() {
 
             <div className="form-group">
               <label htmlFor="documentationUrl" className="form-label">
-                Supporting Documentation URL (Optional)
+                {t('justifications.submit.supportingDocumentation')}
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                Link to supporting documents or analysis
+                {t('justifications.submit.supportingDocumentationHelper')}
               </p>
               <input
                 id="documentationUrl"
@@ -470,10 +472,10 @@ export default function JustificationSubmitPage() {
 
           <div className="card-footer flex gap-3">
             <button onClick={handleBack} className="btn btn-secondary">
-              Back
+              {t('common.back')}
             </button>
             <button onClick={handleNext} disabled={loading} className="btn btn-primary">
-              Review
+              {t('justifications.submit.review')}
             </button>
           </div>
         </div>
@@ -484,60 +486,60 @@ export default function JustificationSubmitPage() {
         <div className="space-y-6">
           <div className="card">
             <div className="card-header">
-              <h2 className="text-lg font-semibold text-gray-900">Step 4: Review Justification</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('justifications.submit.step4Title')}</h2>
               <p className="text-sm text-gray-600 mt-2">
-                Please review your justification before submitting
+                {t('justifications.submit.step4Description')}
               </p>
             </div>
 
             <div className="card-body space-y-6">
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Gap Category</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.submit.review.gapCategory')}</h3>
                 <p className="text-gray-700">
                   {gapCategories.find(c => c.id === formData.gapCategory)?.label}
                 </p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Affected Groups</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.submit.review.affectedGroups')}</h3>
                 <p className="text-gray-700 whitespace-pre-wrap">{formData.affectedGroups}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Root Cause Analysis</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.submit.review.rootCauseAnalysis')}</h3>
                 <p className="text-gray-700 whitespace-pre-wrap">{formData.rootCause}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Detailed Explanation</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.submit.review.detailedExplanation')}</h3>
                 <p className="text-gray-700 whitespace-pre-wrap">{formData.explanation}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <h4 className="font-semibold text-blue-900 mb-2">Corrective Measures</h4>
+                  <h4 className="font-semibold text-blue-900 mb-2">{t('justifications.submit.review.correctiveMeasures')}</h4>
                   <p className="text-blue-800 text-sm whitespace-pre-wrap">{formData.correctiveMeasures}</p>
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <h4 className="font-semibold text-blue-900 mb-2">Implementation Timeline</h4>
+                  <h4 className="font-semibold text-blue-900 mb-2">{t('justifications.submit.review.implementationTimeline')}</h4>
                   <p className="text-blue-800 text-sm whitespace-pre-wrap">{formData.implementationTimeline}</p>
                 </div>
 
                 <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                  <h4 className="font-semibold text-green-900 mb-2">Expected Outcome</h4>
+                  <h4 className="font-semibold text-green-900 mb-2">{t('justifications.submit.review.expectedOutcome')}</h4>
                   <p className="text-green-800 text-sm whitespace-pre-wrap">{formData.expectedOutcome}</p>
                 </div>
 
                 <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                  <h4 className="font-semibold text-green-900 mb-2">Quantifiable Targets</h4>
+                  <h4 className="font-semibold text-green-900 mb-2">{t('justifications.submit.review.quantifiableTargets')}</h4>
                   <p className="text-green-800 text-sm whitespace-pre-wrap">{formData.quantifiableTargets}</p>
                 </div>
               </div>
 
               {formData.documentationUrl && (
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Supporting Documentation</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('justifications.submit.review.supportingDocumentation')}</h3>
                   <a href={formData.documentationUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline break-all">
                     {formData.documentationUrl}
                   </a>
@@ -547,30 +549,30 @@ export default function JustificationSubmitPage() {
 
             <div className="card-footer flex gap-3">
               <button onClick={handleBack} className="btn btn-secondary">
-                Back
+                {t('common.back')}
               </button>
               <button onClick={handleSubmit} disabled={loading} className="btn btn-primary">
                 {loading ? (
                   <>
                     <span className="spinner mr-2"></span>
-                    Submitting...
+                    {t('justifications.submit.submitting')}
                   </>
                 ) : (
-                  'Submit Justification'
+                  t('justifications.submit.submitJustification')
                 )}
               </button>
             </div>
           </div>
 
           <div className="alert alert-info">
-            <p className="font-medium">Submission Process</p>
+            <p className="font-medium">{t('justifications.submit.submissionProcess')}</p>
             <p className="text-sm mt-2">
-              Your justification will be submitted for review through a multi-stage approval process:
+              {t('justifications.submit.submissionProcessDescription')}
             </p>
             <ol className="list-decimal list-inside text-sm mt-2 space-y-1">
-              <li>Manager review and approval</li>
-              <li>HR Specialist verification</li>
-              <li>Compliance Officer final approval</li>
+              <li>{t('justifications.submit.managerReview')}</li>
+              <li>{t('justifications.submit.hrVerification')}</li>
+              <li>{t('justifications.submit.complianceApproval')}</li>
             </ol>
           </div>
         </div>
@@ -580,65 +582,64 @@ export default function JustificationSubmitPage() {
       {step === 'submitted' && (
         <div className="card">
           <div className="card-header bg-green-50 border-b border-green-200">
-            <h2 className="text-lg font-semibold text-green-900">✓ Justification Submitted</h2>
+            <h2 className="text-lg font-semibold text-green-900">✓ {t('justifications.submit.success.title')}</h2>
           </div>
 
           <div className="card-body space-y-6">
             <div className="text-center py-4">
               <p className="text-4xl mb-4">✓</p>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Submission Successful</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('justifications.submit.success.successTitle')}</h3>
               <p className="text-gray-600">
-                Your pay gap justification has been submitted for review
+                {t('justifications.submit.success.successDescription')}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <p className="text-xs text-blue-600 uppercase font-semibold">Submission ID</p>
+                <p className="text-xs text-blue-600 uppercase font-semibold">{t('justifications.submit.success.submissionId')}</p>
                 <p className="text-lg font-bold text-blue-900 mt-1">{submissionId}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-xs text-gray-600 uppercase font-semibold">Status</p>
-                <p className="text-lg font-bold text-gray-900 mt-1">Awaiting Manager Review</p>
+                <p className="text-xs text-gray-600 uppercase font-semibold">{t('justifications.submit.success.status')}</p>
+                <p className="text-lg font-bold text-gray-900 mt-1">{t('justifications.submit.success.awaitingManagerReview')}</p>
               </div>
             </div>
 
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p className="font-medium text-yellow-900 mb-2">⏱️ Approval Timeline</p>
+              <p className="font-medium text-yellow-900 mb-2">⏱️ {t('justifications.submit.success.approvalTimeline')}</p>
               <p className="text-sm text-yellow-800">
-                Your justification will proceed through the following stages:
+                {t('justifications.submit.success.timelineDescription')}
               </p>
               <ol className="list-decimal list-inside text-sm text-yellow-800 mt-2 space-y-1">
                 <li>
-                  <strong>Manager Review</strong> (typically 3-5 business days)
+                  <strong>{t('justifications.submit.success.managerReviewLabel')}</strong> ({t('justifications.submit.success.managerReviewTime')})
                 </li>
                 <li>
-                  <strong>HR Verification</strong> (typically 5-7 business days)
+                  <strong>{t('justifications.submit.success.hrVerificationLabel')}</strong> ({t('justifications.submit.success.hrVerificationTime')})
                 </li>
                 <li>
-                  <strong>Compliance Officer Approval</strong> (typically 7-10 business days)
+                  <strong>{t('justifications.submit.success.complianceApprovalLabel')}</strong> ({t('justifications.submit.success.complianceApprovalTime')})
                 </li>
               </ol>
             </div>
 
             <div className="alert alert-success">
-              <p className="font-medium">✓ Next Steps</p>
+              <p className="font-medium">✓ {t('justifications.submit.success.nextStepsLabel')}</p>
               <p className="text-sm mt-2">
-                You will receive email notifications at each approval stage. You can track the status of your
-                justification in the Justifications dashboard.
+                {t('justifications.submit.success.nextStepsDescription')}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               <a href="/justifications" className="btn btn-primary">
-                View Justifications
+                {t('justifications.submit.success.viewJustifications')}
               </a>
               <a href="/dashboard" className="btn btn-secondary">
-                Back to Dashboard
+                {t('justifications.submit.success.backToDashboard')}
               </a>
               <button onClick={() => window.print()} className="btn btn-secondary">
-                Print Submission
+                {t('justifications.submit.success.printSubmission')}
               </button>
             </div>
           </div>

@@ -31,7 +31,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Directive 2023/970</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">{t('header.directiveTitle')}</h1>
           <p className="text-blue-100">{t('header.payTransparencySystem')}</p>
         </div>
 

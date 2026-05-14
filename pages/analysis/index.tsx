@@ -133,7 +133,7 @@ export default function AnalysisPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="form-group mb-0">
               <label htmlFor="department" className="form-label">
-                Department
+                {t('analysis.department')}
               </label>
               <select
                 id="department"
@@ -142,7 +142,7 @@ export default function AnalysisPage() {
                 onChange={handleFilterChange}
                 className="form-select"
               >
-                <option value="">All Departments</option>
+                <option value="">{t('analysis.allDepartments')}</option>
                 <option value="Engineering">Engineering</option>
                 <option value="Sales">Sales</option>
                 <option value="Marketing">Marketing</option>
@@ -153,7 +153,7 @@ export default function AnalysisPage() {
 
             <div className="form-group mb-0">
               <label htmlFor="jobCode" className="form-label">
-                Job Code
+                {t('analysis.jobCode')}
               </label>
               <input
                 id="jobCode"
@@ -168,7 +168,7 @@ export default function AnalysisPage() {
 
             <div className="form-group mb-0">
               <label htmlFor="salaryRange" className="form-label">
-                Salary Range
+                {t('analysis.salaryRange')}
               </label>
               <select
                 id="salaryRange"
@@ -177,7 +177,7 @@ export default function AnalysisPage() {
                 onChange={handleFilterChange}
                 className="form-select"
               >
-                <option value="">All Ranges</option>
+                <option value="">{t('analysis.allRanges')}</option>
                 <option value="0-50000">€0 - €50K</option>
                 <option value="50000-100000">€50K - €100K</option>
                 <option value="100000-150000">€100K - €150K</option>
@@ -187,7 +187,7 @@ export default function AnalysisPage() {
 
             <div className="form-group mb-0">
               <label htmlFor="tenure" className="form-label">
-                Tenure
+                {t('analysis.tenure')}
               </label>
               <select
                 id="tenure"
@@ -196,7 +196,7 @@ export default function AnalysisPage() {
                 onChange={handleFilterChange}
                 className="form-select"
               >
-                <option value="">All Tenures</option>
+                <option value="">{t('analysis.allTenures')}</option>
                 <option value="0-1">0-1 years</option>
                 <option value="1-3">1-3 years</option>
                 <option value="3-5">3-5 years</option>
@@ -213,7 +213,7 @@ export default function AnalysisPage() {
                   onChange={handleFilterChange}
                   className="rounded border-gray-300"
                 />
-                <span className="text-sm text-gray-700">Adjust for Job Evaluation</span>
+                <span className="text-sm text-gray-700">{t('analysis.adjustForJobEvaluation')}</span>
               </label>
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function AnalysisPage() {
             {/* Pay Gap */}
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Adjusted Pay Gap</p>
+                <p className="text-sm text-gray-600 mb-2">{t('analysis.adjustedPayGap')}</p>
                 <p className={`text-3xl font-bold ${getGapColor(results.analysis?.gapAnalysis?.adjustedGap || 0)}`}>
                   {results.analysis?.gapAnalysis?.adjustedGap?.toFixed(2)}%
                 </p>
@@ -263,10 +263,10 @@ export default function AnalysisPage() {
                     }`}
                   >
                     {results.complianceStatus === 'COMPLIANT'
-                      ? 'Compliant'
+                      ? t('analysis.compliant')
                       : results.complianceStatus === 'REQUIRES_JUSTIFICATION'
-                      ? 'Requires Justification'
-                      : 'Critical'}
+                      ? t('analysis.requiresJustification')
+                      : t('analysis.critical')}
                   </span>
                 </div>
               </div>
@@ -275,20 +275,20 @@ export default function AnalysisPage() {
             {/* Unadjusted Gap */}
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Unadjusted Pay Gap</p>
+                <p className="text-sm text-gray-600 mb-2">{t('analysis.unadjustedPayGap')}</p>
                 <p className={`text-3xl font-bold ${getGapColor(results.analysis?.gapAnalysis?.unadjustedGap || 0)}`}>
                   {results.analysis?.gapAnalysis?.unadjustedGap?.toFixed(2)}%
                 </p>
-                <p className="text-xs text-gray-500 mt-2">Before job evaluation adjustment</p>
+                <p className="text-xs text-gray-500 mt-2">{t('analysis.beforeJobEvaluation')}</p>
               </div>
             </div>
 
             {/* Statistical Significance */}
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Statistical Significance</p>
+                <p className="text-sm text-gray-600 mb-2">{t('analysis.confidenceLevel')}</p>
                 <p className="text-lg font-bold text-gray-900">
-                  {results.analysis?.statisticalSignificance?.significantAt95Confidence ? 'Yes' : 'No'}
+                  {results.analysis?.statisticalSignificance?.significantAt95Confidence ? t('analysis.yes') : t('analysis.no')}
                 </p>
                 <p className="text-xs text-gray-500 mt-2">
                   p-value: {results.analysis?.statisticalSignificance?.pValue?.toFixed(4)}
@@ -299,7 +299,7 @@ export default function AnalysisPage() {
             {/* Sample Size */}
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Sample Size</p>
+                <p className="text-sm text-gray-600 mb-2">{t('analysis.sampleSize')}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {results.analysis?.employeeData?.total}
                 </p>
@@ -324,10 +324,10 @@ export default function AnalysisPage() {
                         : 'border-transparent text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    {tab === 'overview' && 'Overview'}
-                    {tab === 'department' && 'By Department'}
-                    {tab === 'job' && 'By Job Code'}
-                    {tab === 'tenure' && 'By Tenure'}
+                    {tab === 'overview' && t('analysis.overview')}
+                    {tab === 'department' && t('analysis.byDepartment')}
+                    {tab === 'job' && t('analysis.byJobCode')}
+                    {tab === 'tenure' && t('analysis.byTenure')}
                   </button>
                 ))}
               </div>
@@ -340,11 +340,11 @@ export default function AnalysisPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Gender Distribution */}
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-4">Gender Distribution</h3>
+                      <h3 className="font-semibold text-gray-900 mb-4">{t('analysis.genderDistribution')}</h3>
                       <div className="space-y-4">
                         <div>
                           <div className="flex justify-between mb-2">
-                            <span className="text-sm text-gray-700">Male Employees</span>
+                            <span className="text-sm text-gray-700">{t('analysis.maleEmployees')}</span>
                             <span className="text-sm font-bold text-gray-900">
                               {results.analysis?.employeeData?.maleCount} (€
                               {results.analysis?.employeeData?.maleAvgSalary?.toFixed(0)})
@@ -366,7 +366,7 @@ export default function AnalysisPage() {
 
                         <div>
                           <div className="flex justify-between mb-2">
-                            <span className="text-sm text-gray-700">Female Employees</span>
+                            <span className="text-sm text-gray-700">{t('analysis.femaleEmployees')}</span>
                             <span className="text-sm font-bold text-gray-900">
                               {results.analysis?.employeeData?.femaleCount} (€
                               {results.analysis?.employeeData?.femaleAvgSalary?.toFixed(0)})
@@ -389,7 +389,7 @@ export default function AnalysisPage() {
                         {(results.analysis?.employeeData?.otherCount || 0) > 0 && (
                           <div>
                             <div className="flex justify-between mb-2">
-                              <span className="text-sm text-gray-700">Other</span>
+                              <span className="text-sm text-gray-700">{t('analysis.other')}</span>
                               <span className="text-sm font-bold text-gray-900">
                                 {results.analysis?.employeeData?.otherCount} (€
                                 {results.analysis?.employeeData?.otherAvgSalary?.toFixed(0)})
@@ -414,24 +414,24 @@ export default function AnalysisPage() {
 
                     {/* Statistical Details */}
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-4">Statistical Analysis</h3>
+                      <h3 className="font-semibold text-gray-900 mb-4">{t('analysis.statisticalAnalysis')}</h3>
                       <div className="space-y-3 text-sm">
                         <div>
-                          <p className="text-gray-600">T-Statistic</p>
+                          <p className="text-gray-600">{t('analysis.tStatistic')}</p>
                           <p className="text-lg font-semibold text-gray-900">
                             {results.analysis?.statisticalSignificance?.tStatistic?.toFixed(4)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-600">P-Value</p>
+                          <p className="text-gray-600">{t('analysis.pValue')}</p>
                           <p className="text-lg font-semibold text-gray-900">
                             {results.analysis?.statisticalSignificance?.pValue?.toFixed(6)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Confidence Level</p>
+                          <p className="text-gray-600">{t('analysis.confidenceLevel')}</p>
                           <p className="text-lg font-semibold text-gray-900">
-                            {results.analysis?.statisticalSignificance?.significantAt95Confidence ? '95%' : 'Not Significant'}
+                            {results.analysis?.statisticalSignificance?.significantAt95Confidence ? '95%' : t('analysis.no')}
                           </p>
                         </div>
                       </div>
@@ -441,7 +441,7 @@ export default function AnalysisPage() {
                   {/* Recommendations */}
                   {results.recommendations && results.recommendations.length > 0 && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-blue-900 mb-2">Recommendations</h4>
+                      <h4 className="font-semibold text-blue-900 mb-2">{t('analysis.recommendations')}</h4>
                       <ul className="space-y-2">
                         {results.recommendations.map((rec, idx) => (
                           <li key={idx} className="text-sm text-blue-800 flex gap-2">
@@ -486,15 +486,15 @@ export default function AnalysisPage() {
                         {expandedDetails === `dept-${idx}` && (
                           <div className="mt-4 pt-4 border-t border-gray-200 space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Male Average Salary:</span>
+                              <span className="text-gray-600">{t('analysis.maleAverageSalary')}</span>
                               <span className="font-semibold">€{dept.maleAvgSalary?.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Female Average Salary:</span>
+                              <span className="text-gray-600">{t('analysis.femaleAverageSalary')}</span>
                               <span className="font-semibold">€{dept.femaleAvgSalary?.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Difference:</span>
+                              <span className="text-gray-600">{t('analysis.difference')}</span>
                               <span className="font-semibold">
                                 €{(dept.maleAvgSalary - dept.femaleAvgSalary)?.toFixed(2)}
                               </span>
@@ -504,7 +504,7 @@ export default function AnalysisPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-600 text-center py-8">No data available for departments</p>
+                    <p className="text-gray-600 text-center py-8">{t('analysis.noData')} {t('analysis.byDepartment')}</p>
                   )}
                 </div>
               )}
@@ -538,15 +538,15 @@ export default function AnalysisPage() {
                         {expandedDetails === `job-${idx}` && (
                           <div className="mt-4 pt-4 border-t border-gray-200 space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Male Average Salary:</span>
+                              <span className="text-gray-600">{t('analysis.maleAverageSalary')}</span>
                               <span className="font-semibold">€{job.maleAvgSalary?.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Female Average Salary:</span>
+                              <span className="text-gray-600">{t('analysis.femaleAverageSalary')}</span>
                               <span className="font-semibold">€{job.femaleAvgSalary?.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Difference:</span>
+                              <span className="text-gray-600">{t('analysis.difference')}</span>
                               <span className="font-semibold">
                                 €{(job.maleAvgSalary - job.femaleAvgSalary)?.toFixed(2)}
                               </span>
@@ -556,7 +556,7 @@ export default function AnalysisPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-600 text-center py-8">No data available for job codes</p>
+                    <p className="text-gray-600 text-center py-8">{t('analysis.noData')} {t('analysis.byJobCode')}</p>
                   )}
                 </div>
               )}
@@ -570,7 +570,7 @@ export default function AnalysisPage() {
                         <div className="flex justify-between items-center">
                           <div>
                             <h4 className="font-semibold text-gray-900">{tenure.tenureRange}</h4>
-                            <p className="text-xs text-gray-600 mt-1">{tenure.employeeCount} employees</p>
+                            <p className="text-xs text-gray-600 mt-1">{tenure.employeeCount} {t('analysis.employees')}</p>
                           </div>
                           <p className={`text-2xl font-bold ${getGapColor(tenure.gap)}`}>
                             {tenure.gap?.toFixed(2)}%
@@ -579,7 +579,7 @@ export default function AnalysisPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-600 text-center py-8">No data available for tenure</p>
+                    <p className="text-gray-600 text-center py-8">{t('analysis.noData')} {t('analysis.byTenure')}</p>
                   )}
                 </div>
               )}
@@ -590,7 +590,7 @@ export default function AnalysisPage() {
           {['MANAGER', 'HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'CFO', 'ADMIN'].includes(role || '') && (
             <div className="card">
               <div className="card-header">
-                <h3 className="text-lg font-semibold text-gray-900">Actions</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('analysis.actions')}</h3>
               </div>
               <div className="card-body">
                 <div className="flex flex-wrap gap-3">
@@ -599,17 +599,17 @@ export default function AnalysisPage() {
                       onClick={() => router.push('/justifications/submit')}
                       className="btn btn-primary"
                     >
-                      Submit Justification
+                      {t('analysis.submitJustification')}
                     </button>
                   )}
                   <button onClick={loadAnalysis} className="btn btn-secondary" disabled={loading}>
-                    Refresh Analysis
+                    {t('analysis.refreshAnalysis')}
                   </button>
                   <button
                     onClick={() => window.print()}
                     className="btn btn-secondary"
                   >
-                    Print Report
+                    {t('analysis.printReport')}
                   </button>
                 </div>
               </div>

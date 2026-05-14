@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
 import { useReports } from '@/hooks/useApi';
+import { useLanguage } from '@/utils/useLanguage';
 
 interface ComplianceReport {
   reportPeriod: string;
@@ -41,6 +42,7 @@ export default function ReportsPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { getComplianceReport, loading, error } = useReports();
+  const { t } = useLanguage();
 
   const [activeReport, setActiveReport] = useState<'compliance' | 'statistics' | 'audit' | 'corrective'>('compliance');
   const [reportYear, setReportYear] = useState(new Date().getFullYear());
@@ -171,14 +173,14 @@ export default function ReportsPage() {
       <div className="card">
         <div className="card-header flex justify-between items-start">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Compliance Reports</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('reports.title')}</h1>
             <p className="text-sm text-gray-600 mt-2">
-              EU Directive 2023/970 compliance reporting and administrative dashboards
+              {t('reports.generateAndViewReports')}
             </p>
           </div>
           <div className="form-group mb-0">
             <label htmlFor="reportYear" className="form-label">
-              Report Year
+              {t('reports.reportYear')}
             </label>
             <select
               id="reportYear"
@@ -208,10 +210,10 @@ export default function ReportsPage() {
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
-                {tab === 'compliance' && 'Compliance Status'}
-                {tab === 'statistics' && 'Statistics'}
-                {tab === 'audit' && 'Audit Trail'}
-                {tab === 'corrective' && 'Corrective Measures'}
+                {tab === 'compliance' && t('reports.complianceStatus')}
+                {tab === 'statistics' && t('reports.statistics')}
+                {tab === 'audit' && t('reports.auditTrail')}
+                {tab === 'corrective' && t('reports.correctiveMeasures')}
               </button>
             ))}
           </div>
@@ -221,7 +223,7 @@ export default function ReportsPage() {
       {/* Error Alert */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Error</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
@@ -232,7 +234,7 @@ export default function ReportsPage() {
           <div className="card-body text-center py-8">
             <p className="text-gray-600">
               <span className="spinner mr-2"></span>
-              Generating report...
+              {t('reports.generatingReport')}
             </p>
           </div>
         </div>
@@ -246,13 +248,13 @@ export default function ReportsPage() {
             <div className="card-body">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Overall Compliance Status</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('reports.overallComplianceStatus')}</p>
                   <h2 className={`text-3xl font-bold ${complianceTextColor(report.overallComplianceStatus)}`}>
                     {report.overallComplianceStatus === 'COMPLIANT'
-                      ? 'Compliant'
+                      ? t('reports.compliant')
                       : report.overallComplianceStatus === 'REQUIRES_JUSTIFICATION'
-                      ? 'Requires Justification'
-                      : 'Critical'}
+                      ? t('reports.requiresJustification')
+                      : t('reports.critical')}
                   </h2>
                 </div>
                 <div className="text-4xl">
@@ -267,7 +269,7 @@ export default function ReportsPage() {
           {/* Articles Compliance */}
           <div className="card">
             <div className="card-header">
-              <h2 className="text-lg font-semibold text-gray-900">Directive Articles Compliance</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('reports.directiveArticlesCompliance')}</h2>
             </div>
             <div className="card-body">
               <div className="space-y-3">
@@ -278,7 +280,9 @@ export default function ReportsPage() {
                         <div className="flex items-center gap-3 mb-2">
                           <h4 className="font-semibold text-gray-900">{article.article}: {article.title}</h4>
                           <span className={`badge ${getStatusBadgeClass(article.status)}`}>
-                            {article.status}
+                            {article.status === 'COMPLIANT' && t('reports.compliant')}
+                            {article.status === 'PARTIAL' && t('reports.requiresJustification')}
+                            {article.status === 'NON_COMPLIANT' && t('reports.critical')}
                           </span>
                         </div>
                         <p className="text-sm text-gray-700">{article.details}</p>
@@ -299,7 +303,7 @@ export default function ReportsPage() {
           {report.recommendations.length > 0 && (
             <div className="card">
               <div className="card-header">
-                <h2 className="text-lg font-semibold text-gray-900">Recommendations</h2>
+                <h2 className="text-lg font-semibold text-gray-900">{t('reports.recommendations')}</h2>
               </div>
               <div className="card-body">
                 <div className="space-y-3">
@@ -317,7 +321,7 @@ export default function ReportsPage() {
           {/* Next Review */}
           <div className="card">
             <div className="card-body">
-              <p className="text-sm text-gray-600">Next Compliance Review</p>
+              <p className="text-sm text-gray-600">{t('reports.nextComplianceReview')}</p>
               <p className="text-2xl font-bold text-gray-900 mt-2">{report.nextReviewDate}</p>
             </div>
           </div>
@@ -331,30 +335,30 @@ export default function ReportsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Total Employees</p>
+                <p className="text-sm text-gray-600 mb-2">{t('reports.totalEmployees')}</p>
                 <p className="text-3xl font-bold text-gray-900">{report.statisticsSummary.totalEmployees}</p>
               </div>
             </div>
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Gender Distribution</p>
+                <p className="text-sm text-gray-600 mb-2">{t('reports.genderDistribution')}</p>
                 <div className="space-y-2 text-sm mt-3">
                   <div className="flex justify-between">
-                    <span>Male:</span>
+                    <span>{t('reports.male')}</span>
                     <span className="font-semibold">
                       {report.statisticsSummary.genderDistribution.male} (
                       {((report.statisticsSummary.genderDistribution.male / report.statisticsSummary.totalEmployees) * 100).toFixed(1)}%)
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Female:</span>
+                    <span>{t('reports.female')}</span>
                     <span className="font-semibold">
                       {report.statisticsSummary.genderDistribution.female} (
                       {((report.statisticsSummary.genderDistribution.female / report.statisticsSummary.totalEmployees) * 100).toFixed(1)}%)
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Other:</span>
+                    <span>{t('reports.other')}</span>
                     <span className="font-semibold">
                       {report.statisticsSummary.genderDistribution.other} (
                       {((report.statisticsSummary.genderDistribution.other / report.statisticsSummary.totalEmployees) * 100).toFixed(1)}%)
@@ -365,13 +369,13 @@ export default function ReportsPage() {
             </div>
             <div className="card">
               <div className="card-body">
-                <p className="text-sm text-gray-600 mb-2">Employees Affected by Gap</p>
+                <p className="text-sm text-gray-600 mb-2">{t('reports.employeesAffectedByGap')}</p>
                 <p className="text-3xl font-bold text-red-600">{report.statisticsSummary.payGapMetrics.employeesAffected}</p>
                 <p className="text-xs text-gray-600 mt-2">
                   {(
                     (report.statisticsSummary.payGapMetrics.employeesAffected / report.statisticsSummary.totalEmployees) *
                     100
-                  ).toFixed(1)}% of workforce
+                  ).toFixed(1)}% {t('reports.ofWorkforce')}
                 </p>
               </div>
             </div>
@@ -380,24 +384,24 @@ export default function ReportsPage() {
           {/* Pay Gap Metrics */}
           <div className="card">
             <div className="card-header">
-              <h2 className="text-lg font-semibold text-gray-900">Pay Gap Metrics</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('reports.payGapMetrics')}</h2>
             </div>
             <div className="card-body">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 uppercase font-semibold">Overall Gap</p>
+                  <p className="text-xs text-gray-600 uppercase font-semibold">{t('reports.overallGap')}</p>
                   <p className="text-2xl font-bold text-red-600 mt-1">
                     {report.statisticsSummary.payGapMetrics.overallGap.toFixed(2)}%
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 uppercase font-semibold">By Department</p>
+                  <p className="text-xs text-gray-600 uppercase font-semibold">{t('reports.byDepartment')}</p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
                     {report.statisticsSummary.payGapMetrics.gapsByDepartment}
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 uppercase font-semibold">By Job Code</p>
+                  <p className="text-xs text-gray-600 uppercase font-semibold">{t('reports.byJobCode')}</p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
                     {report.statisticsSummary.payGapMetrics.gapsByJobCode}
                   </p>
@@ -409,24 +413,24 @@ export default function ReportsPage() {
           {/* Justification Status */}
           <div className="card">
             <div className="card-header">
-              <h2 className="text-lg font-semibold text-gray-900">Justification Status</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('reports.justificationStatus')}</h2>
             </div>
             <div className="card-body">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Submitted</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('reports.submitted')}</p>
                   <p className="text-3xl font-bold text-blue-600">{report.statisticsSummary.justifications.submitted}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Approved</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('reports.approved')}</p>
                   <p className="text-3xl font-bold text-green-600">{report.statisticsSummary.justifications.approved}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Pending</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('reports.pending')}</p>
                   <p className="text-3xl font-bold text-yellow-600">{report.statisticsSummary.justifications.pending}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Rejected</p>
+                  <p className="text-sm text-gray-600 mb-2">{t('reports.rejected')}</p>
                   <p className="text-3xl font-bold text-red-600">{report.statisticsSummary.justifications.rejected}</p>
                 </div>
               </div>
@@ -439,14 +443,14 @@ export default function ReportsPage() {
       {activeReport === 'audit' && !loading && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Audit Trail & System Events</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('reports.auditTrailSystemEvents')}</h2>
           </div>
           <div className="card-body">
             <p className="text-gray-700 mb-4">
-              Complete immutable audit trail of all system operations per Directive Article 15
+              {t('reports.completeImmutableAuditTrail')}
             </p>
             <button onClick={() => router.push('/audit')} className="btn btn-primary">
-              View Full Audit Trail
+              {t('reports.viewFullAuditTrail')}
             </button>
           </div>
         </div>
@@ -456,14 +460,14 @@ export default function ReportsPage() {
       {activeReport === 'corrective' && !loading && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Corrective Measures & Action Plans</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('reports.correctiveMeasuresActionPlans')}</h2>
           </div>
           <div className="card-body">
             <p className="text-gray-700 mb-4">
-              Track implementation status of corrective measures and action plans
+              {t('reports.trackImplementationStatus')}
             </p>
             <button onClick={() => router.push('/corrective-measures')} className="btn btn-primary">
-              View Corrective Measures
+              {t('reports.viewCorrectiveMeasures')}
             </button>
           </div>
         </div>
@@ -472,21 +476,21 @@ export default function ReportsPage() {
       {/* Export Section */}
       <div className="card">
         <div className="card-header">
-          <h2 className="text-lg font-semibold text-gray-900">Export Report</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('reports.exportReport')}</h2>
         </div>
         <div className="card-body">
           <p className="text-sm text-gray-600 mb-4">
-            Download this compliance report in various formats for regulatory submission or archival
+            {t('reports.exportDescription')}
           </p>
           <div className="flex flex-wrap gap-3">
             <button className="btn btn-secondary">
-              📄 Export as PDF
+              📄 {t('reports.exportAsPDF')}
             </button>
             <button className="btn btn-secondary">
-              📊 Export as Excel
+              📊 {t('reports.exportAsExcel')}
             </button>
             <button onClick={() => window.print()} className="btn btn-secondary">
-              🖨️ Print Report
+              🖨️ {t('reports.printReport')}
             </button>
           </div>
         </div>

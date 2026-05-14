@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
+import { useLanguage } from '@/utils/useLanguage';
 import { useJobs } from '@/hooks/useApi';
 
 interface JobEvaluation {
@@ -26,6 +27,7 @@ interface JobEvaluation {
 export default function JobsPage() {
   const router = useRouter();
   const { role } = useAuth();
+  const { t } = useLanguage();
   const { listJobs, loading, error } = useJobs();
 
   const [jobs, setJobs] = useState<JobEvaluation[]>([]);
@@ -153,11 +155,11 @@ export default function JobsPage() {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'DRAFT':
-        return 'Draft';
+        return t('jobs.draft');
       case 'SUBMITTED':
-        return 'Submitted for Review';
+        return t('jobs.submittedForReview');
       case 'ACTIVE':
-        return 'Active';
+        return t('jobs.active');
       default:
         return status;
     }
@@ -169,14 +171,14 @@ export default function JobsPage() {
       <div className="card">
         <div className="card-header flex justify-between items-start">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Job Evaluations</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('jobs.title')}</h1>
             <p className="text-sm text-gray-600 mt-2">
-              Manage job evaluation methodologies per EU Directive 2023/970, Article 3
+              {t('jobs.description')}
             </p>
           </div>
           {['HR_SPECIALIST', 'ADMIN'].includes(role || '') && (
             <button onClick={() => router.push('/jobs/create')} className="btn btn-primary">
-              Create Job Evaluation
+              {t('jobs.create')}
             </button>
           )}
         </div>
@@ -185,13 +187,13 @@ export default function JobsPage() {
       {/* Filters */}
       <div className="card">
         <div className="card-header">
-          <h2 className="text-lg font-semibold text-gray-900">Filters & Sorting</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('jobs.filtersAndSorting')}</h2>
         </div>
         <div className="card-body">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="form-group mb-0">
               <label htmlFor="department" className="form-label">
-                Department
+                {t('common.department')}
               </label>
               <select
                 id="department"
@@ -199,19 +201,19 @@ export default function JobsPage() {
                 onChange={e => setFilters(prev => ({ ...prev, department: e.target.value }))}
                 className="form-select"
               >
-                <option value="">All Departments</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Sales">Sales</option>
-                <option value="Marketing">Marketing</option>
-                <option value="HR">HR</option>
-                <option value="Finance">Finance</option>
-                <option value="Operations">Operations</option>
+                <option value="">{t('common.allDepartments')}</option>
+                <option value="Engineering">{t('common.engineering')}</option>
+                <option value="Sales">{t('common.sales')}</option>
+                <option value="Marketing">{t('common.marketing')}</option>
+                <option value="HR">{t('common.humanResources')}</option>
+                <option value="Finance">{t('common.finance')}</option>
+                <option value="Operations">{t('common.operations')}</option>
               </select>
             </div>
 
             <div className="form-group mb-0">
               <label htmlFor="status" className="form-label">
-                Status
+                {t('jobs.status')}
               </label>
               <select
                 id="status"
@@ -219,16 +221,16 @@ export default function JobsPage() {
                 onChange={e => setFilters(prev => ({ ...prev, status: e.target.value }))}
                 className="form-select"
               >
-                <option value="">All Statuses</option>
-                <option value="DRAFT">Draft</option>
-                <option value="SUBMITTED">Submitted</option>
-                <option value="ACTIVE">Active</option>
+                <option value="">{t('jobs.allStatuses')}</option>
+                <option value="DRAFT">{t('jobs.draft')}</option>
+                <option value="SUBMITTED">{t('jobs.submitted')}</option>
+                <option value="ACTIVE">{t('jobs.active')}</option>
               </select>
             </div>
 
             <div className="form-group mb-0">
               <label htmlFor="sortBy" className="form-label">
-                Sort By
+                {t('jobs.sortBy')}
               </label>
               <select
                 id="sortBy"
@@ -236,8 +238,8 @@ export default function JobsPage() {
                 onChange={e => setSortBy(e.target.value)}
                 className="form-select"
               >
-                <option value="createdDate">Most Recent</option>
-                <option value="title">Job Title</option>
+                <option value="createdDate">{t('jobs.mostRecent')}</option>
+                <option value="title">{t('jobs.jobTitle')}</option>
               </select>
             </div>
 
@@ -250,10 +252,10 @@ export default function JobsPage() {
                 {loading ? (
                   <>
                     <span className="spinner mr-2"></span>
-                    Searching...
+                    {t('jobs.searching')}
                   </>
                 ) : (
-                  'Apply Filters'
+                  t('jobs.applyFilters')
                 )}
               </button>
             </div>
@@ -264,7 +266,7 @@ export default function JobsPage() {
       {/* Error Alert */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Error</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
@@ -273,17 +275,17 @@ export default function JobsPage() {
       <div className="card">
         <div className="card-header">
           <h2 className="text-lg font-semibold text-gray-900">
-            {jobs.length} Job Evaluation{jobs.length !== 1 ? 's' : ''}
+            {jobs.length} {t('jobs.jobCount')}{jobs.length !== 1 ? 's' : ''}
           </h2>
         </div>
 
         <div className="card-body">
           {jobs.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600 mb-4">No job evaluations found</p>
+              <p className="text-gray-600 mb-4">{t('jobs.noJobsFound')}</p>
               {['HR_SPECIALIST', 'ADMIN'].includes(role || '') && (
                 <button onClick={() => router.push('/jobs/create')} className="btn btn-primary">
-                  Create First Job Evaluation
+                  {t('jobs.createFirstJob')}
                 </button>
               )}
             </div>
@@ -318,7 +320,7 @@ export default function JobsPage() {
                               }}
                               className="btn btn-sm btn-secondary"
                             >
-                              Edit
+                              {t('common.edit')}
                             </button>
                           )}
                           {job.status === 'SUBMITTED' && ['COMPLIANCE_OFFICER', 'ADMIN'].includes(role || '') && (
@@ -329,7 +331,7 @@ export default function JobsPage() {
                               }}
                               className="btn btn-sm btn-primary"
                             >
-                              Activate
+                              {t('jobs.activate')}
                             </button>
                           )}
                         </div>
@@ -339,22 +341,22 @@ export default function JobsPage() {
 
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-600">Created</p>
+                      <p className="text-gray-600">{t('jobs.created')}</p>
                       <p className="font-medium text-gray-900">{job.createdDate}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Last Updated</p>
+                      <p className="text-gray-600">{t('jobs.lastUpdated')}</p>
                       <p className="font-medium text-gray-900">{job.lastUpdatedDate}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Evaluation Method</p>
+                      <p className="text-gray-600">{t('jobs.evaluationMethod')}</p>
                       <p className="font-medium text-gray-900">{job.evaluationMethod}</p>
                     </div>
                   </div>
 
                   {job.pointScale && (
                     <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-600">
-                      Point Scale: {job.pointScale.min} - {job.pointScale.max}
+                      {t('jobs.pointScale')}: {job.pointScale.min} - {job.pointScale.max}
                     </div>
                   )}
                 </div>
@@ -387,23 +389,23 @@ export default function JobsPage() {
               {/* Status & Timeline */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 uppercase font-semibold">Status</p>
+                  <p className="text-xs text-gray-600 uppercase font-semibold">{t('jobs.status')}</p>
                   <p className="font-bold text-gray-900 mt-2">{getStatusLabel(selectedJob.status)}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 uppercase font-semibold">Created</p>
+                  <p className="text-xs text-gray-600 uppercase font-semibold">{t('jobs.created')}</p>
                   <p className="font-bold text-gray-900 mt-2">{selectedJob.createdDate}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 uppercase font-semibold">Created By</p>
+                  <p className="text-xs text-gray-600 uppercase font-semibold">{t('common.edit')}</p>
                   <p className="font-bold text-gray-900 mt-2">{selectedJob.createdBy}</p>
                 </div>
               </div>
 
               {/* Evaluation Details */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Evaluation Criteria</h3>
-                <p className="text-sm text-gray-700 mb-3">Method: {selectedJob.evaluationMethod}</p>
+                <h3 className="font-semibold text-gray-900 mb-3">{t('jobs.evaluationCriteria')}</h3>
+                <p className="text-sm text-gray-700 mb-3">{t('jobs.evaluationMethod')}: {selectedJob.evaluationMethod}</p>
 
                 {selectedJob.weightedCriteria && (
                   <div className="space-y-2">
@@ -414,7 +416,7 @@ export default function JobsPage() {
                       </div>
                     ))}
                     <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg font-semibold">
-                      <span className="text-gray-900">Total Weight</span>
+                      <span className="text-gray-900">{t('jobs.totalWeight')}</span>
                       <span className="text-lg text-blue-600">
                         {selectedJob.weightedCriteria.reduce((sum, c) => sum + c.weight, 0)}%
                       </span>
@@ -426,14 +428,14 @@ export default function JobsPage() {
               {/* Point Scale */}
               {selectedJob.pointScale && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">Point Scale</h3>
+                  <h3 className="font-semibold text-gray-900 mb-3">{t('jobs.pointScale')}</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600">Minimum Points</p>
+                      <p className="text-sm text-gray-600">{t('jobs.minimumPoints')}</p>
                       <p className="text-2xl font-bold text-gray-900 mt-1">{selectedJob.pointScale.min}</p>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600">Maximum Points</p>
+                      <p className="text-sm text-gray-600">{t('jobs.maximumPoints')}</p>
                       <p className="text-2xl font-bold text-gray-900 mt-1">{selectedJob.pointScale.max}</p>
                     </div>
                   </div>
@@ -442,10 +444,9 @@ export default function JobsPage() {
 
               {/* Article Reference */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="font-medium text-blue-900 mb-2">📋 Directive Compliance</p>
+                <p className="font-medium text-blue-900 mb-2">{t('jobs.directiveCompliance')}</p>
                 <p className="text-sm text-blue-800">
-                  This job evaluation methodology implements EU Directive 2023/970, Article 3 requirements for transparent
-                  and objective job evaluation systems.
+                  {t('jobs.complianceMessage')}
                 </p>
               </div>
             </div>
@@ -459,14 +460,14 @@ export default function JobsPage() {
                   }}
                   className="btn btn-primary"
                 >
-                  Edit
+                  {t('common.edit')}
                 </button>
               )}
               <button onClick={() => window.print()} className="btn btn-secondary">
-                Print
+                {t('jobs.print')}
               </button>
               <button onClick={() => setSelectedJob(null)} className="btn btn-secondary ml-auto">
-                Close
+                {t('common.close')}
               </button>
             </div>
           </div>

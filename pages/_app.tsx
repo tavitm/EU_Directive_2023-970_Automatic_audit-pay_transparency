@@ -156,7 +156,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t(language, 'common.loading')}</p>
         </div>
       </div>
     );
@@ -189,24 +189,24 @@ function MyApp({ Component, pageProps }: AppProps) {
           }`}>
             <nav className="p-6 flex-1">
               <div className="mb-8">
-                <h1 className="text-2xl font-bold text-blue-600">Directive 2023/970</h1>
-                <p className="text-sm text-gray-600 mt-1">Pay Transparency System</p>
+                <h1 className="text-2xl font-bold text-blue-600">{t(language, 'header.directiveTitle')}</h1>
+                <p className="text-sm text-gray-600 mt-1">{t(language, 'header.payTransparencySystem')}</p>
               </div>
 
               <div className="space-y-2">
                 {/* Dashboard */}
-                <NavLink href="/dashboard" label="Dashboard" icon="📊" />
+                <NavLink href="/dashboard" label={t(language, 'nav.dashboard')} icon="📊" />
 
                 {/* Job Management - HR_SPECIALIST+ */}
                 {role && ['HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'CFO', 'ADMIN'].includes(role) && (
                   <>
                     <div className="pt-4 pb-2">
                       <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Job Management
+                        {t(language, 'nav.jobManagement')}
                       </p>
                     </div>
-                    <NavLink href="/jobs" label="Job Evaluations" icon="💼" />
-                    <NavLink href="/jobs/create" label="New Job" icon="➕" />
+                    <NavLink href="/jobs" label={t(language, 'nav.jobEvaluations')} icon="💼" />
+                    <NavLink href="/jobs/create" label={t(language, 'nav.newJob')} icon="➕" />
                   </>
                 )}
 
@@ -215,10 +215,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <>
                     <div className="pt-4 pb-2">
                       <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Employees
+                        {t(language, 'nav.employees')}
                       </p>
                     </div>
-                    <NavLink href="/employees/import" label="Import Data" icon="📥" />
+                    <NavLink href="/employees/import" label={t(language, 'nav.importData')} icon="📥" />
                   </>
                 )}
 
@@ -227,11 +227,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <>
                     <div className="pt-4 pb-2">
                       <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Analysis
+                        {t(language, 'nav.analysis')}
                       </p>
                     </div>
-                    <NavLink href="/analysis" label="Pay Gap Analysis" icon="📈" />
-                    <NavLink href="/justifications" label="Justifications" icon="📋" />
+                    <NavLink href="/analysis" label={t(language, 'nav.payGapAnalysis')} icon="📈" />
+                    <NavLink href="/justifications" label={t(language, 'nav.justifications')} icon="📋" />
                   </>
                 )}
 
@@ -240,10 +240,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <>
                     <div className="pt-4 pb-2">
                       <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        My Data
+                        {t(language, 'nav.myData')}
                       </p>
                     </div>
-                    <NavLink href="/transparency" label="Transparency Request" icon="🔍" />
+                    <NavLink href="/transparency" label={t(language, 'nav.transparencyRequest')} icon="🔍" />
                   </>
                 )}
 
@@ -252,11 +252,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <>
                     <div className="pt-4 pb-2">
                       <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Reports
+                        {t(language, 'nav.reports')}
                       </p>
                     </div>
-                    <NavLink href="/reports" label="Compliance Reports" icon="📊" />
-                    <NavLink href="/audit" label="Audit Logs" icon="📋" />
+                    <NavLink href="/reports" label={t(language, 'nav.complianceReports')} icon="📊" />
+                    <NavLink href="/audit" label={t(language, 'nav.auditLogs')} icon="📋" />
                   </>
                 )}
 
@@ -265,11 +265,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <>
                     <div className="pt-4 pb-2">
                       <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Administration
+                        {t(language, 'nav.administration')}
                       </p>
                     </div>
-                    <NavLink href="/admin/users" label="Users" icon="👥" />
-                    <NavLink href="/admin/settings" label="Settings" icon="⚙️" />
+                    <NavLink href="/admin/users" label={t(language, 'nav.users')} icon="👥" />
+                    <NavLink href="/admin/settings" label={t(language, 'nav.settings')} icon="⚙️" />
                   </>
                 )}
               </div>
@@ -285,7 +285,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <button
                   onClick={logout}
                   className="text-gray-500 hover:text-gray-700 text-lg"
-                  title="Logout"
+                  title={t(language, 'common.logout')}
                 >
                   🚪
                 </button>

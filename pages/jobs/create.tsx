@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
 import { useJobs } from '@/hooks/useApi';
+import { useLanguage } from '@/utils/useLanguage';
 
 interface Criterion {
   name: string;
@@ -23,6 +24,7 @@ export default function CreateJobPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { createJob, loading, error } = useJobs();
+  const { t } = useLanguage();
 
   const [step, setStep] = useState<'basic' | 'criteria' | 'scale' | 'review' | 'created'>('basic');
   const [formData, setFormData] = useState<JobForm>({
@@ -49,11 +51,11 @@ export default function CreateJobPage() {
       <div className="space-y-6">
         <div className="card">
           <div className="card-header bg-yellow-50 border-b border-yellow-200">
-            <h2 className="text-lg font-semibold text-yellow-900">Access Restricted</h2>
+            <h2 className="text-lg font-semibold text-yellow-900">{t('jobs.accessRestricted')}</h2>
           </div>
           <div className="card-body">
             <p className="text-gray-700">
-              Only HR Specialists and Administrators can create job evaluations.
+              {t('jobs.onlyHRCanCreate')}
             </p>
           </div>
         </div>
@@ -96,37 +98,37 @@ export default function CreateJobPage() {
 
     if (currentStep === 'basic') {
       if (!formData.jobCode.trim()) {
-        errors.jobCode = 'Job code is required';
+        errors.jobCode = t('jobs.jobCodeRequired');
       }
       if (!formData.title.trim()) {
-        errors.title = 'Job title is required';
+        errors.title = t('jobs.jobTitleRequired');
       }
       if (!formData.department.trim()) {
-        errors.department = 'Department is required';
+        errors.department = t('jobs.departmentRequired');
       }
     }
 
     if (currentStep === 'criteria') {
       const totalWeight = formData.criteria.reduce((sum, c) => sum + c.weight, 0);
       if (totalWeight !== 100) {
-        errors.criteria = `Weights must sum to 100% (currently ${totalWeight}%)`;
+        errors.criteria = t('jobs.weightsMustSum').replace('{{weight}}', totalWeight.toString());
       }
       formData.criteria.forEach((c, idx) => {
         if (!c.name.trim()) {
-          errors[`criterion-${idx}`] = 'Criterion name required';
+          errors[`criterion-${idx}`] = t('jobs.criterionNameRequired');
         }
         if (c.weight < 0 || c.weight > 100) {
-          errors[`weight-${idx}`] = 'Weight must be between 0 and 100';
+          errors[`weight-${idx}`] = t('jobs.weightBetween');
         }
       });
     }
 
     if (currentStep === 'scale') {
       if (formData.pointScaleMin < 0) {
-        errors.pointScaleMin = 'Minimum points must be 0 or greater';
+        errors.pointScaleMin = t('jobs.minimumPointsGte');
       }
       if (formData.pointScaleMax <= formData.pointScaleMin) {
-        errors.pointScaleMax = 'Maximum points must be greater than minimum';
+        errors.pointScaleMax = t('jobs.maximumPointsGreater');
       }
     }
 
@@ -177,9 +179,9 @@ export default function CreateJobPage() {
       {/* Header */}
       <div className="card">
         <div className="card-header">
-          <h1 className="text-2xl font-bold text-gray-900">Create Job Evaluation</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('jobs.createJobTitle')}</h1>
           <p className="text-sm text-gray-600 mt-2">
-            Define job evaluation methodology per EU Directive 2023/970, Article 3
+            {t('jobs.defineJobEvaluation')}
           </p>
         </div>
       </div>
@@ -204,10 +206,10 @@ export default function CreateJobPage() {
                       {idx + 1}
                     </div>
                     <span className="ml-2 text-sm font-medium text-gray-700">
-                      {s === 'basic' && 'Basic Info'}
-                      {s === 'criteria' && 'Criteria'}
-                      {s === 'scale' && 'Point Scale'}
-                      {s === 'review' && 'Review'}
+                      {s === 'basic' && t('jobs.basicInfo')}
+                      {s === 'criteria' && t('jobs.step2Title')}
+                      {s === 'scale' && t('jobs.step3Title')}
+                      {s === 'review' && t('jobs.review')}
                     </span>
                   </div>
                   {idx < 3 && <div className="flex-1 h-1 bg-gray-200 mx-4"></div>}
@@ -230,15 +232,15 @@ export default function CreateJobPage() {
       {step === 'basic' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 1: Basic Information</h2>
-            <p className="text-sm text-gray-600 mt-2">Define the job position and basic evaluation details</p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('jobs.step1BasicInformation')}</h2>
+            <p className="text-sm text-gray-600 mt-2">{t('jobs.defineJobPosition')}</p>
           </div>
 
           <div className="card-body space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
                 <label htmlFor="jobCode" className="form-label">
-                  Job Code *
+                  {t('jobs.jobCode')} *
                 </label>
                 <input
                   id="jobCode"
@@ -254,7 +256,7 @@ export default function CreateJobPage() {
 
               <div className="form-group">
                 <label htmlFor="title" className="form-label">
-                  Job Title *
+                  {t('jobs.jobTitle')} *
                 </label>
                 <input
                   id="title"
@@ -272,7 +274,7 @@ export default function CreateJobPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
                 <label htmlFor="department" className="form-label">
-                  Department *
+                  {t('common.department')} *
                 </label>
                 <select
                   id="department"
@@ -281,22 +283,22 @@ export default function CreateJobPage() {
                   onChange={handleInputChange}
                   className="form-select"
                 >
-                  <option value="">Select department</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="Sales">Sales</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Operations">Operations</option>
-                  <option value="Finance">Finance</option>
-                  <option value="HR">Human Resources</option>
-                  <option value="Legal">Legal</option>
-                  <option value="Executive">Executive</option>
+                  <option value="">{t('jobs.selectDepartment')}</option>
+                  <option value="Engineering">{t('common.engineering')}</option>
+                  <option value="Sales">{t('common.sales')}</option>
+                  <option value="Marketing">{t('common.marketing')}</option>
+                  <option value="Operations">{t('common.operations')}</option>
+                  <option value="Finance">{t('common.finance')}</option>
+                  <option value="HR">{t('common.humanResources')}</option>
+                  <option value="Legal">{t('common.legal')}</option>
+                  <option value="Executive">{t('common.executive')}</option>
                 </select>
                 {formErrors.department && <p className="form-error">{formErrors.department}</p>}
               </div>
 
               <div className="form-group">
                 <label htmlFor="evaluationMethod" className="form-label">
-                  Evaluation Method
+                  {t('jobs.evaluationMethod')}
                 </label>
                 <select
                   id="evaluationMethod"
@@ -305,44 +307,43 @@ export default function CreateJobPage() {
                   onChange={handleInputChange}
                   className="form-select"
                 >
-                  <option value="Point-Factor Method">Point-Factor Method</option>
-                  <option value="Market-Based">Market-Based Approach</option>
-                  <option value="Job Ranking">Job Ranking</option>
-                  <option value="Factor Comparison">Factor Comparison</option>
+                  <option value="Point-Factor Method">{t('jobs.pointFactorMethod')}</option>
+                  <option value="Market-Based">{t('jobs.marketBased')}</option>
+                  <option value="Job Ranking">{t('jobs.jobRanking')}</option>
+                  <option value="Factor Comparison">{t('jobs.factorComparison')}</option>
                 </select>
               </div>
             </div>
 
             <div className="form-group">
               <label htmlFor="description" className="form-label">
-                Description
+                {t('jobs.description')}
               </label>
               <textarea
                 id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder="Brief description of the job and its responsibilities..."
+                placeholder={t('jobs.jobDescriptionPlaceholder')}
                 className="form-textarea"
                 rows={4}
               ></textarea>
             </div>
 
             <div className="alert alert-info">
-              <p className="font-medium">📋 Directive Compliance Note</p>
+              <p className="font-medium">📋 {t('jobs.directionCompliance')}</p>
               <p className="text-sm mt-2">
-                Job evaluation methodologies must be objective, transparent, and non-discriminatory per Article 3 of EU
-                Directive 2023/970. This ensures fair pay for work of equal value.
+                {t('jobs.directionComplianceMessage')}
               </p>
             </div>
           </div>
 
           <div className="card-footer flex gap-3">
             <button onClick={() => router.push('/jobs')} className="btn btn-secondary">
-              Cancel
+              {t('common.cancel')}
             </button>
             <button onClick={handleNext} disabled={loading} className="btn btn-primary">
-              Continue
+              {t('common.next')}
             </button>
           </div>
         </div>
@@ -352,9 +353,9 @@ export default function CreateJobPage() {
       {step === 'criteria' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 2: Evaluation Criteria</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('jobs.step2Title')}</h2>
             <p className="text-sm text-gray-600 mt-2">
-              Define weighted criteria that sum to 100%
+              {t('jobs.step2Description')}
             </p>
           </div>
 
@@ -367,7 +368,7 @@ export default function CreateJobPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="form-group mb-0">
                       <label htmlFor={`criterion-name-${idx}`} className="form-label">
-                        Criterion Name
+                        {t('jobs.criterionName')}
                       </label>
                       <input
                         id={`criterion-name-${idx}`}
@@ -383,7 +384,7 @@ export default function CreateJobPage() {
 
                     <div className="form-group mb-0">
                       <label htmlFor={`criterion-weight-${idx}`} className="form-label">
-                        Weight (%)
+                        {t('jobs.weight')}
                       </label>
                       <div className="flex gap-2">
                         <input
@@ -410,14 +411,14 @@ export default function CreateJobPage() {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
               <div className="flex justify-between items-center">
-                <p className="font-medium text-blue-900">Total Weight</p>
+                <p className="font-medium text-blue-900">{t('jobs.totalWeight')}</p>
                 <p className={`text-2xl font-bold ${totalWeight === 100 ? 'text-green-600' : 'text-red-600'}`}>
                   {totalWeight}%
                 </p>
               </div>
               {totalWeight !== 100 && (
                 <p className="text-sm text-blue-800 mt-2">
-                  Weights must sum to exactly 100%. Currently {totalWeight}%, need to adjust by {100 - totalWeight}%.
+                  {t('jobs.weightsAdjustment').replace('{{weight}}', totalWeight.toString()).replace('{{adjust}}', (100 - totalWeight).toString())}
                 </p>
               )}
             </div>
@@ -425,10 +426,10 @@ export default function CreateJobPage() {
 
           <div className="card-footer flex gap-3">
             <button onClick={handleBack} className="btn btn-secondary">
-              Back
+              {t('common.back')}
             </button>
             <button onClick={handleNext} disabled={loading} className="btn btn-primary">
-              Continue
+              {t('common.next')}
             </button>
           </div>
         </div>
@@ -438,15 +439,15 @@ export default function CreateJobPage() {
       {step === 'scale' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 3: Point Scale</h2>
-            <p className="text-sm text-gray-600 mt-2">Define the minimum and maximum point values for evaluation</p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('jobs.step3Title')}</h2>
+            <p className="text-sm text-gray-600 mt-2">{t('jobs.step3Description')}</p>
           </div>
 
           <div className="card-body space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
                 <label htmlFor="pointScaleMin" className="form-label">
-                  Minimum Points *
+                  {t('jobs.minimumPoints')} *
                 </label>
                 <input
                   id="pointScaleMin"
@@ -462,7 +463,7 @@ export default function CreateJobPage() {
 
               <div className="form-group">
                 <label htmlFor="pointScaleMax" className="form-label">
-                  Maximum Points *
+                  {t('jobs.maximumPoints')} *
                 </label>
                 <input
                   id="pointScaleMax"
@@ -477,38 +478,37 @@ export default function CreateJobPage() {
             </div>
 
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-3">Point Scale Range</p>
+              <p className="text-sm text-gray-600 mb-3">{t('jobs.pointScaleRange')}</p>
               <div className="flex items-center gap-4">
                 <div className="text-center">
                   <p className="text-2xl font-bold text-gray-900">{formData.pointScaleMin}</p>
-                  <p className="text-xs text-gray-600 mt-1">Minimum</p>
+                  <p className="text-xs text-gray-600 mt-1">{t('jobs.minimum')}</p>
                 </div>
                 <div className="flex-1 h-1 bg-blue-600 rounded"></div>
                 <div className="text-center">
                   <p className="text-2xl font-bold text-gray-900">{formData.pointScaleMax}</p>
-                  <p className="text-xs text-gray-600 mt-1">Maximum</p>
+                  <p className="text-xs text-gray-600 mt-1">{t('jobs.maximum')}</p>
                 </div>
               </div>
               <p className="text-sm text-gray-600 mt-3 text-center">
-                Range: {formData.pointScaleMax - formData.pointScaleMin} points
+                {t('jobs.range')}: {formData.pointScaleMax - formData.pointScaleMin} points
               </p>
             </div>
 
             <div className="alert alert-info">
-              <p className="font-medium">💡 Point Scale Guidance</p>
+              <p className="font-medium">💡 {t('jobs.pointScaleGuidance')}</p>
               <p className="text-sm mt-2">
-                Use a scale that provides sufficient granularity to differentiate between positions. Common ranges are
-                100-300 or 50-200 points. Wider ranges allow for more nuanced evaluations.
+                {t('jobs.pointScaleGuidanceMessage')}
               </p>
             </div>
           </div>
 
           <div className="card-footer flex gap-3">
             <button onClick={handleBack} className="btn btn-secondary">
-              Back
+              {t('common.back')}
             </button>
             <button onClick={handleNext} disabled={loading} className="btn btn-primary">
-              Review
+              {t('jobs.review')}
             </button>
           </div>
         </div>
@@ -519,47 +519,47 @@ export default function CreateJobPage() {
         <div className="space-y-6">
           <div className="card">
             <div className="card-header">
-              <h2 className="text-lg font-semibold text-gray-900">Step 4: Review & Create</h2>
-              <p className="text-sm text-gray-600 mt-2">Please review your job evaluation before creating</p>
+              <h2 className="text-lg font-semibold text-gray-900">{t('jobs.step4Title')}</h2>
+              <p className="text-sm text-gray-600 mt-2">{t('jobs.step4Description')}</p>
             </div>
 
             <div className="card-body space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Basic Information</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('jobs.basicInfo')}</h3>
                   <div className="space-y-2 text-sm">
                     <div>
-                      <p className="text-gray-600">Job Code</p>
+                      <p className="text-gray-600">{t('jobs.jobCode')}</p>
                       <p className="font-medium text-gray-900">{formData.jobCode}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Title</p>
+                      <p className="text-gray-600">{t('jobs.jobTitle')}</p>
                       <p className="font-medium text-gray-900">{formData.title}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Department</p>
+                      <p className="text-gray-600">{t('common.department')}</p>
                       <p className="font-medium text-gray-900">{formData.department}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Method</p>
+                      <p className="text-gray-600">{t('jobs.evaluationMethod')}</p>
                       <p className="font-medium text-gray-900">{formData.evaluationMethod}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Point Scale</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('jobs.pointScale')}</h3>
                   <div className="space-y-2 text-sm">
                     <div>
-                      <p className="text-gray-600">Minimum</p>
+                      <p className="text-gray-600">{t('jobs.minimum')}</p>
                       <p className="font-medium text-gray-900">{formData.pointScaleMin} points</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Maximum</p>
+                      <p className="text-gray-600">{t('jobs.maximum')}</p>
                       <p className="font-medium text-gray-900">{formData.pointScaleMax} points</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Range</p>
+                      <p className="text-gray-600">{t('jobs.range')}</p>
                       <p className="font-medium text-gray-900">{formData.pointScaleMax - formData.pointScaleMin} points</p>
                     </div>
                   </div>
@@ -567,7 +567,7 @@ export default function CreateJobPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Evaluation Criteria</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">{t('jobs.evaluationCriteria')}</h3>
                 <div className="space-y-2">
                   {formData.criteria.map((criterion, idx) => (
                     <div key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
@@ -576,7 +576,7 @@ export default function CreateJobPage() {
                     </div>
                   ))}
                   <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg font-semibold">
-                    <span className="text-gray-900">Total Weight</span>
+                    <span className="text-gray-900">{t('jobs.totalWeight')}</span>
                     <span className="text-blue-600">{totalWeight}%</span>
                   </div>
                 </div>
@@ -584,7 +584,7 @@ export default function CreateJobPage() {
 
               {formData.description && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('jobs.description')}</h3>
                   <p className="text-gray-700 whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded-lg">
                     {formData.description}
                   </p>
@@ -594,26 +594,25 @@ export default function CreateJobPage() {
 
             <div className="card-footer flex gap-3">
               <button onClick={handleBack} className="btn btn-secondary">
-                Back
+                {t('common.back')}
               </button>
               <button onClick={handleSubmit} disabled={loading} className="btn btn-primary">
                 {loading ? (
                   <>
                     <span className="spinner mr-2"></span>
-                    Creating...
+                    {t('jobs.creating')}
                   </>
                 ) : (
-                  'Create Job Evaluation'
+                  t('jobs.createJobTitle')
                 )}
               </button>
             </div>
           </div>
 
           <div className="alert alert-info">
-            <p className="font-medium">📋 What happens next</p>
+            <p className="font-medium">📋 {t('jobs.whatsHappensNext')}</p>
             <p className="text-sm mt-2">
-              Your job evaluation will be created in DRAFT status. You can edit it before submitting for Compliance
-              Officer approval to activate it.
+              {t('jobs.nextStepsMessage')}
             </p>
           </div>
         </div>
@@ -623,45 +622,44 @@ export default function CreateJobPage() {
       {step === 'created' && (
         <div className="card">
           <div className="card-header bg-green-50 border-b border-green-200">
-            <h2 className="text-lg font-semibold text-green-900">✓ Job Evaluation Created</h2>
+            <h2 className="text-lg font-semibold text-green-900">✓ {t('jobs.jobCreated')}</h2>
           </div>
 
           <div className="card-body space-y-6">
             <div className="text-center py-4">
               <p className="text-4xl mb-4">✓</p>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Successfully Created</h3>
-              <p className="text-gray-600">Your job evaluation has been created in DRAFT status</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('jobs.successfullyCreated')}</h3>
+              <p className="text-gray-600">{t('jobs.jobCreatedDraft')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <p className="text-xs text-blue-600 uppercase font-semibold">Job ID</p>
+                <p className="text-xs text-blue-600 uppercase font-semibold">{t('jobs.jobID')}</p>
                 <p className="text-lg font-bold text-blue-900 mt-1">{createdJobId}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-xs text-gray-600 uppercase font-semibold">Job Title</p>
+                <p className="text-xs text-gray-600 uppercase font-semibold">{t('jobs.jobTitle')}</p>
                 <p className="text-lg font-bold text-gray-900 mt-1">{formData.title}</p>
               </div>
             </div>
 
             <div className="alert alert-success">
-              <p className="font-medium">✓ Next Steps</p>
+              <p className="font-medium">✓ {t('jobs.nextSteps')}</p>
               <p className="text-sm mt-2">
-                Your job evaluation is now in DRAFT status. You can edit it anytime, or submit it to the Compliance
-                Officer for review and activation.
+                {t('jobs.nextStepsDetail')}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               <a href="/jobs" className="btn btn-primary">
-                Back to Jobs
+                {t('jobs.backToJobs')}
               </a>
               <button
                 onClick={() => router.push(`/jobs/${createdJobId}/edit`)}
                 className="btn btn-secondary"
               >
-                Edit Job Evaluation
+                {t('jobs.editJobEvaluation')}
               </button>
             </div>
           </div>

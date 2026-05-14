@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
 import { useEmployees } from '@/hooks/useApi';
+import { useLanguage } from '@/utils/useLanguage';
 
 interface TransparencyResult {
   requestId?: string;
@@ -28,6 +29,7 @@ export default function TransparencyPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { requestTransparency, loading, error } = useEmployees();
+  const { t } = useLanguage();
 
   const [step, setStep] = useState<'form' | 'preview' | 'submitted'>('form');
   const [formData, setFormData] = useState({
@@ -44,16 +46,16 @@ export default function TransparencyPage() {
       <div className="space-y-6">
         <div className="card">
           <div className="card-header bg-yellow-50 border-b border-yellow-200">
-            <h2 className="text-lg font-semibold text-yellow-900">Access Restricted</h2>
+            <h2 className="text-lg font-semibold text-yellow-900">{t('transparency.accessRestricted')}</h2>
           </div>
           <div className="card-body">
             <p className="text-gray-700 mb-4">
-              This page is only available to employees. If you are an employee, please log in with your employee account.
+              {t('transparency.onlyEmployeesCanAccess')}
             </p>
             <p className="text-sm text-gray-600">
-              Managers and HR can access pay gap analysis through the{' '}
+              {t('transparency.managersHRCanAccess')}{' '}
               <button onClick={() => router.push('/analysis')} className="text-blue-600 hover:underline">
-                Analysis page
+                {t('transparency.analysisPage')}
               </button>
               .
             </p>
@@ -84,11 +86,11 @@ export default function TransparencyPage() {
     const errors: Record<string, string> = {};
 
     if (!formData.jobCode.trim()) {
-      errors.jobCode = 'Please enter your job code';
+      errors.jobCode = t('transparency.jobCodeRequired');
     }
 
     if (!formData.department.trim()) {
-      errors.department = 'Please select your department';
+      errors.department = t('transparency.departmentRequired');
     }
 
     setFormErrors(errors);
@@ -123,19 +125,18 @@ export default function TransparencyPage() {
       {/* Header */}
       <div className="card">
         <div className="card-header">
-          <h1 className="text-2xl font-bold text-gray-900">Pay Transparency Request</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('transparency.title')}</h1>
           <p className="text-sm text-gray-600 mt-2">
-            Request salary information for your peer group per EU Directive 2023/970
+            {t('transparency.requestSalaryInfo')}
           </p>
         </div>
       </div>
 
       {/* Info Alert */}
       <div className="alert alert-info">
-        <p className="font-medium">🔒 Your Privacy is Protected</p>
+        <p className="font-medium">{t('transparency.privacyProtected')}</p>
         <p className="text-sm mt-2">
-          We will provide you with aggregated salary statistics for employees in similar roles. Individual salary
-          information will never be disclosed. All data is pseudonymized and you cannot be identified.
+          {t('transparency.privacyMessage')}
         </p>
       </div>
 
@@ -143,19 +144,19 @@ export default function TransparencyPage() {
       {step === 'form' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 1: Provide Your Information</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('transparency.step1ProvideInfo')}</h2>
             <p className="text-sm text-gray-600 mt-2">
-              We will use this to identify your peer group and provide relevant salary statistics
+              {t('transparency.provideInfoDescription')}
             </p>
           </div>
 
           <div className="card-body space-y-6">
             <div className="form-group">
               <label htmlFor="jobCode" className="form-label">
-                Your Job Code *
+                {t('transparency.jobCode')} *
               </label>
               <p className="text-xs text-gray-600 mb-2">
-                Your job code as shown in your employment contract (e.g., ENG-001, SAL-003)
+                {t('transparency.enterYourJobCode')}
               </p>
               <input
                 id="jobCode"
@@ -171,7 +172,7 @@ export default function TransparencyPage() {
 
             <div className="form-group">
               <label htmlFor="department" className="form-label">
-                Your Department *
+                {t('common.department')} *
               </label>
               <select
                 id="department"
@@ -180,15 +181,15 @@ export default function TransparencyPage() {
                 onChange={handleInputChange}
                 className="form-select"
               >
-                <option value="">Select your department</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Sales">Sales</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Operations">Operations</option>
-                <option value="Finance">Finance</option>
-                <option value="HR">Human Resources</option>
-                <option value="Legal">Legal</option>
-                <option value="Executive">Executive</option>
+                <option value="">{t('transparency.selectYourDepartment')}</option>
+                <option value="Engineering">{t('common.engineering')}</option>
+                <option value="Sales">{t('common.sales')}</option>
+                <option value="Marketing">{t('common.marketing')}</option>
+                <option value="Operations">{t('common.operations')}</option>
+                <option value="Finance">{t('common.finance')}</option>
+                <option value="HR">{t('common.humanResources')}</option>
+                <option value="Legal">{t('common.legal')}</option>
+                <option value="Executive">{t('common.executive')}</option>
               </select>
               {formErrors.department && <p className="form-error">{formErrors.department}</p>}
             </div>
@@ -203,32 +204,31 @@ export default function TransparencyPage() {
                   className="mt-1"
                 />
                 <div>
-                  <p className="font-medium text-gray-900">Compare with same gender peers</p>
+                  <p className="font-medium text-gray-900">{t('transparency.includeGender')}</p>
                   <p className="text-xs text-gray-600 mt-1">
-                    If checked, we'll provide salary statistics only for employees of the same gender. This can help
-                    you understand gender-based salary differences (optional).
+                    {t('transparency.genderAnalysisDescription')}
                   </p>
                 </div>
               </label>
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="font-medium text-blue-900 mb-2">📋 What you'll receive:</p>
+              <p className="font-medium text-blue-900 mb-2">📋 {t('transparency.whatYouReceive')}:</p>
               <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Salary statistics for your peer group (minimum, quartiles, maximum, average)</li>
-                <li>• Number of employees in your peer group (minimum 10 required)</li>
-                <li>• No individual salary data or identifying information</li>
-                <li>• Response within 15 days (per Directive Article 10)</li>
+                <li>• {t('transparency.salaryStatsDescription')}</li>
+                <li>• {t('transparency.minimumPeerGroup')}</li>
+                <li>• {t('transparency.noIndividualData')}</li>
+                <li>• {t('transparency.response15Days')}</li>
               </ul>
             </div>
           </div>
 
           <div className="card-footer flex gap-3">
             <button onClick={() => router.push('/dashboard')} className="btn btn-secondary">
-              Cancel
+              {t('common.cancel')}
             </button>
             <button onClick={handleSubmit} disabled={loading} className="btn btn-primary">
-              Continue
+              {t('common.next')}
             </button>
           </div>
         </div>
@@ -238,60 +238,58 @@ export default function TransparencyPage() {
       {step === 'preview' && (
         <div className="card">
           <div className="card-header">
-            <h2 className="text-lg font-semibold text-gray-900">Step 2: Confirm Your Request</h2>
-            <p className="text-sm text-gray-600 mt-2">Please review your request details</p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('transparency.step2ReviewRequest')}</h2>
+            <p className="text-sm text-gray-600 mt-2">{t('transparency.reviewRequestDescription')}</p>
           </div>
 
           <div className="card-body space-y-6">
             <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-900 mb-3">Your Peer Group</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">{t('transparency.requestSummary')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <p className="text-gray-600">Job Code</p>
+                  <p className="text-gray-600">{t('transparency.jobCode')}</p>
                   <p className="font-semibold text-gray-900">{formData.jobCode}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Department</p>
+                  <p className="text-gray-600">{t('transparency.yourDepartment')}</p>
                   <p className="font-semibold text-gray-900">{formData.department}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Filter</p>
+                  <p className="text-gray-600">{t('common.filter')}</p>
                   <p className="font-semibold text-gray-900">
-                    {formData.includeGender ? 'Same Gender' : 'All Genders'}
+                    {formData.includeGender ? t('transparency.includeGender') : t('common.allDepartments')}
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="alert alert-warning">
-              <p className="font-medium">⏱️ Processing Time</p>
+              <p className="font-medium">⏱️ {t('common.time')}</p>
               <p className="text-sm mt-2">
-                Your request will be processed within 15 days per EU Directive 2023/970, Article 10. You will receive
-                an email notification when your salary statistics are ready.
+                {t('transparency.response15Days')}
               </p>
             </div>
 
             <div className="alert alert-info">
-              <p className="font-medium">📊 Minimum Group Size</p>
+              <p className="font-medium">📊 {t('transparency.minimumPeerGroup')}</p>
               <p className="text-sm mt-2">
-                We can only provide statistics if your peer group contains at least 10 employees. If your group is
-                smaller, we cannot fulfill this request to protect privacy.
+                {t('transparency.minimumPeerGroup')}
               </p>
             </div>
           </div>
 
           <div className="card-footer flex gap-3">
             <button onClick={() => setStep('form')} className="btn btn-secondary">
-              Back
+              {t('common.back')}
             </button>
             <button onClick={handleConfirm} disabled={loading} className="btn btn-primary">
               {loading ? (
                 <>
                   <span className="spinner mr-2"></span>
-                  Submitting...
+                  {t('common.submit')}
                 </>
               ) : (
-                'Submit Request'
+                t('transparency.requestSubmitted')
               )}
             </button>
           </div>
@@ -302,24 +300,24 @@ export default function TransparencyPage() {
       {step === 'submitted' && results && (
         <div className="card">
           <div className="card-header bg-green-50 border-b border-green-200">
-            <h2 className="text-lg font-semibold text-green-900">✓ Request Submitted</h2>
+            <h2 className="text-lg font-semibold text-green-900">✓ {t('transparency.requestSubmitted')}</h2>
           </div>
 
           <div className="card-body space-y-6">
             <div className="text-center py-4">
               <p className="text-4xl mb-4">✓</p>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Request Successful</h3>
-              <p className="text-gray-600">Your transparency request has been submitted</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('common.success')}</h3>
+              <p className="text-gray-600">{t('transparency.requestSubmitted')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <p className="text-xs text-blue-600 uppercase font-semibold">Request ID</p>
+                <p className="text-xs text-blue-600 uppercase font-semibold">{t('transparency.requestID')}</p>
                 <p className="text-lg font-bold text-blue-900 mt-1">{results.requestId || 'TR-2026-05-14-001'}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-xs text-gray-600 uppercase font-semibold">Response Deadline</p>
+                <p className="text-xs text-gray-600 uppercase font-semibold">{t('transparency.responseDeadline')}</p>
                 <p className="text-lg font-bold text-gray-900 mt-1">
                   {results.responseDeadline || '2026-05-29'}
                 </p>
@@ -328,64 +326,64 @@ export default function TransparencyPage() {
 
             {results.peerGroup && (
               <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-3">Your Peer Group</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">{t('transparency.peerGroupStatistics')}</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-600">Job Code</p>
+                    <p className="text-gray-600">{t('transparency.jobCode')}</p>
                     <p className="font-semibold text-gray-900">{results.peerGroup.jobCode}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Department</p>
+                    <p className="text-gray-600">{t('common.department')}</p>
                     <p className="font-semibold text-gray-900">{results.peerGroup.department}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Peer Count</p>
+                    <p className="text-gray-600">{t('transparency.peerGroupCount')}</p>
                     <p className="font-semibold text-gray-900">{results.peerGroup.count}</p>
                   </div>
                 </div>
 
                 {results.peerGroup.salaryStats && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
-                    <h4 className="font-medium text-gray-900 mb-3">Salary Statistics</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">{t('transparency.salaryStats')}</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                       <div>
-                        <p className="text-gray-600">Minimum</p>
+                        <p className="text-gray-600">{t('transparency.minimum')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.minimum.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-600">25th Percentile</p>
+                        <p className="text-gray-600">{t('transparency.percentile25')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.p25.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Median</p>
+                        <p className="text-gray-600">{t('transparency.median')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.median.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-600">75th Percentile</p>
+                        <p className="text-gray-600">{t('transparency.percentile75')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.p75.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Maximum</p>
+                        <p className="text-gray-600">{t('transparency.maximum')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.maximum.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Average</p>
+                        <p className="text-gray-600">{t('transparency.mean')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.mean.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-600">Std. Deviation</p>
+                        <p className="text-gray-600">{t('transparency.standardDeviation')}</p>
                         <p className="font-semibold text-gray-900">
                           €{results.peerGroup.salaryStats.stdDev.toLocaleString()}
                         </p>
@@ -397,19 +395,18 @@ export default function TransparencyPage() {
             )}
 
             <div className="alert alert-success">
-              <p className="font-medium">✓ What's Next</p>
+              <p className="font-medium">✓ {t('transparency.whatsNext')}</p>
               <p className="text-sm mt-2">
-                We'll process your request and send you the salary statistics by email. If your peer group contains
-                fewer than 10 employees, we'll notify you that we cannot provide the information to protect privacy.
+                {t('transparency.whatsNextMessage')}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               <a href="/dashboard" className="btn btn-primary">
-                Back to Dashboard
+                {t('transparency.backToDashboard')}
               </a>
               <button onClick={() => window.print()} className="btn btn-secondary">
-                Print Request
+                {t('transparency.printRequest')}
               </button>
             </div>
           </div>
@@ -419,7 +416,7 @@ export default function TransparencyPage() {
       {/* Error Alert */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Error</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
