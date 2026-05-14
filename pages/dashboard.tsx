@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '@/pages/_app';
+import { useLanguage } from '@/utils/useLanguage';
 import { useReports, useAnalysis } from '@/hooks/useApi';
 
 export default function DashboardPage() {
   const { user, role } = useAuth();
+  const { t } = useLanguage();
   const { getComplianceReport, loading: reportLoading, data: report } = useReports();
   const { calculateGap, loading: gapLoading, data: gapData } = useAnalysis();
 
@@ -18,10 +20,10 @@ export default function DashboardPage() {
       <div className="card">
         <div className="card-body">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {user?.email}!
+            {t('dashboard.welcome')}, {user?.email}!
           </h1>
           <p className="text-gray-600">
-            Role: <span className="font-medium">{role}</span>
+            {t('dashboard.role')}: <span className="font-medium">{role}</span>
           </p>
         </div>
       </div>
@@ -30,7 +32,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Overall Pay Gap */}
         <MetricCard
-          title="Overall Pay Gap"
+          title={t('dashboard.overallPayGap')}
           value={gapData?.analysis?.gapAnalysis?.adjustedGap || '-'}
           unit="%"
           status={getGapStatus(gapData?.analysis?.gapAnalysis?.adjustedGap)}
@@ -40,7 +42,7 @@ export default function DashboardPage() {
 
         {/* Employees Analyzed */}
         <MetricCard
-          title="Employees Analyzed"
+          title={t('dashboard.employeesAnalyzed')}
           value={gapData?.analysis?.employeeData?.total || 0}
           status="info"
           icon="👥"
@@ -49,7 +51,7 @@ export default function DashboardPage() {
 
         {/* Compliance Status */}
         <MetricCard
-          title="Compliance Status"
+          title={t('dashboard.complianceStatus')}
           value={report?.report?.overallComplianceAssessment?.status || '-'}
           status={getComplianceStatus(report?.report?.overallComplianceAssessment?.status)}
           icon="✅"
@@ -58,7 +60,7 @@ export default function DashboardPage() {
 
         {/* Active Jobs */}
         <MetricCard
-          title="Active Job Methodologies"
+          title={t('dashboard.activeJobMethodologies')}
           value={report?.report?.jobEvaluationMethodology?.methodologiesActive || 0}
           status="info"
           icon="💼"
@@ -72,13 +74,13 @@ export default function DashboardPage() {
           {/* Gender Distribution */}
           <div className="card">
             <div className="card-header">
-              <h3 className="text-lg font-semibold text-gray-900">Gender Distribution</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('dashboard.genderDistribution')}</h3>
             </div>
             <div className="card-body">
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">Male Employees</span>
+                    <span className="text-sm font-medium text-gray-700">{t('dashboard.maleEmployees')}</span>
                     <span className="text-sm font-bold text-gray-900">
                       {gapData.analysis?.employeeData?.maleCount} ({gapData.analysis?.employeeData?.maleAvgSalary} €)
                     </span>
@@ -99,7 +101,7 @@ export default function DashboardPage() {
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">Female Employees</span>
+                    <span className="text-sm font-medium text-gray-700">{t('dashboard.femaleEmployees')}</span>
                     <span className="text-sm font-bold text-gray-900">
                       {gapData.analysis?.employeeData?.femaleCount} ({gapData.analysis?.employeeData?.femaleAvgSalary} €)
                     </span>
@@ -121,7 +123,7 @@ export default function DashboardPage() {
                 {gapData.analysis?.employeeData?.otherCount > 0 && (
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700">Other</span>
+                      <span className="text-sm font-medium text-gray-700">{t('dashboard.other')}</span>
                       <span className="text-sm font-bold text-gray-900">
                         {gapData.analysis?.employeeData?.otherCount}
                       </span>
@@ -147,11 +149,11 @@ export default function DashboardPage() {
           {/* Statistical Significance */}
           <div className="card">
             <div className="card-header">
-              <h3 className="text-lg font-semibold text-gray-900">Statistical Analysis</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('dashboard.statisticalAnalysis')}</h3>
             </div>
             <div className="card-body space-y-4">
               <div>
-                <p className="text-sm text-gray-600">Pay Gap (Adjusted)</p>
+                <p className="text-sm text-gray-600">{t('dashboard.payGapAdjusted')}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {gapData.analysis?.gapAnalysis?.adjustedGap}%
                 </p>
@@ -159,13 +161,13 @@ export default function DashboardPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600">T-Statistic</p>
+                  <p className="text-xs text-gray-600">{t('dashboard.tStatistic')}</p>
                   <p className="text-lg font-semibold text-gray-900">
                     {gapData.analysis?.statisticalSignificance?.tStatistic}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">P-Value</p>
+                  <p className="text-xs text-gray-600">{t('dashboard.pValue')}</p>
                   <p className="text-lg font-semibold text-gray-900">
                     {gapData.analysis?.statisticalSignificance?.pValue}
                   </p>
@@ -173,7 +175,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm font-medium text-gray-700 mb-2">Significance Level</p>
+                <p className="text-sm font-medium text-gray-700 mb-2">{t('dashboard.significanceLevel')}</p>
                 <span
                   className={`badge ${
                     gapData.analysis?.statisticalSignificance?.significantAt95Confidence
@@ -182,8 +184,8 @@ export default function DashboardPage() {
                   }`}
                 >
                   {gapData.analysis?.statisticalSignificance?.significantAt95Confidence
-                    ? 'Significant at 95% confidence'
-                    : 'Not significant'}
+                    ? t('dashboard.significantAt95Confidence')
+                    : t('dashboard.notSignificant')}
                 </span>
               </div>
             </div>
@@ -194,36 +196,36 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div className="card">
         <div className="card-header">
-          <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+          <h3 className="text-lg font-semibold text-gray-900">{t('dashboard.quickActions')}</h3>
         </div>
         <div className="card-body">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {role === 'EMPLOYEE' && (
               <ActionButton
                 href="/transparency"
-                label="Request Pay Transparency"
+                label={t('dashboard.requestPayTransparency')}
                 icon="🔍"
               />
             )}
 
             {['MANAGER', 'HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'ADMIN'].includes(role) && (
               <>
-                <ActionButton href="/analysis" label="View Pay Gap" icon="📈" />
-                <ActionButton href="/justifications" label="Manage Justifications" icon="📋" />
+                <ActionButton href="/analysis" label={t('dashboard.viewPayGap')} icon="📈" />
+                <ActionButton href="/justifications" label={t('dashboard.manageJustifications')} icon="📋" />
               </>
             )}
 
             {['HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'ADMIN'].includes(role) && (
               <>
-                <ActionButton href="/employees/import" label="Import Data" icon="📥" />
-                <ActionButton href="/jobs" label="Job Evaluations" icon="💼" />
+                <ActionButton href="/employees/import" label={t('dashboard.importData')} icon="📥" />
+                <ActionButton href="/jobs" label={t('dashboard.jobEvaluations')} icon="💼" />
               </>
             )}
 
             {['COMPLIANCE_OFFICER', 'ADMIN'].includes(role) && (
               <>
-                <ActionButton href="/reports" label="Compliance Reports" icon="📊" />
-                <ActionButton href="/audit" label="Audit Trail" icon="📋" />
+                <ActionButton href="/reports" label={t('dashboard.complianceReports')} icon="📊" />
+                <ActionButton href="/audit" label={t('dashboard.auditTrail')} icon="📋" />
               </>
             )}
           </div>
@@ -232,10 +234,9 @@ export default function DashboardPage() {
 
       {/* Compliance Note */}
       <div className="alert alert-info">
-        <p className="font-medium">🔒 GDPR & Directive 2023/970 Compliant</p>
+        <p className="font-medium">🔒 {t('dashboard.gdprCompliant')}</p>
         <p className="text-sm mt-1">
-          All data is pseudonymized using SHA-256 hashing. Employee identities are protected per GDPR Article 4(11).
-          Complete audit trail is maintained for all operations (Directive Article 15).
+          {t('dashboard.dataProtection')}
         </p>
       </div>
     </div>

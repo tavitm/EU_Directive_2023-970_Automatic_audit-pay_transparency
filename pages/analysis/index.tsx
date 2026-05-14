@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
+import { useLanguage } from '@/utils/useLanguage';
 import { useAnalysis } from '@/hooks/useApi';
 
 interface GapAnalysisResult {
@@ -53,6 +54,7 @@ interface GapAnalysisResult {
 export default function AnalysisPage() {
   const router = useRouter();
   const { role } = useAuth();
+  const { t } = useLanguage();
   const { calculateGap, loading, error } = useAnalysis();
 
   const [results, setResults] = useState<GapAnalysisResult | null>(null);
@@ -115,9 +117,9 @@ export default function AnalysisPage() {
       {/* Header */}
       <div className="card">
         <div className="card-header">
-          <h1 className="text-2xl font-bold text-gray-900">Gender Pay Gap Analysis</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('analysis.payGapAnalysis')}</h1>
           <p className="text-sm text-gray-600 mt-2">
-            Detailed analysis of salary differences by gender across your organization
+            {t('dashboard.dataProtection')}
           </p>
         </div>
       </div>
@@ -125,7 +127,7 @@ export default function AnalysisPage() {
       {/* Filters */}
       <div className="card">
         <div className="card-header">
-          <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('analysis.filters')}</h2>
         </div>
         <div className="card-body">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -221,7 +223,7 @@ export default function AnalysisPage() {
       {/* Error Display */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Error</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
@@ -232,7 +234,7 @@ export default function AnalysisPage() {
           <div className="card-body text-center py-8">
             <p className="text-gray-600">
               <span className="spinner mr-2"></span>
-              Calculating analysis...
+              {t('analysis.calculating')}
             </p>
           </div>
         </div>

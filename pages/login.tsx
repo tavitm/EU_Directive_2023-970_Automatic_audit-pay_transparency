@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/_app';
+import { useLanguage } from '@/utils/useLanguage';
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,7 +20,7 @@ export default function LoginPage() {
     try {
       await login(email, password);
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please try again.');
+      setError(err.message || t('login.invalidCredentials'));
     } finally {
       setLoading(false);
     }
@@ -30,16 +32,16 @@ export default function LoginPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Directive 2023/970</h1>
-          <p className="text-blue-100">Pay Transparency & Gender Equality System</p>
+          <p className="text-blue-100">{t('header.payTransparencySystem')}</p>
         </div>
 
         {/* Login Card */}
         <div className="bg-white rounded-lg shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Sign In</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('login.title')}</h2>
 
           {error && (
             <div className="alert alert-error mb-4">
-              <p className="font-medium">Login Error</p>
+              <p className="font-medium">{t('common.error')}</p>
               <p className="text-sm mt-1">{error}</p>
             </div>
           )}
@@ -48,7 +50,7 @@ export default function LoginPage() {
             {/* Email */}
             <div className="form-group">
               <label htmlFor="email" className="form-label">
-                Email Address
+                {t('login.email')}
               </label>
               <input
                 id="email"
@@ -65,7 +67,7 @@ export default function LoginPage() {
             {/* Password */}
             <div className="form-group">
               <label htmlFor="password" className="form-label">
-                Password
+                {t('login.password')}
               </label>
               <input
                 id="password"
@@ -88,10 +90,10 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <span className="spinner mr-2"></span>
-                  Signing in...
+                  {t('login.login')}...
                 </>
               ) : (
-                'Sign In'
+                t('login.login')
               )}
             </button>
           </form>
@@ -99,24 +101,20 @@ export default function LoginPage() {
           {/* Demo Info */}
           <div className="mt-6 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-600 mb-3">
-              <strong>Demo Accounts:</strong>
+              <strong>{t('login.demoAccounts')}</strong>
             </p>
             <div className="bg-gray-50 rounded p-3 text-xs text-gray-700 space-y-2">
               <div>
-                <p>Employee:</p>
-                <p className="text-gray-500">employee@example.com / password</p>
+                <p>{t('login.employee')}</p>
               </div>
               <div>
-                <p>Manager:</p>
-                <p className="text-gray-500">manager@example.com / password</p>
+                <p>{t('login.manager')}</p>
               </div>
               <div>
-                <p>HR Specialist:</p>
-                <p className="text-gray-500">hr@example.com / password</p>
+                <p>{t('login.hr')}</p>
               </div>
               <div>
-                <p>Compliance Officer:</p>
-                <p className="text-gray-500">compliance@example.com / password</p>
+                <p>{t('login.compliance')}</p>
               </div>
             </div>
           </div>
@@ -124,8 +122,8 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="mt-8 text-center text-blue-100 text-sm">
-          <p>EU Directive 2023/970 Compliance System</p>
-          <p>GDPR Compliant • Secure • Transparent</p>
+          <p>Directive 2023/970</p>
+          <p>{t('dashboard.gdprCompliant')}</p>
         </div>
       </div>
     </div>

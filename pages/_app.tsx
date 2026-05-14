@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import '../styles/globals.css';
+import { LanguageContext } from '@/utils/useLanguage';
+import type { Language } from '@/utils/translations';
+import { translations, t } from '@/utils/translations';
 
 interface AuthContextType {
   token: string | null;
@@ -28,12 +31,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [language, setLanguageState] = useState<Language>('ro');
 
-  // Initialize auth from localStorage
+  // Initialize auth and language from localStorage
   useEffect(() => {
     const savedToken = localStorage.getItem('authToken');
     const savedUser = localStorage.getItem('user');
     const savedRole = localStorage.getItem('role');
+    const savedLanguage = localStorage.getItem('language') as Language | null;
 
     if (savedToken && savedUser) {
       setToken(savedToken);
@@ -41,8 +46,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       setRole(savedRole);
     }
 
+    if (savedLanguage && ['ro', 'en'].includes(savedLanguage)) {
+      setLanguageState(savedLanguage);
+    }
+
     setIsLoading(false);
   }, []);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('language', lang);
+  };
 
   const login = async (email: string, password: string) => {
     try {
@@ -142,11 +156,18 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
   }
 
+  const languageValue = {
+    language,
+    setLanguage,
+    t: (key: string) => t(language, key),
+  };
+
   return (
-    <AuthContext.Provider value={authValue}>
-      {isPublicRoute ? (
-        <Component {...pageProps} />
-      ) : (
+    <LanguageContext.Provider value={languageValue}>
+      <AuthContext.Provider value={authValue}>
+        {isPublicRoute ? (
+          <Component {...pageProps} />
+        ) : (
         <div className="flex h-screen bg-gray-100">
           {/* Sidebar Navigation */}
           <aside className="w-64 bg-white shadow-md overflow-y-auto flex flex-col">
@@ -258,18 +279,44 @@ function MyApp({ Component, pageProps }: AppProps) {
 
           {/* Main Content */}
           <main className="flex-1 overflow-auto">
-            <header className="bg-white shadow-sm border-b border-gray-200 px-8 py-6">
+            <header className="bg-white shadow-sm border-b border-gray-200 px-8 py-6 flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900">
-                {getPageTitle(router.pathname)}
+                {getPageTitle(router.pathname, language)}
               </h2>
+              {/* Language Switcher */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setLanguage('ro')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    language === 'ro'
+                      ? 'bg-blue-100 text-blue-700 border-2 border-blue-600'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
+                  }`}
+                  title="Română"
+                >
+                  🇷🇴 RO
+                </button>
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    language === 'en'
+                      ? 'bg-blue-100 text-blue-700 border-2 border-blue-600'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
+                  }`}
+                  title="English"
+                >
+                  🇬🇧 EN
+                </button>
+              </div>
             </header>
             <div className="p-8">
               <Component {...pageProps} />
             </div>
           </main>
         </div>
-      )}
-    </AuthContext.Provider>
+        )}
+      </AuthContext.Provider>
+    </LanguageContext.Provider>
   );
 }
 
@@ -292,22 +339,55 @@ function NavLink({ href, label, icon }: { href: string; label: string; icon: str
   );
 }
 
-function getPageTitle(pathname: string): string {
-  const titles: Record<string, string> = {
-    '/dashboard': 'Dashboard',
-    '/jobs': 'Job Evaluations',
-    '/jobs/create': 'Create Job Evaluation',
-    '/employees/import': 'Import Employee Data',
-    '/analysis': 'Pay Gap Analysis',
-    '/justifications': 'Justifications',
-    '/transparency': 'Transparency Request',
-    '/reports': 'Compliance Reports',
-    '/audit': 'Audit Logs',
-    '/admin/users': 'User Management',
-    '/admin/settings': 'Settings',
+function getPageTitle(pathname: string, language: Language): string {
+  const titles: Record<string, Record<Language, string>> = {
+    '/dashboard': {
+      ro: 'Tablou de Bord',
+      en: 'Dashboard',
+    },
+    '/jobs': {
+      ro: 'Evaluări Locuri de Muncă',
+      en: 'Job Evaluations',
+    },
+    '/jobs/create': {
+      ro: 'Creare Evaluare Loc de Muncă',
+      en: 'Create Job Evaluation',
+    },
+    '/employees/import': {
+      ro: 'Import Date Angajați',
+      en: 'Import Employee Data',
+    },
+    '/analysis': {
+      ro: 'Analiza Decalajului Salarial',
+      en: 'Pay Gap Analysis',
+    },
+    '/justifications': {
+      ro: 'Justificări',
+      en: 'Justifications',
+    },
+    '/transparency': {
+      ro: 'Cerere de Transparență',
+      en: 'Transparency Request',
+    },
+    '/reports': {
+      ro: 'Rapoarte de Conformitate',
+      en: 'Compliance Reports',
+    },
+    '/audit': {
+      ro: 'Jurnale de Audit',
+      en: 'Audit Logs',
+    },
+    '/admin/users': {
+      ro: 'Gestionare Utilizatori',
+      en: 'User Management',
+    },
+    '/admin/settings': {
+      ro: 'Setări',
+      en: 'Settings',
+    },
   };
 
-  return titles[pathname] || 'Directive 2023/970';
+  return titles[pathname]?.[language] || 'Directive 2023/970';
 }
 
 export default MyApp;
