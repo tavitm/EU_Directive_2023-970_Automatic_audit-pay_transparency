@@ -42,7 +42,7 @@ interface JustificationDetail {
 export default function JustificationsPage() {
   const router = useRouter();
   const { role } = useAuth();
-  const { getLogs, loading, error } = useJustifications();
+  const { loading, error } = useJustifications();
 
   const [justifications, setJustifications] = useState<Justification[]>([]);
   const [selectedJustification, setSelectedJustification] = useState<JustificationDetail | null>(null);
