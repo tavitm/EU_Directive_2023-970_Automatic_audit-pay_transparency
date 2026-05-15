@@ -23,8 +23,9 @@ interface JobForm {
 export default function CreateJobPage() {
   const router = useRouter();
   const { role } = useAuth();
-  const { createJob, loading, error } = useJobs();
+  const { createJob, loading, error: hookError } = useJobs();
   const { t } = useLanguage();
+  const [error, setError] = useState<{ message: string } | null>(null);
 
   const [step, setStep] = useState<'basic' | 'criteria' | 'scale' | 'review' | 'created'>('basic');
   const [formData, setFormData] = useState<JobForm>({
@@ -106,6 +107,9 @@ export default function CreateJobPage() {
       if (!formData.department.trim()) {
         errors.department = t('jobs.departmentRequired');
       }
+      if (!formData.description.trim()) {
+        errors.description = t('jobs.descriptionRequired');
+      }
     }
 
     if (currentStep === 'criteria') {
@@ -161,13 +165,19 @@ export default function CreateJobPage() {
   const handleSubmit = async () => {
     if (!validateStep('review')) return;
 
+    setError(null);
+
     try {
       const result = await createJob(formData);
       if (result) {
         setCreatedJobId(result.jobId || 'JOB-' + Date.now());
         setStep('created');
+      } else {
+        setError({ message: t('errors.jobCreationFailed') });
       }
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t('errors.jobCreationFailed');
+      setError({ message: errorMessage });
       console.error('Creation error:', err);
     }
   };
@@ -223,7 +233,7 @@ export default function CreateJobPage() {
       {/* Error Alert */}
       {error && (
         <div className="alert alert-error">
-          <p className="font-medium">Error</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
       )}
@@ -317,7 +327,7 @@ export default function CreateJobPage() {
 
             <div className="form-group">
               <label htmlFor="description" className="form-label">
-                {t('jobs.description')}
+                {t('jobs.description')} *
               </label>
               <textarea
                 id="description"
@@ -328,6 +338,7 @@ export default function CreateJobPage() {
                 className="form-textarea"
                 rows={4}
               ></textarea>
+              {formErrors.description && <p className="form-error">{formErrors.description}</p>}
             </div>
 
             <div className="alert alert-info">

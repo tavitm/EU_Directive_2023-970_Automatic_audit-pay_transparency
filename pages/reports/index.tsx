@@ -167,6 +167,104 @@ export default function ReportsPage() {
     return 'text-red-900';
   };
 
+  const exportAsPDF = () => {
+    if (!report) return;
+
+    // Generate simple PDF content
+    const printWindow = window.open('', '', 'width=800,height=600');
+    if (printWindow) {
+      const htmlContent = `
+        <html>
+          <head>
+            <title>Directive 2023/970 - ${t('reports.complianceReport')} ${reportYear}</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              h1, h2 { color: #333; }
+              table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+              th { background-color: #f2f2f2; }
+              .status { font-weight: bold; }
+              .compliant { color: green; }
+              .partial { color: orange; }
+              .non-compliant { color: red; }
+            </style>
+          </head>
+          <body>
+            <h1>Directive 2023/970 - Compliance Report</h1>
+            <p>Report Year: ${reportYear}</p>
+            <p>Generated: ${report.generatedDate}</p>
+
+            <h2>Overall Compliance Status</h2>
+            <p class="status ${report.overallComplianceStatus === 'COMPLIANT' ? 'compliant' : report.overallComplianceStatus === 'REQUIRES_JUSTIFICATION' ? 'partial' : 'non-compliant'}">
+              ${report.overallComplianceStatus}
+            </p>
+
+            <h2>Statistics Summary</h2>
+            <p>Total Employees: ${report.statisticsSummary.totalEmployees}</p>
+            <p>Overall Pay Gap: ${report.statisticsSummary.payGapMetrics.overallGap.toFixed(2)}%</p>
+            <p>Employees Affected: ${report.statisticsSummary.payGapMetrics.employeesAffected}</p>
+
+            <h2>Articles Compliance</h2>
+            <table>
+              <tr>
+                <th>Article</th>
+                <th>Status</th>
+                <th>Details</th>
+              </tr>
+              ${report.articlesCompliance.map(a => `
+                <tr>
+                  <td>${a.article}: ${a.title}</td>
+                  <td class="${a.status === 'COMPLIANT' ? 'compliant' : a.status === 'PARTIAL' ? 'partial' : 'non-compliant'}">${a.status}</td>
+                  <td>${a.details}</td>
+                </tr>
+              `).join('')}
+            </table>
+          </body>
+        </html>
+      `;
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
+  const exportAsExcel = () => {
+    if (!report) return;
+
+    // Create CSV content (simple Excel format)
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    csvContent += 'Directive 2023/970 - Compliance Report\n';
+    csvContent += `Report Year,${reportYear}\n`;
+    csvContent += `Generated Date,${report.generatedDate}\n\n`;
+
+    csvContent += 'Overall Compliance Status\n';
+    csvContent += `Status,${report.overallComplianceStatus}\n\n`;
+
+    csvContent += 'Statistics Summary\n';
+    csvContent += 'Metric,Value\n';
+    csvContent += `Total Employees,${report.statisticsSummary.totalEmployees}\n`;
+    csvContent += `Overall Pay Gap,${report.statisticsSummary.payGapMetrics.overallGap.toFixed(2)}%\n`;
+    csvContent += `Employees Affected,${report.statisticsSummary.payGapMetrics.employeesAffected}\n\n`;
+
+    csvContent += 'Articles Compliance\n';
+    csvContent += 'Article,Title,Status,Details\n';
+    report.articlesCompliance.forEach(article => {
+      csvContent += `"${article.article}","${article.title}","${article.status}","${article.details}"\n`;
+    });
+
+    csvContent += '\nRecommendations\n';
+    report.recommendations.forEach((rec, idx) => {
+      csvContent += `"${idx + 1}","${rec}"\n`;
+    });
+
+    // Download CSV file
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `compliance-report-${reportYear}.csv`);
+    link.click();
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -483,10 +581,10 @@ export default function ReportsPage() {
             {t('reports.exportDescription')}
           </p>
           <div className="flex flex-wrap gap-3">
-            <button className="btn btn-secondary">
+            <button onClick={exportAsPDF} disabled={!report} className="btn btn-secondary">
               📄 {t('reports.exportAsPDF')}
             </button>
-            <button className="btn btn-secondary">
+            <button onClick={exportAsExcel} disabled={!report} className="btn btn-secondary">
               📊 {t('reports.exportAsExcel')}
             </button>
             <button onClick={() => window.print()} className="btn btn-secondary">

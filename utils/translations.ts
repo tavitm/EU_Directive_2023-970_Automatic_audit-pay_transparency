@@ -576,6 +576,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'justifications.gapCategory.education.description': 'Diferențe în nivelul de educație sau certificări',
     'justifications.gapCategory.other.label': 'Altele',
     'justifications.gapCategory.other.description': 'Alți factori legați de afaceri',
+
+    // Errors
+    'errors.payGapAnalysisFailed': 'Nu s-a putut încărca analiza decalajului salarial',
+    'errors.reportFailed': 'Nu s-a putut încărca raportul de conformitate',
+    'errors.networkError': 'Eroare de conexiune la rețea',
+    'errors.unauthorized': 'Nu aveți permisiunea să accesați această resursă',
+    'errors.tokenExpired': 'Sesiunea dvs. a expirat. Vă rugăm să vă conectați din nou.',
+    'errors.generalError': 'A apărut o eroare. Vă rugăm încercați din nou.',
   },
   en: {
     // Navigation
@@ -1109,6 +1117,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'justifications.gapCategory.education.description': 'Differences in education levels or certifications',
     'justifications.gapCategory.other.label': 'Other',
     'justifications.gapCategory.other.description': 'Other business-related factors',
+
+    // Errors
+    'errors.payGapAnalysisFailed': 'Failed to load pay gap analysis',
+    'errors.reportFailed': 'Failed to load compliance report',
+    'errors.networkError': 'Network connection error',
+    'errors.unauthorized': 'You do not have permission to access this resource',
+    'errors.tokenExpired': 'Your session has expired. Please log in again.',
+    'errors.generalError': 'An error occurred. Please try again.',
   },
 };
 

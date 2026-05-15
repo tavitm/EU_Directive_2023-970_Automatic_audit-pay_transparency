@@ -21,6 +21,7 @@ export default function EmployeeImportPage() {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
+      dynamicTyping: false,
       complete: (results: any) => {
         if (results.errors.length > 0) {
           setError(t('employees.errorParsingCSV'));
@@ -29,9 +30,46 @@ export default function EmployeeImportPage() {
 
         const data = results.data;
 
-        // Validate required columns
-        if (!data[0] || !data[0].employeeId || !data[0].salary) {
+        // Check if data is empty
+        if (!data || data.length === 0) {
           setError(t('employees.csvMustContainColumns'));
+          return;
+        }
+
+        // Get first row and check for required columns
+        const firstRow = data[0];
+        const requiredColumns = ['employeeId', 'firstName', 'lastName', 'salary', 'gender', 'department', 'jobCode'];
+        const hasRequiredColumns = requiredColumns.every(col => col in firstRow);
+
+        // Check if it might be semicolon-delimited (common issue)
+        if (!hasRequiredColumns && firstRow && Object.keys(firstRow).length <= 2) {
+          const firstKey = Object.keys(firstRow)[0];
+          if (firstKey && firstKey.includes(';')) {
+            setError('❌ ' + t('employees.csvMustContainColumns') + '\n\n' +
+              '⚠️ Notă: Fișierul pare să folosească PUNCT-VIRGULĂ (;) ca delimitator.\n' +
+              'Exportați din Excel/Calc cu delimitatorul VIRGULĂ (,)');
+            return;
+          }
+        }
+
+        // Check if header row is missing (data values instead of column names)
+        if (!hasRequiredColumns && firstRow && Object.keys(firstRow).length === 7) {
+          const firstKey = Object.keys(firstRow)[0];
+          // If first column looks like employee data (not a column header), likely missing header
+          if (firstKey && !['employeeId', 'id', 'employee', 'emp', 'cod', 'nr'].some(h => h.toLowerCase() === firstKey.toLowerCase())) {
+            setError('❌ ' + t('employees.csvMustContainColumns') + '\n\n' +
+              '⚠️ Notă: CSV-ul pare să LIPSEASCĂ LINIA DE ANTET (header row)!\n' +
+              'Prima linie trebuie să conțină NUMELE COLOANELOR:\n' +
+              'employeeId,firstName,lastName,salary,gender,department,jobCode\n\n' +
+              'După aceea urmează datele cu angajații.');
+            return;
+          }
+        }
+
+        if (!hasRequiredColumns) {
+          setError('❌ ' + t('employees.csvMustContainColumns') + '\n\n' +
+            '✅ Coloanele necesare sunt:\n' +
+            'employeeId, firstName, lastName, salary, gender (M/F/O), department, jobCode');
           return;
         }
 

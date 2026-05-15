@@ -101,22 +101,55 @@ export default function LoginPage() {
           {/* Demo Info */}
           <div className="mt-6 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-600 mb-3">
-              <strong>{t('login.demoAccounts')}</strong>
+              <strong>📋 {t('login.demoAccounts')}</strong>
             </p>
-            <div className="bg-gray-50 rounded p-3 text-xs text-gray-700 space-y-2">
-              <div>
-                <p>{t('login.employee')}</p>
+            <div className="bg-gray-50 rounded p-4 text-xs text-gray-700 space-y-3">
+              {/* HR Specialist */}
+              <div className="border-b border-gray-200 pb-2 last:border-b-0">
+                <p className="font-semibold text-gray-900 mb-1">👤 {t('login.hr')}</p>
+                <div className="ml-2 space-y-1 font-mono text-gray-600">
+                  <p>📧 <span className="select-all">hr@company.com</span></p>
+                  <p>🔑 <span className="select-all">password123</span></p>
+                </div>
               </div>
-              <div>
-                <p>{t('login.manager')}</p>
+
+              {/* Compliance Officer */}
+              <div className="border-b border-gray-200 pb-2 last:border-b-0">
+                <p className="font-semibold text-gray-900 mb-1">⚖️ {t('login.compliance')}</p>
+                <div className="ml-2 space-y-1 font-mono text-gray-600">
+                  <p>📧 <span className="select-all">compliance@company.com</span></p>
+                  <p>🔑 <span className="select-all">password123</span></p>
+                </div>
               </div>
-              <div>
-                <p>{t('login.hr')}</p>
+
+              {/* Manager */}
+              <div className="border-b border-gray-200 pb-2 last:border-b-0">
+                <p className="font-semibold text-gray-900 mb-1">👔 {t('login.manager')}</p>
+                <div className="ml-2 space-y-1 font-mono text-gray-600">
+                  <p>📧 <span className="select-all">manager@company.com</span></p>
+                  <p>🔑 <span className="select-all">password123</span></p>
+                </div>
               </div>
+
+              {/* Employee */}
+              <div className="border-b border-gray-200 pb-2 last:border-b-0">
+                <p className="font-semibold text-gray-900 mb-1">👨‍💼 {t('login.employee')}</p>
+                <div className="ml-2 space-y-1 font-mono text-gray-600">
+                  <p>📧 <span className="select-all">employee@company.com</span></p>
+                  <p>🔑 <span className="select-all">password123</span></p>
+                </div>
+              </div>
+
+              {/* Admin */}
               <div>
-                <p>{t('login.compliance')}</p>
+                <p className="font-semibold text-gray-900 mb-1">🔐 Admin</p>
+                <div className="ml-2 space-y-1 font-mono text-gray-600">
+                  <p>📧 <span className="select-all">admin@company.com</span></p>
+                  <p>🔑 <span className="select-all">password123</span></p>
+                </div>
               </div>
             </div>
+            <p className="text-xs text-gray-500 mt-2 italic">💡 Click on credentials to select</p>
           </div>
         </div>
 

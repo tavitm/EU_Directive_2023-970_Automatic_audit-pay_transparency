@@ -61,60 +61,41 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const login = async (email: string, password: string) => {
     try {
-      // Mock authentication with demo credentials
-      const demoAccounts: {
-        [key: string]: { password: string; role: string; name: string };
-      } = {
-        'employee@example.com': {
-          password: 'password',
-          role: 'EMPLOYEE',
-          name: 'John Employee',
+      // Call the API login endpoint
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        'manager@example.com': {
-          password: 'password',
-          role: 'MANAGER',
-          name: 'Jane Manager',
-        },
-        'hr@example.com': {
-          password: 'password',
-          role: 'HR_SPECIALIST',
-          name: 'HR Admin',
-        },
-        'compliance@example.com': {
-          password: 'password',
-          role: 'COMPLIANCE_OFFICER',
-          name: 'Compliance Officer',
-        },
-      };
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Validate credentials
-      const account = demoAccounts[email.toLowerCase()];
-      if (!account || account.password !== password) {
-        throw new Error('Invalid email or password');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Login failed');
       }
 
-      // Mock token and user data
-      const newToken = `mock-jwt-token-${Date.now()}-${Math.random()}`;
-      const userData = {
-        id: `user-${email.split('@')[0]}`,
-        email,
-        name: account.name,
-        role: account.role,
-      };
+      const data = await response.json();
 
-      setToken(newToken);
+      if (!data.success || !data.data) {
+        throw new Error('Invalid response from server');
+      }
+
+      const { token, user: userData } = data.data;
+
+      setToken(token);
       setUser(userData);
-      setRole(account.role);
+      setRole(userData.role);
 
-      localStorage.setItem('authToken', newToken);
+      localStorage.setItem('authToken', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('role', account.role);
+      localStorage.setItem('role', userData.role);
 
       // Redirect to dashboard
       router.push('/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      throw error;
+      throw new Error(error.message || 'Login failed');
     }
   };
 

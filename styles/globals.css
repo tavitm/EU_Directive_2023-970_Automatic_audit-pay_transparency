@@ -188,6 +188,10 @@ code {
   @apply bg-red-100 text-red-800;
 }
 
+.badge-info {
+  @apply bg-blue-100 text-blue-800;
+}
+
 /* Status Badge Styles */
 .status-compliant {
   @apply badge badge-success;

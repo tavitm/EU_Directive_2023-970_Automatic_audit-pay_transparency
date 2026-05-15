@@ -6,13 +6,20 @@ import { useReports, useAnalysis } from '@/hooks/useApi';
 export default function DashboardPage() {
   const { user, role } = useAuth();
   const { t } = useLanguage();
-  const { getComplianceReport, loading: reportLoading, data: report } = useReports();
-  const { calculateGap, loading: gapLoading, data: gapData } = useAnalysis();
+  const { getComplianceReport, loading: reportLoading, data: report, error: reportError } = useReports();
+  const { calculateGap, loading: gapLoading, data: gapData, error: gapError } = useAnalysis();
 
   useEffect(() => {
-    getComplianceReport();
-    calculateGap();
-  }, []);
+    // Fetch data on component mount
+    const fetchData = async () => {
+      await Promise.all([
+        getComplianceReport(),
+        calculateGap(),
+      ]);
+    };
+
+    fetchData();
+  }, [getComplianceReport, calculateGap]);
 
   return (
     <div className="space-y-6">
@@ -27,6 +34,21 @@ export default function DashboardPage() {
           </p>
         </div>
       </div>
+
+      {/* Error Messages */}
+      {gapError && (
+        <div className="alert alert-error">
+          <p className="font-medium">⚠️ {t('errors.payGapAnalysisFailed') || 'Failed to load pay gap analysis'}</p>
+          <p className="text-sm mt-1">{gapError}</p>
+        </div>
+      )}
+
+      {reportError && (
+        <div className="alert alert-error">
+          <p className="font-medium">⚠️ {t('errors.reportFailed') || 'Failed to load compliance report'}</p>
+          <p className="text-sm mt-1">{reportError}</p>
+        </div>
+      )}
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -258,6 +280,9 @@ function MetricCard({
   icon: string;
   loading?: boolean;
 }) {
+  const displayValue = loading ? '-' : (value ?? '-');
+  const displayStatus = typeof status === 'string' ? status : 'info';
+
   return (
     <div className="card">
       <div className="card-body">
@@ -265,13 +290,19 @@ function MetricCard({
           <div>
             <p className="text-sm text-gray-600 mb-1">{title}</p>
             <p className="text-3xl font-bold text-gray-900">
-              {loading ? <span className="spinner"></span> : `${value}${unit}`}
+              {loading ? (
+                <span className="inline-block animate-pulse">⏳</span>
+              ) : (
+                `${displayValue}${unit}`
+              )}
             </p>
           </div>
           <span className="text-3xl">{icon}</span>
         </div>
         <div className="mt-4">
-          <span className={`badge badge-${status}`}>{status}</span>
+          <span className={`badge badge-${displayStatus}`}>
+            {loading ? 'Loading...' : displayStatus}
+          </span>
         </div>
       </div>
     </div>

@@ -28,9 +28,11 @@ export default function JobsPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { t } = useLanguage();
-  const { listJobs, loading, error } = useJobs();
+  const { listJobs: listJobsAPI, loading, error: hookError } = useJobs();
 
   const [jobs, setJobs] = useState<JobEvaluation[]>([]);
+  const [loadingState, setLoadingState] = useState(false);
+  const [error, setError] = useState<{ message: string } | null>(null);
   const [filters, setFilters] = useState({
     department: '',
     status: '',
@@ -42,108 +44,52 @@ export default function JobsPage() {
     if (role && !['HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'CFO', 'ADMIN'].includes(role)) {
       router.push('/dashboard');
     }
-  }, [role]);
+  }, [role, router]);
 
   useEffect(() => {
     loadJobs();
   }, [filters, sortBy]);
 
   const loadJobs = async () => {
-    // Mock data - in real implementation, fetch from API
-    const mockData: JobEvaluation[] = [
-      {
-        id: 'JOB-001',
-        jobCode: 'ENG-001',
-        title: 'Senior Software Engineer',
-        department: 'Engineering',
-        status: 'ACTIVE',
-        createdDate: '2026-04-01',
-        lastUpdatedDate: '2026-04-15',
-        evaluationMethod: 'Point-Factor Method',
-        weightedCriteria: [
-          { name: 'Education & Skills', weight: 30 },
-          { name: 'Experience', weight: 25 },
-          { name: 'Complexity', weight: 25 },
-          { name: 'Accountability', weight: 20 },
-        ],
-        pointScale: { min: 150, max: 300 },
-        createdBy: 'HR Manager',
-      },
-      {
-        id: 'JOB-002',
-        jobCode: 'SAL-001',
-        title: 'Sales Director',
-        department: 'Sales',
-        status: 'ACTIVE',
-        createdDate: '2026-03-15',
-        lastUpdatedDate: '2026-04-20',
-        evaluationMethod: 'Point-Factor Method',
-        weightedCriteria: [
-          { name: 'Education & Skills', weight: 20 },
-          { name: 'Experience', weight: 30 },
-          { name: 'Leadership', weight: 25 },
-          { name: 'Performance Metrics', weight: 25 },
-        ],
-        pointScale: { min: 180, max: 320 },
-        createdBy: 'HR Manager',
-      },
-      {
-        id: 'JOB-003',
-        jobCode: 'MKT-001',
-        title: 'Marketing Manager',
-        department: 'Marketing',
-        status: 'SUBMITTED',
-        createdDate: '2026-05-01',
-        lastUpdatedDate: '2026-05-10',
-        evaluationMethod: 'Point-Factor Method',
-        weightedCriteria: [
-          { name: 'Education & Skills', weight: 25 },
-          { name: 'Experience', weight: 25 },
-          { name: 'Complexity', weight: 25 },
-          { name: 'Accountability', weight: 25 },
-        ],
-        pointScale: { min: 140, max: 280 },
-        createdBy: 'Department Manager',
-      },
-      {
-        id: 'JOB-004',
-        jobCode: 'HR-001',
-        title: 'HR Specialist',
-        department: 'HR',
-        status: 'DRAFT',
-        createdDate: '2026-05-05',
-        lastUpdatedDate: '2026-05-12',
-        evaluationMethod: 'Point-Factor Method',
-        weightedCriteria: [
-          { name: 'Education & Skills', weight: 30 },
-          { name: 'Experience', weight: 20 },
-          { name: 'Complexity', weight: 25 },
-          { name: 'Accountability', weight: 25 },
-        ],
-        pointScale: { min: 120, max: 260 },
-        createdBy: 'HR Manager',
-      },
-    ];
+    setLoadingState(true);
+    setError(null);
 
-    // Apply filters
-    let filtered = mockData.filter(j => {
-      if (filters.department && j.department !== filters.department) return false;
-      if (filters.status && j.status !== filters.status) return false;
-      return true;
-    });
+    try {
+      // Call the useJobs hook API - pass status filter if provided
+      const result = await listJobsAPI(filters.status || undefined);
 
-    // Apply sorting
-    filtered.sort((a, b) => {
-      if (sortBy === 'createdDate') {
-        return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+      if (!result || !result.jobs) {
+        throw new Error(t('common.failedToLoadData'));
       }
-      if (sortBy === 'title') {
-        return a.title.localeCompare(b.title);
-      }
-      return 0;
-    });
 
-    setJobs(filtered);
+      // Result contains the jobs data - apply local filters and sorting
+      let filtered = result.jobs.filter((j: JobEvaluation) => {
+        // Filter by department if specified
+        if (filters.department && j.department !== filters.department) return false;
+        // Status filtering is done at API level, but double-check locally
+        if (filters.status && j.status !== filters.status) return false;
+        return true;
+      });
+
+      // Apply sorting
+      filtered.sort((a: JobEvaluation, b: JobEvaluation) => {
+        if (sortBy === 'createdDate') {
+          return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+        }
+        if (sortBy === 'title') {
+          return a.title.localeCompare(b.title);
+        }
+        return 0;
+      });
+
+      setJobs(filtered);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t('common.failedToLoadData');
+      setError({ message: errorMessage });
+      console.error('Failed to load jobs:', err);
+    } finally {
+      setLoadingState(false);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -202,12 +148,8 @@ export default function JobsPage() {
                 className="form-select"
               >
                 <option value="">{t('common.allDepartments')}</option>
-                <option value="Engineering">{t('common.engineering')}</option>
-                <option value="Sales">{t('common.sales')}</option>
-                <option value="Marketing">{t('common.marketing')}</option>
-                <option value="HR">{t('common.humanResources')}</option>
-                <option value="Finance">{t('common.finance')}</option>
-                <option value="Operations">{t('common.operations')}</option>
+                <option value="Developers">Developers</option>
+                <option value="Managers">Managers</option>
               </select>
             </div>
 
@@ -247,9 +189,9 @@ export default function JobsPage() {
               <button
                 onClick={loadJobs}
                 className="btn btn-secondary w-full"
-                disabled={loading}
+                disabled={loadingState}
               >
-                {loading ? (
+                {loadingState ? (
                   <>
                     <span className="spinner mr-2"></span>
                     {t('jobs.searching')}
@@ -369,10 +311,15 @@ export default function JobsPage() {
       {/* Detail Modal */}
       {selectedJob && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div
+            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="job-detail-title"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedJob.title}</h2>
+                <h2 id="job-detail-title" className="text-2xl font-bold text-gray-900">{selectedJob.title}</h2>
                 <p className="text-sm text-gray-600 mt-1">
                   {selectedJob.jobCode} • {selectedJob.department}
                 </p>
@@ -380,6 +327,7 @@ export default function JobsPage() {
               <button
                 onClick={() => setSelectedJob(null)}
                 className="text-gray-600 hover:text-gray-900 text-2xl"
+                aria-label="Close job details modal"
               >
                 ✕
               </button>

@@ -55,7 +55,7 @@ export default function AnalysisPage() {
   const router = useRouter();
   const { role } = useAuth();
   const { t } = useLanguage();
-  const { calculateGap, loading, error } = useAnalysis();
+  const { calculateGap, loading, error: gapError, data: gapData } = useAnalysis();
 
   const [results, setResults] = useState<GapAnalysisResult | null>(null);
   const [filters, setFilters] = useState({
@@ -73,23 +73,22 @@ export default function AnalysisPage() {
     if (role && !['MANAGER', 'HR_SPECIALIST', 'COMPLIANCE_OFFICER', 'CFO', 'ADMIN'].includes(role)) {
       router.push('/dashboard');
     }
-  }, [role]);
+  }, [role, router]);
 
   // Load analysis on mount and filter changes
   useEffect(() => {
+    const loadAnalysis = async () => {
+      // Extract job code/group from filters if available
+      const jobGroup = filters.jobCode || filters.department || undefined;
+
+      const data = await calculateGap(jobGroup);
+      if (data) {
+        setResults(data);
+      }
+    };
+
     loadAnalysis();
-  }, [filters]);
-
-  const loadAnalysis = async () => {
-    const filterParams = Object.entries(filters)
-      .filter(([_, value]) => value !== '' && value !== false)
-      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-
-    const data = await calculateGap(filterParams);
-    if (data) {
-      setResults(data);
-    }
-  };
+  }, [filters, calculateGap]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value, type } = e.target;
@@ -221,10 +220,10 @@ export default function AnalysisPage() {
       </div>
 
       {/* Error Display */}
-      {error && (
+      {gapError && (
         <div className="alert alert-error">
-          <p className="font-medium">{t('common.error')}</p>
-          <p className="text-sm mt-1">{error.message}</p>
+          <p className="font-medium">⚠️ {t('errors.payGapAnalysisFailed') || 'Failed to load pay gap analysis'}</p>
+          <p className="text-sm mt-1">{gapError}</p>
         </div>
       )}
 
@@ -602,7 +601,7 @@ export default function AnalysisPage() {
                       {t('analysis.submitJustification')}
                     </button>
                   )}
-                  <button onClick={loadAnalysis} className="btn btn-secondary" disabled={loading}>
+                  <button onClick={() => setFilters({...filters})} className="btn btn-secondary" disabled={loading}>
                     {t('analysis.refreshAnalysis')}
                   </button>
                   <button
