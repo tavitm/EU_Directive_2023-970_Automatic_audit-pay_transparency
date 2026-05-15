@@ -32,6 +32,7 @@ export function useAnalysis() {
         analysis: {
           gapAnalysis: {
             adjustedGap: response.data?.summary?.payGap || 0,
+            unadjustedGap: response.data?.summary?.payGap || 0,
           },
           employeeData: {
             total: response.data?.summary?.totalEmployees || 0,
