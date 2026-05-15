@@ -45,6 +45,7 @@ export function useAnalysis() {
             tStatistic: 2.45,
             pValue: 0.015,
             significantAt95Confidence: (response.data?.summary?.payGap || 0) > 5,
+            sampleSize: response.data?.summary?.totalEmployees || 0,
           },
         },
       };
