@@ -315,7 +315,7 @@ export default function SettingsPage() {
               {setting.type === 'text' && (
                 <input
                   type="text"
-                  value={setting.value}
+                  value={String(setting.value)}
                   onChange={e => handleSettingChange(setting.key, e.target.value)}
                   className="form-input mt-2"
                 />
@@ -324,7 +324,7 @@ export default function SettingsPage() {
               {setting.type === 'number' && (
                 <input
                   type="number"
-                  value={setting.value}
+                  value={String(setting.value)}
                   onChange={e => handleSettingChange(setting.key, e.target.value)}
                   className="form-input mt-2"
                 />
@@ -352,7 +352,7 @@ export default function SettingsPage() {
 
               {setting.type === 'select' && setting.options && (
                 <select
-                  value={setting.value}
+                  value={String(setting.value)}
                   onChange={e => handleSettingChange(setting.key, e.target.value)}
                   className="form-select mt-2"
                 >
